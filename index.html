@@ -1,0 +1,4919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#ff4d00">
+<title>SYNK — Connect. Share. Belong.</title>
+
+<style>
+/* =========================================================
+   SYNK
+   ONE FILE — HTML + CSS + JAVASCRIPT
+========================================================= */
+
+:root{
+  --orange:#ff4d00;
+  --orange2:#ff7300;
+  --pink:#ff007f;
+  --pink2:#ff28a8;
+  --black:#060606;
+  --dark:#0d0d0d;
+  --card:#121212;
+  --card2:#191919;
+  --white:#fff;
+  --gray:#999;
+  --gray2:#666;
+  --line:rgba(255,255,255,.09);
+  --green:#21d07a;
+  --red:#ff4545;
+  --shadow:0 15px 45px rgba(0,0,0,.35);
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+  width:100%;
+  min-height:100%;
+}
+
+body{
+  font-family:Inter,Arial,Helvetica,sans-serif;
+  background:var(--black);
+  color:var(--white);
+  overflow-x:hidden;
+}
+
+button,
+input,
+textarea,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+  border:0;
+}
+
+input,
+textarea,
+select{
+  outline:none;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+#authScreen{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:
+    radial-gradient(circle at 10% 10%,rgba(255,77,0,.25),transparent 35%),
+    radial-gradient(circle at 90% 90%,rgba(255,0,127,.22),transparent 35%),
+    #050505;
+}
+
+.authCard{
+  width:100%;
+  max-width:450px;
+  padding:30px 24px;
+  background:rgba(14,14,14,.96);
+  border:1px solid var(--line);
+  border-radius:28px;
+  box-shadow:
+    0 0 70px rgba(255,77,0,.1),
+    0 0 70px rgba(255,0,127,.08);
+}
+
+.logo{
+  text-align:center;
+  font-size:45px;
+  font-weight:1000;
+  letter-spacing:6px;
+  background:linear-gradient(90deg,var(--orange),var(--pink));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.logoSub{
+  text-align:center;
+  color:#777;
+  margin:7px 0 28px;
+}
+
+.authTabs{
+  display:flex;
+  gap:4px;
+  padding:4px;
+  border-radius:14px;
+  background:#080808;
+  margin-bottom:22px;
+}
+
+.authTabs button{
+  flex:1;
+  padding:12px;
+  border-radius:10px;
+  color:#777;
+  background:transparent;
+}
+
+.authTabs button.active{
+  color:#fff;
+  background:linear-gradient(90deg,var(--orange),var(--pink));
+}
+
+.formGroup{
+  margin-bottom:15px;
+}
+
+.formGroup label{
+  display:block;
+  color:#aaa;
+  font-size:13px;
+  margin-bottom:7px;
+}
+
+.formGroup input,
+.formGroup select,
+.formGroup textarea{
+  width:100%;
+  color:#fff;
+  background:#090909;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:14px;
+}
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus{
+  border-color:var(--orange);
+  box-shadow:0 0 0 3px rgba(255,77,0,.08);
+}
+
+.phoneGrid{
+  display:grid;
+  grid-template-columns:125px 1fr;
+  gap:8px;
+}
+
+.mainButton{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  color:#fff;
+  font-weight:800;
+  background:linear-gradient(100deg,var(--orange),var(--pink));
+  box-shadow:0 10px 30px rgba(255,77,0,.18);
+}
+
+.authFooter{
+  text-align:center;
+  color:#666;
+  font-size:11px;
+  margin-top:18px;
+}
+
+/* =========================================================
+   APP
+========================================================= */
+
+#app{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 100% 0,rgba(255,0,127,.07),transparent 30%),
+    var(--black);
+}
+
+.topDashboard{
+  position:fixed;
+  z-index:100;
+  top:0;
+  left:0;
+  right:0;
+  height:68px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 16px;
+  border-bottom:1px solid var(--line);
+  background:rgba(6,6,6,.92);
+  backdrop-filter:blur(20px);
+}
+
+.brand{
+  font-weight:1000;
+  letter-spacing:3px;
+  font-size:22px;
+  background:linear-gradient(90deg,var(--orange),var(--pink));
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.topProfile{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.topName{
+  font-size:14px;
+  font-weight:700;
+  max-width:130px;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.profileAvatar{
+  width:39px;
+  height:39px;
+  border-radius:50%;
+  object-fit:cover;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,var(--orange),var(--pink));
+  color:#fff;
+  font-weight:900;
+  overflow:hidden;
+}
+
+.profileAvatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.main{
+  max-width:900px;
+  min-height:100vh;
+  margin:auto;
+  padding:88px 15px 95px;
+}
+
+/* =========================================================
+   BOTTOM NAV
+========================================================= */
+
+.bottomDashboard{
+  position:fixed;
+  z-index:100;
+  bottom:0;
+  left:0;
+  right:0;
+  height:74px;
+  border-top:1px solid var(--line);
+  background:rgba(7,7,7,.96);
+  backdrop-filter:blur(20px);
+}
+
+.navInner{
+  height:100%;
+  max-width:700px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+}
+
+.navButton{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  color:#666;
+  background:transparent;
+  font-size:10px;
+}
+
+.navButton .navIcon{
+  font-size:21px;
+}
+
+.navButton.active{
+  color:#fff;
+}
+
+.navButton.active .navIcon{
+  filter:drop-shadow(0 0 7px var(--orange));
+}
+
+/* =========================================================
+   PAGES
+========================================================= */
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+.pageTitle{
+  font-size:27px;
+  margin-bottom:6px;
+}
+
+.pageSubtitle{
+  color:#777;
+  margin-bottom:20px;
+}
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.search{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:13px 15px;
+  border-radius:15px;
+  background:var(--card);
+  border:1px solid var(--line);
+  margin-bottom:15px;
+}
+
+.search input{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#fff;
+}
+
+/* =========================================================
+   CONTACTS
+========================================================= */
+
+.contact{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:17px;
+  margin-bottom:9px;
+}
+
+.contactDetails{
+  flex:1;
+  min-width:0;
+}
+
+.contactName{
+  font-weight:800;
+}
+
+.contactPhone{
+  color:#777;
+  font-size:11px;
+  margin-top:4px;
+}
+
+.contactButtons{
+  display:flex;
+  gap:5px;
+}
+
+.smallButton{
+  width:35px;
+  height:35px;
+  border-radius:10px;
+  background:#222;
+  color:#fff;
+}
+
+.empty{
+  min-height:55vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:#666;
+}
+
+.emptyIcon{
+  font-size:55px;
+  margin-bottom:10px;
+}
+
+/* =========================================================
+   FLOATING +
+========================================================= */
+
+.addButton{
+  position:fixed;
+  z-index:90;
+  right:20px;
+  bottom:91px;
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  color:#fff;
+  font-size:30px;
+  font-weight:300;
+  background:linear-gradient(135deg,var(--orange),var(--pink));
+  box-shadow:
+    0 8px 30px rgba(255,77,0,.35),
+    0 4px 25px rgba(255,0,127,.2);
+}
+
+/* =========================================================
+   MODALS
+========================================================= */
+
+.modal{
+  position:fixed;
+  z-index:500;
+  inset:0;
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  background:rgba(0,0,0,.75);
+  backdrop-filter:blur(8px);
+}
+
+.modal.open{
+  display:flex;
+}
+
+.modalCard{
+  width:100%;
+  max-width:580px;
+  max-height:92vh;
+  overflow-y:auto;
+  padding:22px;
+  border-radius:25px 25px 0 0;
+  background:#111;
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+}
+
+.modalHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+
+.close{
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  color:#fff;
+  background:#222;
+}
+
+/* =========================================================
+   INVITE
+========================================================= */
+
+.inviteGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.inviteOption{
+  padding:16px 8px;
+  border-radius:15px;
+  color:#fff;
+  background:#1a1a1a;
+  text-align:center;
+}
+
+.inviteOption div{
+  font-size:27px;
+  margin-bottom:7px;
+}
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.profileHeader{
+  text-align:center;
+  padding:10px 0 25px;
+}
+
+.largeAvatar{
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  font-size:34px;
+  font-weight:900;
+  background:linear-gradient(135deg,var(--orange),var(--pink));
+}
+
+.largeAvatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.profileHeader h2{
+  margin-top:12px;
+}
+
+.profileHeader p{
+  color:#777;
+  margin-top:5px;
+}
+
+.profileButtons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:15px;
+}
+
+.secondaryButton{
+  padding:12px;
+  color:#fff;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:#1b1b1b;
+}
+
+.profileSection{
+  margin-top:22px;
+}
+
+.profileSection h3{
+  font-size:12px;
+  text-transform:uppercase;
+  color:#666;
+  letter-spacing:1px;
+  margin-bottom:9px;
+}
+
+.infoBox{
+  padding:15px;
+  border-radius:15px;
+  background:#171717;
+  border:1px solid var(--line);
+  margin-bottom:8px;
+}
+
+.infoBox small{
+  display:block;
+  color:#666;
+  margin-bottom:5px;
+}
+
+.infoBox p{
+  color:#ddd;
+  line-height:1.5;
+}
+
+.hobbyGrid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.hobby{
+  padding:8px 11px;
+  border-radius:20px;
+  color:#bbb;
+  background:#191919;
+  border:1px solid var(--line);
+}
+
+.hobby.selected{
+  color:#fff;
+  background:linear-gradient(90deg,var(--orange),var(--pink));
+}
+
+/* =========================================================
+   REELS
+========================================================= */
+
+.composer{
+  padding:15px;
+  border-radius:18px;
+  background:var(--card);
+  border:1px solid var(--line);
+  margin-bottom:17px;
+}
+
+.composer textarea{
+  width:100%;
+  min-height:85px;
+  resize:none;
+  padding:13px;
+  border-radius:12px;
+  background:#080808;
+  color:#fff;
+  border:1px solid var(--line);
+  margin-bottom:9px;
+}
+
+.mediaRow{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-bottom:9px;
+}
+
+.mediaButton{
+  padding:11px;
+  border-radius:11px;
+  color:#ddd;
+  background:#1b1b1b;
+  border:1px solid var(--line);
+}
+
+.reel{
+  overflow:hidden;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:20px;
+  margin-bottom:16px;
+}
+
+.reelTop{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:14px;
+}
+
+.reelTopInfo{
+  flex:1;
+}
+
+.reelTopInfo strong{
+  display:block;
+}
+
+.reelTopInfo small{
+  color:#666;
+}
+
+.reelText{
+  padding:0 15px 15px;
+  white-space:pre-wrap;
+  line-height:1.5;
+  color:#eee;
+}
+
+.reelMedia{
+  width:100%;
+  max-height:500px;
+  object-fit:cover;
+  display:block;
+  background:#000;
+}
+
+.reelActions{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--line);
+}
+
+.reelActions button{
+  padding:13px 5px;
+  color:#aaa;
+  background:transparent;
+  font-size:12px;
+}
+
+.reelActions button:hover{
+  color:#fff;
+}
+
+.reelActions .liked{
+  color:#ff238e;
+}
+
+.comments{
+  padding:12px 15px;
+  border-top:1px solid var(--line);
+}
+
+.comment{
+  padding:7px 0;
+  font-size:13px;
+  color:#aaa;
+}
+
+.comment strong{
+  color:#fff;
+}
+
+.commentInput{
+  display:flex;
+  gap:7px;
+  margin-top:9px;
+}
+
+.commentInput input{
+  flex:1;
+  padding:9px 11px;
+  border-radius:15px;
+  background:#090909;
+  color:#fff;
+  border:1px solid var(--line);
+}
+
+.commentInput button{
+  padding:8px 12px;
+  border-radius:13px;
+  color:#fff;
+  background:var(--orange);
+}
+
+/* =========================================================
+   REQUESTS
+========================================================= */
+
+.request{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px;
+  border-radius:17px;
+  background:var(--card);
+  border:1px solid var(--line);
+  margin-bottom:9px;
+}
+
+.requestInfo{
+  flex:1;
+}
+
+.requestActions{
+  display:flex;
+  gap:5px;
+}
+
+.accept{
+  padding:8px 11px;
+  border-radius:9px;
+  color:#000;
+  background:var(--green);
+}
+
+.reject{
+  padding:8px 11px;
+  border-radius:9px;
+  color:#fff;
+  background:#292929;
+}
+
+/* =========================================================
+   NEWS
+========================================================= */
+
+.news{
+  padding:20px;
+  border-radius:20px;
+  background:
+    linear-gradient(135deg,rgba(255,77,0,.11),rgba(255,0,127,.09)),
+    var(--card);
+  border:1px solid var(--line);
+  margin-bottom:14px;
+}
+
+.newsLabel{
+  color:var(--orange);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1.3px;
+  margin-bottom:7px;
+}
+
+.news h3{
+  margin-bottom:7px;
+}
+
+.news p{
+  color:#999;
+  line-height:1.55;
+}
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+.settingGroup{
+  margin-bottom:24px;
+}
+
+.settingGroupTitle{
+  color:#666;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  margin-bottom:7px;
+}
+
+.setting{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-height:65px;
+  padding:13px;
+  background:#161616;
+  border-bottom:1px solid var(--line);
+}
+
+.setting:first-of-type{
+  border-radius:14px 14px 0 0;
+}
+
+.setting:last-of-type{
+  border-radius:0 0 14px 14px;
+}
+
+.settingInfo{
+  flex:1;
+}
+
+.settingInfo strong{
+  display:block;
+  margin-bottom:4px;
+}
+
+.settingInfo small{
+  color:#666;
+}
+
+.switch{
+  width:48px;
+  height:27px;
+  border-radius:20px;
+  background:#333;
+  position:relative;
+  transition:.2s;
+}
+
+.switch:after{
+  content:"";
+  width:21px;
+  height:21px;
+  position:absolute;
+  top:3px;
+  left:4px;
+  background:#fff;
+  border-radius:50%;
+  transition:.2s;
+}
+
+.switch.on{
+  background:linear-gradient(90deg,var(--orange),var(--pink));
+}
+
+.switch.on:after{
+  left:23px;
+}
+
+/* =========================================================
+   AI
+========================================================= */
+
+.aiWindow{
+  height:75vh;
+  display:flex;
+  flex-direction:column;
+}
+
+.aiMessages{
+  flex:1;
+  overflow-y:auto;
+  padding-bottom:15px;
+}
+
+.aiBubble{
+  max-width:88%;
+  padding:13px 15px;
+  border-radius:18px;
+  line-height:1.5;
+  margin-bottom:11px;
+}
+
+.aiBubble.user{
+  margin-left:auto;
+  color:#fff;
+  background:linear-gradient(135deg,var(--orange),var(--pink));
+}
+
+.aiBubble.assistant{
+  background:#181818;
+  border:1px solid var(--line);
+}
+
+.aiInputRow{
+  display:flex;
+  gap:8px;
+  padding-top:10px;
+}
+
+.aiInputRow input{
+  flex:1;
+  padding:13px 16px;
+  border-radius:22px;
+  color:#fff;
+  background:#171717;
+  border:1px solid var(--line);
+}
+
+.aiSend{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  color:#fff;
+  background:linear-gradient(135deg,var(--orange),var(--pink));
+}
+
+.aiProvider{
+  margin-top:9px;
+  display:flex;
+  gap:7px;
+}
+
+.aiProvider button{
+  flex:1;
+  padding:9px;
+  border-radius:10px;
+  color:#aaa;
+  background:#191919;
+}
+
+.aiProvider button.active{
+  color:#fff;
+  border:1px solid var(--orange);
+}
+
+/* =========================================================
+   ABOUT
+========================================================= */
+
+.aboutHero{
+  text-align:center;
+  padding:30px 15px;
+}
+
+.aboutLogo{
+  font-size:58px;
+  font-weight:1000;
+  letter-spacing:8px;
+  background:linear-gradient(90deg,var(--orange),var(--pink));
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.aboutHero p{
+  color:#777;
+  margin-top:8px;
+}
+
+.feature{
+  padding:17px;
+  border-radius:17px;
+  background:#171717;
+  border:1px solid var(--line);
+  margin-bottom:9px;
+}
+
+.feature h3{
+  margin-bottom:6px;
+}
+
+.feature p{
+  color:#888;
+  line-height:1.5;
+}
+
+.creator{
+  text-align:center;
+  margin-top:20px;
+  padding:22px;
+  border-radius:20px;
+  background:linear-gradient(
+    135deg,
+    rgba(255,77,0,.11),
+    rgba(255,0,127,.11)
+  );
+}
+
+/* =========================================================
+   CHAT ROOM
+========================================================= */
+
+.chatRoom{
+  position:fixed;
+  z-index:300;
+  inset:0;
+  display:none;
+  flex-direction:column;
+  background:#080808;
+}
+
+.chatRoom.open{
+  display:flex;
+}
+
+.chatHeader{
+  height:66px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:0 15px;
+  background:#0d0d0d;
+  border-bottom:1px solid var(--line);
+}
+
+.back{
+  background:transparent;
+  color:#fff;
+  font-size:28px;
+}
+
+.chatMessages{
+  flex:1;
+  overflow-y:auto;
+  padding:20px 15px 85px;
+}
+
+.message{
+  max-width:80%;
+  padding:11px 14px;
+  border-radius:17px;
+  margin-bottom:9px;
+  line-height:1.45;
+  word-break:break-word;
+}
+
+.message.mine{
+  margin-left:auto;
+  background:linear-gradient(135deg,var(--orange),var(--pink));
+}
+
+.message.other{
+  background:#1b1b1b;
+}
+
+.chatComposer{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  display:flex;
+  gap:7px;
+  padding:10px;
+  background:rgba(8,8,8,.98);
+  border-top:1px solid var(--line);
+}
+
+.chatComposer input{
+  flex:1;
+  padding:12px 15px;
+  color:#fff;
+  background:#171717;
+  border:1px solid var(--line);
+  border-radius:22px;
+}
+
+.send{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  color:#fff;
+  background:linear-gradient(135deg,var(--orange),var(--pink));
+}
+
+/* =========================================================
+   LIGHT MODE
+========================================================= */
+
+body.light{
+  --black:#f3f3f3;
+  --dark:#fff;
+  --card:#fff;
+  --card2:#eee;
+  --white:#111;
+  --gray:#666;
+  --gray2:#888;
+  --line:rgba(0,0,0,.1);
+}
+
+body.light #app{
+  background:#f3f3f3;
+}
+
+body.light .topDashboard,
+body.light .bottomDashboard,
+body.light .chatHeader,
+body.light .chatRoom{
+  background:rgba(255,255,255,.95);
+}
+
+body.light .search,
+body.light .contact,
+body.light .reel,
+body.light .news,
+body.light .request,
+body.light .setting,
+body.light .feature{
+  background:#fff;
+}
+
+body.light .composer textarea,
+body.light .formGroup input,
+body.light .formGroup select,
+body.light .formGroup textarea,
+body.light .chatComposer input,
+body.light .aiInputRow input,
+body.light .commentInput input{
+  color:#111;
+  background:#f5f5f5;
+}
+
+body.light .modalCard{
+  background:#fff;
+  color:#111;
+}
+
+body.light .inviteOption,
+body.light .secondaryButton,
+body.light .smallButton{
+  background:#eee;
+  color:#111;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:520px){
+
+  .main{
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+  .topName{
+    max-width:95px;
+  }
+
+  .pageTitle{
+    font-size:24px;
+  }
+
+  .inviteGrid{
+    grid-template-columns:1fr;
+  }
+
+  .reelActions button{
+    font-size:11px;
+  }
+
+  .message{
+    max-width:88%;
+  }
+
+}
+
+@media(min-width:800px){
+
+  .modal{
+    align-items:center;
+  }
+
+  .modalCard{
+    border-radius:25px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- =======================================================
+     AUTH
+======================================================= -->
+
+<section id="authScreen">
+
+<div class="authCard">
+
+  <div class="logo">SYNK</div>
+  <div class="logoSub">Connect. Share. Belong.</div>
+
+  <div class="authTabs">
+    <button id="signupTab"
+      class="active"
+      onclick="switchAuth('signup')">
+      Sign Up
+    </button>
+
+    <button id="loginTab"
+      onclick="switchAuth('login')">
+      Login
+    </button>
+  </div>
+
+
+  <!-- SIGN UP -->
+
+  <form id="signupForm">
+
+    <div class="formGroup">
+      <label>Full Name</label>
+      <input
+        id="signupName"
+        type="text"
+        placeholder="Your name"
+        required>
+    </div>
+
+    <div class="formGroup">
+      <label>Country</label>
+
+      <select id="signupCountry">
+
+        <option value="+234">
+          🇳🇬 Nigeria (+234)
+        </option>
+
+        <option value="+233">
+          🇬🇭 Ghana (+233)
+        </option>
+
+        <option value="+254">
+          🇰🇪 Kenya (+254)
+        </option>
+
+        <option value="+27">
+          🇿🇦 South Africa (+27)
+        </option>
+
+        <option value="+44">
+          🇬🇧 United Kingdom (+44)
+        </option>
+
+        <option value="+1">
+          🇺🇸 United States (+1)
+        </option>
+
+        <option value="+91">
+          🇮🇳 India (+91)
+        </option>
+
+        <option value="+971">
+          🇦🇪 UAE (+971)
+        </option>
+
+      </select>
+    </div>
+
+    <div class="formGroup">
+
+      <label>Phone Number</label>
+
+      <input
+        id="signupPhone"
+        type="tel"
+        placeholder="8012345678"
+        required>
+
+    </div>
+
+    <div class="formGroup">
+
+      <label>Password</label>
+
+      <input
+        id="signupPassword"
+        type="password"
+        placeholder="Create password"
+        required>
+
+    </div>
+
+    <button class="mainButton">
+      Create SYNK Account
+    </button>
+
+  </form>
+
+
+  <!-- LOGIN -->
+
+  <form id="loginForm" class="hidden">
+
+    <div class="formGroup">
+
+      <label>Phone Number</label>
+
+      <input
+        id="loginPhone"
+        type="tel"
+        placeholder="Phone number"
+        required>
+
+    </div>
+
+    <div class="formGroup">
+
+      <label>Password</label>
+
+      <input
+        id="loginPassword"
+        type="password"
+        placeholder="Password"
+        required>
+
+    </div>
+
+    <button class="mainButton">
+      Login to SYNK
+    </button>
+
+  </form>
+
+
+  <div class="authFooter">
+    SYNK frontend mode — backend can be connected later.
+  </div>
+
+</div>
+
+</section>
+
+
+<!-- =======================================================
+     APP
+======================================================= -->
+
+<div id="app" class="hidden">
+
+
+<!-- TOP DASHBOARD -->
+
+<header class="topDashboard">
+
+  <div class="brand">
+    SYNK
+  </div>
+
+  <div class="topProfile">
+
+    <div
+      id="topName"
+      class="topName">
+      User
+    </div>
+
+    <button
+      class="profileAvatar"
+      onclick="openProfile()"
+      id="topAvatar">
+      U
+    </button>
+
+  </div>
+
+</header>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+
+<!-- =====================================================
+     CHAT
+===================================================== -->
+
+<section
+  id="chatPage"
+  class="page active">
+
+  <h1 class="pageTitle">
+    Chats
+  </h1>
+
+  <p class="pageSubtitle">
+    Your SYNK conversations
+  </p>
+
+  <div class="search">
+
+    🔎
+
+    <input
+      id="contactSearch"
+      placeholder="Search contacts..."
+      oninput="renderContacts()">
+
+  </div>
+
+  <div id="contacts"></div>
+
+  <div
+    id="chatEmpty"
+    class="empty">
+
+    <div>
+
+      <div class="emptyIcon">
+        💬
+      </div>
+
+      <h3>No chats yet</h3>
+
+      <p>
+        Use the + button to invite people to SYNK.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     REQUESTS
+===================================================== -->
+
+<section
+  id="requestPage"
+  class="page">
+
+  <h1 class="pageTitle">
+    SYNK Requests
+  </h1>
+
+  <p class="pageSubtitle">
+    Manage your connection requests.
+  </p>
+
+  <div id="requests"></div>
+
+</section>
+
+
+<!-- =====================================================
+     REELS
+===================================================== -->
+
+<section
+  id="reelsPage"
+  class="page">
+
+  <h1 class="pageTitle">
+    Reels
+  </h1>
+
+  <p class="pageSubtitle">
+    Share your moments with SYNK.
+  </p>
+
+
+  <div class="composer">
+
+    <textarea
+      id="reelText"
+      placeholder="What's happening?"></textarea>
+
+
+    <div class="mediaRow">
+
+      <button
+        class="mediaButton"
+        onclick="chooseImage()">
+        🖼️ Add Picture
+      </button>
+
+      <button
+        class="mediaButton"
+        onclick="chooseVideo()">
+        🎥 Add Video
+      </button>
+
+    </div>
+
+
+    <input
+      id="imageInput"
+      type="file"
+      accept="image/*"
+      class="hidden"
+      onchange="handleImage(this)">
+
+    <input
+      id="videoInput"
+      type="file"
+      accept="video/*"
+      class="hidden"
+      onchange="handleVideo(this)">
+
+
+    <button
+      class="mainButton"
+      onclick="createReel()">
+      + Post to SYNK
+    </button>
+
+  </div>
+
+
+  <div id="reels"></div>
+
+</section>
+
+
+<!-- =====================================================
+     NEWS
+===================================================== -->
+
+<section
+  id="newsPage"
+  class="page">
+
+  <h1 class="pageTitle">
+    SYNK News
+  </h1>
+
+  <p class="pageSubtitle">
+    Official SYNK company updates.
+  </p>
+
+
+  <div class="news">
+
+    <div class="newsLabel">
+      SYNK OFFICIAL
+    </div>
+
+    <h3>
+      Welcome to SYNK
+    </h3>
+
+    <p>
+      Welcome to SYNK — a new social communication platform
+      built around conversations, connections and sharing.
+    </p>
+
+  </div>
+
+
+  <div class="news">
+
+    <div class="newsLabel">
+      DEVELOPMENT UPDATE
+    </div>
+
+    <h3>
+      SYNK is growing
+    </h3>
+
+    <p>
+      The next development stage includes real-time messaging,
+      cloud accounts, notifications, media sharing and
+      improved social features.
+    </p>
+
+  </div>
+
+
+  <div class="news">
+
+    <div class="newsLabel">
+      COMING SOON
+    </div>
+
+    <h3>
+      SYNK Calls
+    </h3>
+
+    <p>
+      Voice and video calling are planned for a future release.
+    </p>
+
+  </div>
+
+
+  <div class="news">
+
+    <div class="newsLabel">
+      COMING SOON
+    </div>
+
+    <h3>
+      SYNK Communities
+    </h3>
+
+    <p>
+      Create communities, discover people with similar interests
+      and build your own SYNK network.
+    </p>
+
+  </div>
+
+</section>
+
+</main>
+
+
+<!-- FLOATING ADD -->
+
+<button
+  class="addButton"
+  onclick="openInvite()">
+  +
+</button>
+
+
+<!-- BOTTOM DASHBOARD -->
+
+<nav class="bottomDashboard">
+
+<div class="navInner">
+
+  <button
+    class="navButton active"
+    onclick="navigate('chatPage',this)">
+
+    <span class="navIcon">💬</span>
+    Chat
+
+  </button>
+
+
+  <button
+    class="navButton"
+    onclick="navigate('requestPage',this)">
+
+    <span class="navIcon">👥</span>
+    SYNK Request
+
+  </button>
+
+
+  <button
+    class="navButton"
+    onclick="navigate('reelsPage',this)">
+
+    <span class="navIcon">▶</span>
+    Reels
+
+  </button>
+
+
+  <button
+    class="navButton"
+    onclick="navigate('newsPage',this)">
+
+    <span class="navIcon">📰</span>
+    SYNK News
+
+  </button>
+
+</div>
+
+</nav>
+
+</div>
+
+
+<!-- =======================================================
+     INVITE MODAL
+======================================================= -->
+
+<div
+  id="inviteModal"
+  class="modal">
+
+<div class="modalCard">
+
+  <div class="modalHeader">
+
+    <h2>
+      Add someone to SYNK
+    </h2>
+
+    <button
+      class="close"
+      onclick="closeModal('inviteModal')">
+      ×
+    </button>
+
+  </div>
+
+
+  <div class="formGroup">
+
+    <label>
+      Phone Number
+    </label>
+
+    <input
+      id="invitePhone"
+      type="tel"
+      placeholder="+2348012345678">
+
+  </div>
+
+
+  <div class="inviteGrid">
+
+    <button
+      class="inviteOption"
+      onclick="whatsappInvite()">
+
+      <div>🟢</div>
+      WhatsApp
+
+    </button>
+
+
+    <button
+      class="inviteOption"
+      onclick="smsInvite()">
+
+      <div>💬</div>
+      SMS
+
+    </button>
+
+
+    <button
+      class="inviteOption"
+      onclick="gmailInvite()">
+
+      <div>✉️</div>
+      Gmail
+
+    </button>
+
+  </div>
+
+  <p
+    style="color:#666;font-size:12px;margin-top:15px;">
+    They can create their own SYNK account after receiving
+    your invitation.
+  </p>
+
+</div>
+
+</div>
+
+
+<!-- =======================================================
+     PROFILE
+======================================================= -->
+
+<div
+  id="profileModal"
+  class="modal">
+
+<div class="modalCard">
+
+  <div class="modalHeader">
+
+    <h2>
+      My SYNK Profile
+    </h2>
+
+    <button
+      class="close"
+      onclick="closeModal('profileModal')">
+      ×
+    </button>
+
+  </div>
+
+
+  <div class="profileHeader">
+
+    <div
+      id="largeAvatar"
+      class="largeAvatar">
+      U
+    </div>
+
+
+    <h2 id="profileName">
+      User
+    </h2>
+
+    <p id="profileCountry">
+      Country
+    </p>
+
+
+    <div class="profileButtons">
+
+      <button
+        class="secondaryButton"
+        onclick="changeProfileImage()">
+        📷 Add Profile Image
+      </button>
+
+      <button
+        class="secondaryButton"
+        onclick="editName()">
+        ✏️ Edit Name
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <input
+    id="profileImageInput"
+    type="file"
+    accept="image/*"
+    class="hidden"
+    onchange="saveProfileImage(this)">
+
+
+  <div class="profileSection">
+
+    <h3>
+      Personal Information
+    </h3>
+
+
+    <div class="infoBox">
+
+      <small>
+        Country
+      </small>
+
+      <p id="countryInfo">
+        —
+      </p>
+
+    </div>
+
+
+    <div class="infoBox">
+
+      <small>
+        Age
+      </small>
+
+      <p id="ageInfo">
+        Not set
+      </p>
+
+    </div>
+
+
+    <div class="infoBox">
+
+      <small>
+        Description
+      </small>
+
+      <p id="descriptionInfo">
+        No description yet.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="profileSection">
+
+    <h3>
+      Hobbies
+    </h3>
+
+    <div
+      id="hobbies"
+      class="hobbyGrid">
+    </div>
+
+  </div>
+
+
+  <div class="profileSection">
+
+    <button
+      class="secondaryButton"
+      style="width:100%;margin-bottom:8px;"
+      onclick="openSettings()">
+
+      ⚙️ Settings
+
+    </button>
+
+
+    <button
+      class="secondaryButton"
+      style="width:100%;margin-bottom:8px;"
+      onclick="openAI()">
+
+      🤖 Personal AI
+
+    </button>
+
+
+    <button
+      class="secondaryButton"
+      style="width:100%;"
+      onclick="openAbout()">
+
+      ⓘ About SYNK
+
+    </button>
+
+  </div>
+
+</div>
+
+</div>
+
+
+<!-- =======================================================
+     EDIT PROFILE
+======================================================= -->
+
+<div
+  id="editProfileModal"
+  class="modal">
+
+<div class="modalCard">
+
+  <div class="modalHeader">
+
+    <h2>
+      Edit Profile
+    </h2>
+
+    <button
+      class="close"
+      onclick="closeModal('editProfileModal')">
+      ×
+    </button>
+
+  </div>
+
+
+  <div class="formGroup">
+
+    <label>
+      Age
+    </label>
+
+    <input
+      id="editAge"
+      type="number"
+      min="1"
+      max="120"
+      placeholder="Your age">
+
+  </div>
+
+
+  <div class="formGroup">
+
+    <label>
+      Description
+    </label>
+
+    <textarea
+      id="editDescription"
+      rows="4"
+      placeholder="Tell people something about yourself...">
+    </textarea>
+
+  </div>
+
+
+  <div class="formGroup">
+
+    <label>
+      Hobbies — choose multiple
+    </label>
+
+    <div
+      id="editHobbies"
+      class="hobbyGrid">
+    </div>
+
+  </div>
+
+
+  <button
+    class="mainButton"
+    onclick="saveProfileDetails()">
+
+    Save Profile
+
+  </button>
+
+</div>
+
+</div>
+
+
+<!-- =======================================================
+     SETTINGS
+======================================================= -->
+
+<div
+  id="settingsModal"
+  class="modal">
+
+<div class="modalCard">
+
+  <div class="modalHeader">
+
+    <h2>
+      Settings
+    </h2>
+
+    <button
+      class="close"
+      onclick="closeModal('settingsModal')">
+      ×
+    </button>
+
+  </div>
+
+
+  <!-- APPEARANCE -->
+
+  <div class="settingGroup">
+
+    <div class="settingGroupTitle">
+      Appearance
+    </div>
+
+
+    <div class="setting">
+
+      <div class="settingInfo">
+
+        <strong>
+          Dark Mode
+        </strong>
+
+        <small>
+          Default SYNK neon dark appearance.
+        </small>
+
+      </div>
+
+      <button
+        id="darkSwitch"
+        class="switch on"
+        onclick="toggleDarkMode()">
+      </button>
+
+    </div>
+
+
+    <div class="setting">
+
+      <div class="settingInfo">
+
+        <strong>
+          Neon Effects
+        </strong>
+
+        <small>
+          Enable SYNK glow effects.
+        </small>
+
+      </div>
+
+      <button
+        id="neonSwitch"
+        class="switch on"
+        onclick="toggleSetting('neon')">
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- NOTIFICATIONS -->
+
+  <div class="settingGroup">
+
+    <div class="settingGroupTitle">
+      Notifications
+    </div>
+
+
+    <div class="setting">
+
+      <div class="settingInfo">
+
+        <strong>
+          Notifications
+        </strong>
+
+        <small>
+          SYNK notifications.
+        </small>
+
+      </div>
+
+      <button
+        id="notificationSwitch"
+        class="switch on"
+        onclick="toggleSetting('notifications')">
+      </button>
+
+    </div>
+
+
+    <div class="setting">
+
+      <div class="settingInfo">
+
+        <strong>
+          Message Sounds
+        </strong>
+
+        <small>
+          Play sounds for new messages.
+        </small>
+
+      </div>
+
+      <button
+        id="soundSwitch"
+        class="switch on"
+        onclick="toggleSetting('sounds')">
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- PRIVACY -->
+
+  <div class="settingGroup">
+
+    <div class="settingGroupTitle">
+      Privacy
+    </div>
+
+
+    <div class="setting">
+
+      <div class="settingInfo">
+
+        <strong>
+          Profile Visibility
+        </strong>
+
+        <small>
+          Choose who can see your profile.
+        </small>
+
+      </div>
+
+      <select
+        id="visibilitySelect"
+        onchange="saveSettingSelect('visibility',this.value)"
+        style="background:#222;color:#fff;border:1px solid var(--line);padding:8px;border-radius:9px;">
+
+        <option value="everyone">
+          Everyone
+        </option>
+
+        <option value="contacts">
+          Contacts
+        </option>
+
+        <option value="private">
+          Private
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div class="setting">
+
+      <div class="settingInfo">
+
+        <strong>
+          Read Receipts
+        </strong>
+
+        <small>
+          Show when messages have been read.
+        </small>
+
+      </div>
+
+      <button
+        id="readSwitch"
+        class="switch on"
+        onclick="toggleSetting('readReceipts')">
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- CHAT -->
+
+  <div class="settingGroup">
+
+    <div class="settingGroupTitle">
+      Chat
+    </div>
+
+
+    <div class="setting">
+
+      <div class="settingInfo">
+
+        <strong>
+          Enter to Send
+        </strong>
+
+        <small>
+          Press Enter to send messages.
+        </small>
+
+      </div>
+
+      <button
+        id="enterSwitch"
+        class="switch on"
+        onclick="toggleSetting('enterSend')">
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <button
+    class="secondaryButton"
+    style="width:100%;color:#ff5050;margin-bottom:8px;"
+    onclick="clearPosts()">
+
+    Delete My SYNK Posts
+
+  </button>
+
+
+  <button
+    class="secondaryButton"
+    style="width:100%;color:#ff5050;"
+    onclick="logout()">
+
+    Logout
+
+  </button>
+
+</div>
+
+</div>
+
+
+<!-- =======================================================
+     AI
+======================================================= -->
+
+<div
+  id="aiModal"
+  class="modal">
+
+<div
+  class="modalCard"
+  style="height:92vh;display:flex;flex-direction:column;">
+
+  <div class="modalHeader">
+
+    <h2>
+      🤖 Personal AI
+    </h2>
+
+    <button
+      class="close"
+      onclick="closeModal('aiModal')">
+      ×
+    </button>
+
+  </div>
+
+
+  <div class="aiWindow">
+
+    <div
+      id="aiMessages"
+      class="aiMessages">
+
+      <div class="aiBubble assistant">
+
+        Hi! I'm your SYNK Personal AI.
+        Ask me anything.
+
+        <br><br>
+
+        <span style="color:#666;font-size:12px;">
+          The frontend is ready for a ChatGPT or
+          DeepSeek API/backend connection.
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="aiInputRow">
+
+      <input
+        id="aiInput"
+        placeholder="Ask Personal AI..."
+        onkeydown="aiKeyDown(event)">
+
+      <button
+        class="aiSend"
+        onclick="sendAI()">
+        ➤
+      </button>
+
+    </div>
+
+
+    <div class="aiProvider">
+
+      <button
+        id="chatGPTProvider"
+        class="active"
+        onclick="selectAI('ChatGPT',this)">
+        ChatGPT
+      </button>
+
+      <button
+        onclick="selectAI('DeepSeek',this)">
+        DeepSeek
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
+
+<!-- =======================================================
+     ABOUT
+======================================================= -->
+
+<div
+  id="aboutModal"
+  class="modal">
+
+<div class="modalCard">
+
+  <div class="modalHeader">
+
+    <h2>
+      About SYNK
+    </h2>
+
+    <button
+      class="close"
+      onclick="closeModal('aboutModal')">
+      ×
+    </button>
+
+  </div>
+
+
+  <div class="aboutHero">
+
+    <div class="aboutLogo">
+      SYNK
+    </div>
+
+    <p>
+      Connect. Share. Belong.
+    </p>
+
+  </div>
+
+
+  <div class="feature">
+
+    <h3>
+      💬 Messaging
+    </h3>
+
+    <p>
+      Connect and communicate with your SYNK contacts.
+    </p>
+
+  </div>
+
+
+  <div class="feature">
+
+    <h3>
+      👥 SYNK Network
+    </h3>
+
+    <p>
+      Find people and build your personal SYNK network.
+    </p>
+
+  </div>
+
+
+  <div class="feature">
+
+    <h3>
+      🎬 SYNK Reels
+    </h3>
+
+    <p>
+      Post text, pictures and videos. Like, comment and
+      share posts to WhatsApp.
+    </p>
+
+  </div>
+
+
+  <div class="feature">
+
+    <h3>
+      📰 SYNK News
+    </h3>
+
+    <p>
+      Official updates and announcements from the SYNK company.
+    </p>
+
+  </div>
+
+
+  <div class="feature">
+
+    <h3>
+      🤖 Personal AI
+    </h3>
+
+    <p>
+      A dedicated AI assistant interface designed for
+      ChatGPT and DeepSeek integration.
+    </p>
+
+  </div>
+
+
+  <div class="feature">
+
+    <h3>
+      🎨 Custom Profiles
+    </h3>
+
+    <p>
+      Add a profile image, country, age, description and
+      multiple hobbies.
+    </p>
+
+  </div>
+
+
+  <div class="feature">
+
+    <h3>
+      🌙 Custom Appearance
+    </h3>
+
+    <p>
+      Switch between the signature SYNK neon dark appearance
+      and a clean light mode.
+    </p>
+
+  </div>
+
+
+  <h3 style="margin:22px 0 10px;">
+    Coming Soon
+  </h3>
+
+
+  <div class="feature">
+
+    <p>
+      Real-time messaging • Online status • Push notifications •
+      Voice calls • Video calls • Communities • Stories •
+      Cloud synchronization • Advanced Reels • Media sharing
+    </p>
+
+  </div>
+
+
+  <div class="creator">
+
+    <h3>
+      Created by Alex Artie
+    </h3>
+
+    <p
+      style="color:#777;margin-top:7px;line-height:1.5;">
+
+      SYNK is an independent social communication project
+      created by Alex Artie.
+
+    </p>
+
+  </div>
+
+</div>
+
+</div>
+
+
+<!-- =======================================================
+     CHAT ROOM
+======================================================= -->
+
+<div
+  id="chatRoom"
+  class="chatRoom">
+
+<header class="chatHeader">
+
+  <button
+    class="back"
+    onclick="closeChat()">
+    ‹
+  </button>
+
+
+  <div
+    id="chatAvatar"
+    class="profileAvatar">
+    U
+  </div>
+
+
+  <div>
+
+    <strong id="chatName">
+      Contact
+    </strong>
+
+    <div
+      style="font-size:11px;color:#666;">
+      SYNK contact
+    </div>
+
+  </div>
+
+</header>
+
+
+<div
+  id="chatMessages"
+  class="chatMessages">
+</div>
+
+
+<div class="chatComposer">
+
+  <input
+    id="chatInput"
+    placeholder="Write a message..."
+    onkeydown="chatKeyDown(event)">
+
+  <button
+    class="send"
+    onclick="sendMessage()">
+    ➤
+  </button>
+
+</div>
+
+</div>
+
+
+<script>
+/* =========================================================
+   SYNK JAVASCRIPT
+========================================================= */
+
+const DB = {
+  account:"synk_account_v3",
+  session:"synk_session_v3",
+  contacts:"synk_contacts_v3",
+  posts:"synk_posts_v3",
+  messages:"synk_messages_v3",
+  settings:"synk_settings_v3"
+};
+
+let activeContact = null;
+let selectedMedia = null;
+let selectedMediaType = null;
+let selectedAI = "ChatGPT";
+
+const hobbies = [
+  "Gaming",
+  "Reading",
+  "Music",
+  "Sports",
+  "Gym",
+  "Coding",
+  "Football",
+  "Movies",
+  "Anime",
+  "Art",
+  "Photography",
+  "Travel",
+  "Dancing",
+  "Cooking",
+  "Writing"
+];
+
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+function load(key,fallback){
+
+  try{
+
+    const item = localStorage.getItem(key);
+
+    return item
+      ? JSON.parse(item)
+      : fallback;
+
+  }catch(e){
+
+    return fallback;
+
+  }
+
+}
+
+
+function save(key,value){
+
+  localStorage.setItem(
+    key,
+    JSON.stringify(value)
+  );
+
+}
+
+
+function account(){
+
+  return load(DB.account,null);
+
+}
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+function switchAuth(type){
+
+  const signup =
+    document.getElementById("signupForm");
+
+  const login =
+    document.getElementById("loginForm");
+
+  const signupTab =
+    document.getElementById("signupTab");
+
+  const loginTab =
+    document.getElementById("loginTab");
+
+  if(type==="signup"){
+
+    signup.classList.remove("hidden");
+    login.classList.add("hidden");
+
+    signupTab.classList.add("active");
+    loginTab.classList.remove("active");
+
+  }else{
+
+    signup.classList.add("hidden");
+    login.classList.remove("hidden");
+
+    signupTab.classList.remove("active");
+    loginTab.classList.add("active");
+
+  }
+
+}
+
+
+/* =========================================================
+   SIGN UP
+========================================================= */
+
+document
+.getElementById("signupForm")
+.addEventListener("submit",function(e){
+
+  e.preventDefault();
+
+  const name =
+    document.getElementById("signupName")
+    .value.trim();
+
+  const country =
+    document.getElementById("signupCountry")
+    .value;
+
+  const phone =
+    document.getElementById("signupPhone")
+    .value.trim();
+
+  const password =
+    document.getElementById("signupPassword")
+    .value;
+
+  if(name.length < 2){
+
+    alert("Enter your name.");
+    return;
+
+  }
+
+  if(phone.length < 6){
+
+    alert("Enter a valid phone number.");
+    return;
+
+  }
+
+  if(password.length < 4){
+
+    alert("Password must contain at least 4 characters.");
+    return;
+
+  }
+
+
+  const user = {
+
+    id:
+      "user_" +
+      Date.now() +
+      "_" +
+      Math.random()
+      .toString(36)
+      .substring(2,8),
+
+    name:name,
+
+    country:country,
+
+    phone:phone,
+
+    password:password,
+
+    age:"",
+
+    description:"",
+
+    hobbies:[],
+
+    profileImage:"",
+
+    created:
+      new Date().toISOString()
+
+  };
+
+
+  save(DB.account,user);
+
+  save(DB.contacts,[]);
+  save(DB.posts,[]);
+  save(DB.messages,{});
+
+
+  save(DB.settings,{
+
+    dark:true,
+    neon:true,
+    notifications:true,
+    sounds:true,
+    readReceipts:true,
+    enterSend:true,
+    visibility:"everyone"
+
+  });
+
+
+  alert(
+    "Account created successfully.\n\nPlease login to continue."
+  );
+
+
+  document.getElementById("loginPhone")
+    .value = phone;
+
+  switchAuth("login");
+
+});
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+document
+.getElementById("loginForm")
+.addEventListener("submit",function(e){
+
+  e.preventDefault();
+
+  const user = account();
+
+  if(!user){
+
+    alert(
+      "No SYNK account exists on this device. Please sign up."
+    );
+
+    switchAuth("signup");
+
+    return;
+
+  }
+
+
+  const phone =
+    document.getElementById("loginPhone")
+    .value.trim();
+
+  const password =
+    document.getElementById("loginPassword")
+    .value;
+
+
+  if(
+    phone === user.phone &&
+    password === user.password
+  ){
+
+    localStorage.setItem(
+      DB.session,
+      "true"
+    );
+
+    launchApp();
+
+  }else{
+
+    alert(
+      "Incorrect phone number or password."
+    );
+
+  }
+
+});
+
+
+/* =========================================================
+   APP START
+========================================================= */
+
+function launchApp(){
+
+  document
+    .getElementById("authScreen")
+    .classList.add("hidden");
+
+  document
+    .getElementById("app")
+    .classList.remove("hidden");
+
+
+  updateUserUI();
+
+  loadSettings();
+
+  renderContacts();
+
+  renderPosts();
+
+  renderRequests();
+
+}
+
+
+function updateUserUI(){
+
+  const user = account();
+
+  if(!user) return;
+
+
+  document.getElementById("topName")
+    .textContent = user.name;
+
+  document.getElementById("profileName")
+    .textContent = user.name;
+
+  document.getElementById("profileCountry")
+    .textContent = countryName(user.country);
+
+  document.getElementById("countryInfo")
+    .textContent = countryName(user.country);
+
+  document.getElementById("ageInfo")
+    .textContent =
+      user.age
+      ? user.age
+      : "Not set";
+
+  document.getElementById("descriptionInfo")
+    .textContent =
+      user.description ||
+      "No description yet.";
+
+  setAvatar(
+    document.getElementById("topAvatar"),
+    user
+  );
+
+  setAvatar(
+    document.getElementById("largeAvatar"),
+    user
+  );
+
+  renderHobbies();
+
+}
+
+
+/* =========================================================
+   AVATAR
+========================================================= */
+
+function setAvatar(element,user){
+
+  if(user.profileImage){
+
+    element.innerHTML =
+      `<img src="${user.profileImage}" alt="Profile">`;
+
+  }else{
+
+    element.textContent =
+      user.name
+      .charAt(0)
+      .toUpperCase();
+
+  }
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function navigate(page,button){
+
+  document
+    .querySelectorAll(".page")
+    .forEach(p =>
+      p.classList.remove("active")
+    );
+
+
+  document
+    .getElementById(page)
+    .classList.add("active");
+
+
+  document
+    .querySelectorAll(".navButton")
+    .forEach(b =>
+      b.classList.remove("active")
+    );
+
+
+  button.classList.add("active");
+
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+function openProfile(){
+
+  updateUserUI();
+
+  document
+    .getElementById("profileModal")
+    .classList.add("open");
+
+}
+
+
+function changeProfileImage(){
+
+  document
+    .getElementById("profileImageInput")
+    .click();
+
+}
+
+
+function saveProfileImage(input){
+
+  const file = input.files[0];
+
+  if(!file) return;
+
+
+  if(!file.type.startsWith("image/")){
+
+    alert("Please select an image.");
+
+    return;
+
+  }
+
+
+  const reader =
+    new FileReader();
+
+
+  reader.onload = function(){
+
+    const user = account();
+
+    user.profileImage =
+      reader.result;
+
+    save(DB.account,user);
+
+    updateUserUI();
+
+  };
+
+
+  reader.readAsDataURL(file);
+
+}
+
+
+function editName(){
+
+  const user = account();
+
+  const newName =
+    prompt(
+      "Enter your new name:",
+      user.name
+    );
+
+
+  if(
+    !newName ||
+    !newName.trim()
+  ) return;
+
+
+  user.name =
+    newName.trim();
+
+  save(DB.account,user);
+
+  updateUserUI();
+
+}
+
+
+function renderHobbies(){
+
+  const user = account();
+
+  const container =
+    document.getElementById("hobbies");
+
+  container.innerHTML = "";
+
+
+  if(
+    !user.hobbies ||
+    user.hobbies.length === 0
+  ){
+
+    container.innerHTML =
+      `<span style="color:#666;">
+        No hobbies selected.
+      </span>`;
+
+    return;
+
+  }
+
+
+  user.hobbies.forEach(h => {
+
+    const span =
+      document.createElement("span");
+
+    span.className =
+      "hobby selected";
+
+    span.textContent = h;
+
+    container.appendChild(span);
+
+  });
+
+}
+
+
+/* =========================================================
+   EDIT PROFILE
+========================================================= */
+
+function openEditProfile(){
+
+  const user = account();
+
+  document.getElementById("editAge")
+    .value = user.age || "";
+
+  document.getElementById("editDescription")
+    .value = user.description || "";
+
+  renderEditHobbies();
+
+  closeModal("profileModal");
+
+  document
+    .getElementById("editProfileModal")
+    .classList.add("open");
+
+}
+
+
+/*
+  Allow the profile section itself to open editing
+  through a small helper.
+*/
+
+document.addEventListener("click",function(e){
+
+  if(
+    e.target.matches("#profileName") ||
+    e.target.matches("#descriptionInfo")
+  ){
+    openEditProfile();
+  }
+
+});
+
+
+function renderEditHobbies(){
+
+  const user = account();
+
+  const container =
+    document.getElementById("editHobbies");
+
+  container.innerHTML = "";
+
+
+  hobbies.forEach(hobby => {
+
+    const button =
+      document.createElement("button");
+
+    button.className =
+      "hobby";
+
+    if(
+      user.hobbies &&
+      user.hobbies.includes(hobby)
+    ){
+
+      button.classList.add("selected");
+
+    }
+
+    button.textContent = hobby;
+
+    button.type = "button";
+
+
+    button.onclick = function(){
+
+      button.classList.toggle("selected");
+
+    };
+
+
+    container.appendChild(button);
+
+  });
+
+}
+
+
+function saveProfileDetails(){
+
+  const user = account();
+
+  user.age =
+    document.getElementById("editAge")
+    .value;
+
+  user.description =
+    document.getElementById("editDescription")
+    .value.trim();
+
+
+  user.hobbies =
+    [...document
+      .querySelectorAll("#editHobbies .hobby.selected")]
+    .map(el => el.textContent);
+
+
+  save(DB.account,user);
+
+  updateUserUI();
+
+  closeModal("editProfileModal");
+
+}
+
+
+/* =========================================================
+   CONTACTS
+========================================================= */
+
+function renderContacts(){
+
+  const contacts =
+    load(DB.contacts,[]);
+
+  const container =
+    document.getElementById("contacts");
+
+  const empty =
+    document.getElementById("chatEmpty");
+
+  const search =
+    document.getElementById("contactSearch")
+    .value
+    .toLowerCase();
+
+
+  container.innerHTML = "";
+
+
+  const filtered =
+    contacts.filter(c =>
+      c.name.toLowerCase()
+      .includes(search) ||
+      c.phone.includes(search)
+    );
+
+
+  if(filtered.length===0){
+
+    empty.style.display = "flex";
+
+    return;
+
+  }
+
+
+  empty.style.display = "none";
+
+
+  filtered.forEach(contact => {
+
+    const div =
+      document.createElement("div");
+
+    div.className = "contact";
+
+
+    const avatar =
+      contact.name
+      .charAt(0)
+      .toUpperCase();
+
+
+    div.innerHTML = `
+
+      <div class="profileAvatar">
+        ${avatar}
+      </div>
+
+      <div class="contactDetails">
+
+        <div class="contactName">
+          ${safe(contact.name)}
+        </div>
+
+        <div class="contactPhone">
+          ${safe(contact.phone)}
+        </div>
+
+      </div>
+
+      <div class="contactButtons">
+
+        <button
+          class="smallButton"
+          onclick="openChat('${contact.id}')">
+          💬
+        </button>
+
+        <button
+          class="smallButton"
+          onclick="deleteContact('${contact.id}')">
+          ×
+        </button>
+
+      </div>
+
+    `;
+
+
+    container.appendChild(div);
+
+  });
+
+}
+
+
+/* =========================================================
+   INVITE
+========================================================= */
+
+function openInvite(){
+
+  document
+    .getElementById("inviteModal")
+    .classList.add("open");
+
+}
+
+
+function whatsappInvite(){
+
+  const phone =
+    document.getElementById("invitePhone")
+    .value.trim();
+
+
+  if(!phone){
+
+    alert("Enter a phone number.");
+    return;
+
+  }
+
+
+  const message =
+    "Join me on SYNK — Connect. Share. Belong.";
+
+
+  window.open(
+    "https://wa.me/" +
+    phone.replace(/\D/g,"") +
+    "?text=" +
+    encodeURIComponent(message),
+    "_blank"
+  );
+
+}
+
+
+function smsInvite(){
+
+  const phone =
+    document.getElementById("invitePhone")
+    .value.trim();
+
+
+  if(!phone){
+
+    alert("Enter a phone number.");
+    return;
+
+  }
+
+
+  const message =
+    "Join me on SYNK — Connect. Share. Belong.";
+
+
+  location.href =
+    "sms:" +
+    phone +
+    "?body=" +
+    encodeURIComponent(message);
+
+}
+
+
+function gmailInvite(){
+
+  const subject =
+    "Join me on SYNK";
+
+  const body =
+    "Join me on SYNK — Connect. Share. Belong.";
+
+
+  location.href =
+    "mailto:?subject=" +
+    encodeURIComponent(subject) +
+    "&body=" +
+    encodeURIComponent(body);
+
+}
+
+
+/* =========================================================
+   DELETE CONTACT
+========================================================= */
+
+function deleteContact(id){
+
+  if(!confirm(
+    "Remove this contact from SYNK?"
+  )) return;
+
+
+  let contacts =
+    load(DB.contacts,[]);
+
+
+  contacts =
+    contacts.filter(
+      c => c.id !== id
+    );
+
+
+  save(DB.contacts,contacts);
+
+  renderContacts();
+
+}
+
+
+/* =========================================================
+   POSTS / REELS
+========================================================= */
+
+function chooseImage(){
+
+  document
+    .getElementById("imageInput")
+    .click();
+
+}
+
+
+function chooseVideo(){
+
+  document
+    .getElementById("videoInput")
+    .click();
+
+}
+
+
+function handleImage(input){
+
+  const file = input.files[0];
+
+  if(!file) return;
+
+
+  if(!file.type.startsWith("image/")){
+
+    alert("Select an image file.");
+    return;
+
+  }
+
+
+  const reader =
+    new FileReader();
+
+
+  reader.onload = function(){
+
+    selectedMedia =
+      reader.result;
+
+    selectedMediaType =
+      "image";
+
+  };
+
+
+  reader.readAsDataURL(file);
+
+}
+
+
+function handleVideo(input){
+
+  const file = input.files[0];
+
+  if(!file) return;
+
+
+  if(!file.type.startsWith("video/")){
+
+    alert("Select a video file.");
+    return;
+
+  }
+
+
+  /*
+    Data URLs are useful for this frontend demo,
+    but large videos should be uploaded to a server
+    when your backend is connected.
+  */
+
+  const reader =
+    new FileReader();
+
+
+  reader.onload = function(){
+
+    selectedMedia =
+      reader.result;
+
+    selectedMediaType =
+      "video";
+
+  };
+
+
+  reader.readAsDataURL(file);
+
+}
+
+
+function createReel(){
+
+  const text =
+    document.getElementById("reelText")
+    .value.trim();
+
+
+  if(
+    !text &&
+    !selectedMedia
+  ){
+
+    alert(
+      "Write something or add a picture/video."
+    );
+
+    return;
+
+  }
+
+
+  const user = account();
+
+  const posts =
+    load(DB.posts,[]);
+
+
+  posts.unshift({
+
+    id:
+      "post_" +
+      Date.now(),
+
+    userId:user.id,
+
+    userName:user.name,
+
+    profileImage:user.profileImage || "",
+
+    text:text,
+
+    media:selectedMedia,
+
+    mediaType:selectedMediaType,
+
+    likes:0,
+
+    liked:false,
+
+    comments:[],
+
+    created:
+      new Date().toISOString()
+
+  });
+
+
+  save(DB.posts,posts);
+
+
+  document
+    .getElementById("reelText")
+    .value = "";
+
+
+  document
+    .getElementById("imageInput")
+    .value = "";
+
+
+  document
+    .getElementById("videoInput")
+    .value = "";
+
+
+  selectedMedia = null;
+  selectedMediaType = null;
+
+
+  renderPosts();
+
+}
+
+
+function renderPosts(){
+
+  const posts =
+    load(DB.posts,[]);
+
+  const container =
+    document.getElementById("reels");
+
+  container.innerHTML = "";
+
+
+  if(posts.length===0){
+
+    container.innerHTML = `
+
+      <div class="empty">
+
+        <div>
+
+          <div class="emptyIcon">
+            🎬
+          </div>
+
+          <h3>
+            No Reels yet
+          </h3>
+
+          <p>
+            Your SYNK feed is empty.
+          </p>
+
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  const user = account();
+
+
+  posts.forEach(post => {
+
+    const reel =
+      document.createElement("article");
+
+    reel.className = "reel";
+
+
+    let mediaHTML = "";
+
+
+    if(
+      post.media &&
+      post.mediaType === "image"
+    ){
+
+      mediaHTML =
+        `<img
+          class="reelMedia"
+          src="${post.media}"
+          alt="SYNK post">`;
+
+    }
+
+
+    if(
+      post.media &&
+      post.mediaType === "video"
+    ){
+
+      mediaHTML =
+        `<video
+          class="reelMedia"
+          controls
+          playsinline
+          src="${post.media}">
+        </video>`;
+
+    }
+
+
+    const comments =
+      (post.comments || [])
+      .map(c => `
+
+        <div class="comment">
+
+          <strong>
+            ${safe(c.name)}
+          </strong>
+
+          ${safe(c.text)}
+
+        </div>
+
+      `)
+      .join("");
+
+
+    const mine =
+      post.userId === user.id;
+
+
+    reel.innerHTML = `
+
+      <div class="reelTop">
+
+        <div class="profileAvatar">
+
+          ${
+            post.profileImage
+            ?
+            `<img src="${post.profileImage}">`
+            :
+            safe(post.userName.charAt(0))
+          }
+
+        </div>
+
+
+        <div class="reelTopInfo">
+
+          <strong>
+            ${safe(post.userName)}
+          </strong>
+
+          <small>
+            ${formatDate(post.created)}
+          </small>
+
+        </div>
+
+      </div>
+
+
+      ${
+        post.text
+        ?
+        `<div class="reelText">
+          ${safe(post.text)}
+        </div>`
+        :
+        ""
+      }
+
+
+      ${mediaHTML}
+
+
+      <div class="reelActions">
+
+        <button
+          class="${post.liked ? "liked" : ""}"
+          onclick="likePost('${post.id}')">
+
+          ❤️ ${post.likes}
+
+        </button>
+
+
+        <button
+          onclick="focusComment('${post.id}')">
+
+          💬 ${post.comments?.length || 0}
+
+        </button>
+
+
+        <button
+          onclick="shareWhatsApp('${post.id}')">
+
+          ↗ Share
+
+        </button>
+
+
+        ${
+          mine
+          ?
+          `
+          <button
+            onclick="deletePost('${post.id}')">
+
+            🗑 Delete
+
+          </button>
+          `
+          :
+          `
+          <button
+            onclick="copyPost('${post.id}')">
+
+            📋 Copy
+
+          </button>
+          `
+        }
+
+      </div>
+
+
+      <div
+        id="comments_${post.id}"
+        class="comments">
+
+        ${comments}
+
+
+        <div class="commentInput">
+
+          <input
+            id="comment_${post.id}"
+            placeholder="Write a comment...">
+
+          <button
+            onclick="addComment('${post.id}')">
+
+            Send
+
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+
+    container.appendChild(reel);
+
+  });
+
+}
+
+
+/* =========================================================
+   LIKE
+========================================================= */
+
+function likePost(id){
+
+  const posts =
+    load(DB.posts,[]);
+
+
+  const post =
+    posts.find(p => p.id === id);
+
+
+  if(!post) return;
+
+
+  if(post.liked){
+
+    post.likes =
+      Math.max(0,post.likes-1);
+
+    post.liked = false;
+
+  }else{
+
+    post.likes++;
+
+    post.liked = true;
+
+  }
+
+
+  save(DB.posts,posts);
+
+  renderPosts();
+
+}
+
+
+/* =========================================================
+   COMMENT
+========================================================= */
+
+function addComment(id){
+
+  const input =
+    document.getElementById(
+      "comment_" + id
+    );
+
+
+  const text =
+    input.value.trim();
+
+
+  if(!text) return;
+
+
+  const posts =
+    load(DB.posts,[]);
+
+
+  const post =
+    posts.find(p => p.id === id);
+
+
+  if(!post) return;
+
+
+  if(!post.comments)
+    post.comments = [];
+
+
+  post.comments.push({
+
+    name:account().name,
+
+    text:text,
+
+    date:
+      new Date().toISOString()
+
+  });
+
+
+  save(DB.posts,posts);
+
+
+  renderPosts();
+
+}
+
+
+function focusComment(id){
+
+  const input =
+    document.getElementById(
+      "comment_" + id
+    );
+
+
+  if(input){
+
+    input.focus();
+
+  }
+
+}
+
+
+/* =========================================================
+   SHARE
+========================================================= */
+
+function shareWhatsApp(id){
+
+  const posts =
+    load(DB.posts,[]);
+
+
+  const post =
+    posts.find(p => p.id === id);
+
+
+  if(!post) return;
+
+
+  const text =
+    "Check this out on SYNK:\n\n" +
+    (post.text || "SYNK post") +
+    "\n\nConnect. Share. Belong.";
+
+
+  window.open(
+    "https://wa.me/?text=" +
+    encodeURIComponent(text),
+    "_blank"
+  );
+
+}
+
+
+async function copyPost(id){
+
+  const posts =
+    load(DB.posts,[]);
+
+
+  const post =
+    posts.find(p => p.id === id);
+
+
+  if(!post) return;
+
+
+  const text =
+    post.text ||
+    "SYNK post";
+
+
+  try{
+
+    await navigator.clipboard.writeText(text);
+
+    alert("Post copied.");
+
+  }catch(e){
+
+    alert(text);
+
+  }
+
+}
+
+
+/* =========================================================
+   DELETE POST
+========================================================= */
+
+function deletePost(id){
+
+  if(!confirm(
+    "Delete this SYNK post permanently?"
+  )) return;
+
+
+  let posts =
+    load(DB.posts,[]);
+
+
+  posts =
+    posts.filter(
+      p => p.id !== id
+    );
+
+
+  save(DB.posts,posts);
+
+  renderPosts();
+
+}
+
+
+function clearPosts(){
+
+  if(!confirm(
+    "Delete ALL your SYNK posts?"
+  )) return;
+
+
+  const user = account();
+
+
+  let posts =
+    load(DB.posts,[]);
+
+
+  posts =
+    posts.filter(
+      p => p.userId !== user.id
+    );
+
+
+  save(DB.posts,posts);
+
+  renderPosts();
+
+  alert("Your posts were deleted.");
+
+}
+
+
+/* =========================================================
+   REQUESTS
+========================================================= */
+
+function renderRequests(){
+
+  const container =
+    document.getElementById("requests");
+
+
+  container.innerHTML = `
+
+    <div class="empty">
+
+      <div>
+
+        <div class="emptyIcon">
+          👥
+        </div>
+
+        <h3>
+          No SYNK Requests
+        </h3>
+
+        <p>
+          New connection requests will appear here
+          when your backend is connected.
+        </p>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   CHAT
+========================================================= */
+
+function openChat(id){
+
+  const contacts =
+    load(DB.contacts,[]);
+
+
+  activeContact =
+    contacts.find(
+      c => c.id === id
+    );
+
+
+  if(!activeContact) return;
+
+
+  document
+    .getElementById("chatName")
+    .textContent =
+      activeContact.name;
+
+
+  document
+    .getElementById("chatAvatar")
+    .textContent =
+      activeContact.name
+      .charAt(0)
+      .toUpperCase();
+
+
+  document
+    .getElementById("chatRoom")
+    .classList.add("open");
+
+
+  renderMessages();
+
+}
+
+
+function closeChat(){
+
+  activeContact = null;
+
+  document
+    .getElementById("chatRoom")
+    .classList.remove("open");
+
+}
+
+
+function renderMessages(){
+
+  const container =
+    document.getElementById("chatMessages");
+
+
+  container.innerHTML = "";
+
+
+  if(!activeContact) return;
+
+
+  const messages =
+    load(DB.messages,{});
+
+
+  const conversation =
+    messages[activeContact.id] || [];
+
+
+  if(conversation.length===0){
+
+    container.innerHTML = `
+
+      <div
+        style="
+        text-align:center;
+        color:#666;
+        padding-top:30vh;">
+
+        <div style="font-size:45px;">
+          💬
+        </div>
+
+        <p>
+          Start the conversation.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  conversation.forEach(message => {
+
+    const div =
+      document.createElement("div");
+
+
+    div.className =
+      "message " +
+      (
+        message.sender === "me"
+        ? "mine"
+        : "other"
+      );
+
+
+    div.textContent =
+      message.text;
+
+
+    container.appendChild(div);
+
+  });
+
+
+  container.scrollTop =
+    container.scrollHeight;
+
+}
+
+
+function sendMessage(){
+
+  if(!activeContact) return;
+
+
+  const input =
+    document.getElementById("chatInput");
+
+
+  const text =
+    input.value.trim();
+
+
+  if(!text) return;
+
+
+  const messages =
+    load(DB.messages,{});
+
+
+  if(!messages[activeContact.id])
+    messages[activeContact.id] = [];
+
+
+  messages[activeContact.id].push({
+
+    sender:"me",
+
+    text:text,
+
+    time:
+      new Date().toISOString()
+
+  });
+
+
+  save(DB.messages,messages);
+
+
+  input.value = "";
+
+
+  renderMessages();
+
+}
+
+
+function chatKeyDown(event){
+
+  const settings =
+    load(DB.settings,{});
+
+
+  if(
+    event.key === "Enter" &&
+    !event.shiftKey
+  ){
+
+    if(settings.enterSend !== false){
+
+      event.preventDefault();
+
+      sendMessage();
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+function loadSettings(){
+
+  const settings =
+    load(DB.settings,{
+
+      dark:true,
+      neon:true,
+      notifications:true,
+      sounds:true,
+      readReceipts:true,
+      enterSend:true,
+      visibility:"everyone"
+
+    });
+
+
+  if(settings.dark){
+
+    document.body
+      .classList.remove("light");
+
+  }else{
+
+    document.body
+      .classList.add("light");
+
+  }
+
+
+  setSwitch(
+    "darkSwitch",
+    settings.dark
+  );
+
+  setSwitch(
+    "neonSwitch",
+    settings.neon
+  );
+
+  setSwitch(
+    "notificationSwitch",
+    settings.notifications
+  );
+
+  setSwitch(
+    "soundSwitch",
+    settings.sounds
+  );
+
+  setSwitch(
+    "readSwitch",
+    settings.readReceipts
+  );
+
+  setSwitch(
+    "enterSwitch",
+    settings.enterSend
+  );
+
+
+  document.getElementById(
+    "visibilitySelect"
+  ).value =
+    settings.visibility || "everyone";
+
+}
+
+
+function setSwitch(id,value){
+
+  const el =
+    document.getElementById(id);
+
+  if(!el) return;
+
+  el.classList.toggle(
+    "on",
+    value
+  );
+
+}
+
+
+function toggleDarkMode(){
+
+  const settings =
+    load(DB.settings,{});
+
+
+  settings.dark =
+    !settings.dark;
+
+
+  save(DB.settings,settings);
+
+  loadSettings();
+
+}
+
+
+function toggleSetting(key){
+
+  const settings =
+    load(DB.settings,{});
+
+
+  settings[key] =
+    settings[key] === false;
+
+
+  save(DB.settings,settings);
+
+  loadSettings();
+
+}
+
+
+function saveSettingSelect(key,value){
+
+  const settings =
+    load(DB.settings,{});
+
+  settings[key] = value;
+
+  save(DB.settings,settings);
+
+}
+
+
+/* =========================================================
+   AI
+========================================================= */
+
+function openAI(){
+
+  closeAllModals();
+
+  document
+    .getElementById("aiModal")
+    .classList.add("open");
+
+}
+
+
+function selectAI(provider,button){
+
+  selectedAI = provider;
+
+
+  document
+    .querySelectorAll(".aiProvider button")
+    .forEach(b =>
+      b.classList.remove("active")
+    );
+
+
+  button.classList.add("active");
+
+}
+
+
+function aiKeyDown(event){
+
+  if(event.key === "Enter"){
+
+    event.preventDefault();
+
+    sendAI();
+
+  }
+
+}
+
+
+function sendAI(){
+
+  const input =
+    document.getElementById("aiInput");
+
+
+  const question =
+    input.value.trim();
+
+
+  if(!question) return;
+
+
+  addAIBubble(
+    question,
+    "user"
+  );
+
+
+  input.value = "";
+
+
+  /*
+    FRONTEND DEMO RESPONSE.
+
+    To make this genuinely use ChatGPT or DeepSeek,
+    connect this function to YOUR backend later.
+
+    Never place a private production API key directly
+    in this HTML file.
+  */
+
+
+  setTimeout(() => {
+
+    const answer =
+      localAIResponse(question);
+
+
+    addAIBubble(
+      answer,
+      "assistant"
+    );
+
+  },500);
+
+}
+
+
+function addAIBubble(text,type){
+
+  const container =
+    document.getElementById("aiMessages");
+
+
+  const bubble =
+    document.createElement("div");
+
+
+  bubble.className =
+    "aiBubble " + type;
+
+
+  bubble.textContent =
+    text;
+
+
+  container.appendChild(bubble);
+
+
+  container.scrollTop =
+    container.scrollHeight;
+
+}
+
+
+function localAIResponse(question){
+
+  const q =
+    question.toLowerCase();
+
+
+  if(
+    q.includes("hello") ||
+    q.includes("hi") ||
+    q.includes("hey")
+  ){
+
+    return (
+      "Hey! 👋 I'm your SYNK Personal AI. " +
+      "What would you like to talk about?"
+    );
+
+  }
+
+
+  if(q.includes("who created synk")){
+
+    return "SYNK was created by Alex Artie.";
+
+  }
+
+
+  if(q.includes("html")){
+
+    return (
+      "HTML is the markup language used to structure " +
+      "web pages."
+    );
+
+  }
+
+
+  if(
+    q.includes("javascript") ||
+    q.includes("javascript")
+  ){
+
+    return (
+      "JavaScript is a programming language used to " +
+      "add logic and interactivity to websites."
+    );
+
+  }
+
+
+  if(q.includes("css")){
+
+    return (
+      "CSS controls the appearance and layout of a " +
+      "website."
+    );
+
+  }
+
+
+  return (
+    "I'm ready for a real ChatGPT or DeepSeek connection. " +
+    "In this frontend-only version, I cannot directly call " +
+    "their private AI APIs safely. Connect this function to " +
+    "your backend when you're ready."
+  );
+
+}
+
+
+/* =========================================================
+   ABOUT
+========================================================= */
+
+function openAbout(){
+
+  closeAllModals();
+
+  document
+    .getElementById("aboutModal")
+    .classList.add("open");
+
+}
+
+
+/* =========================================================
+   MODALS
+========================================================= */
+
+function closeModal(id){
+
+  document
+    .getElementById(id)
+    .classList.remove("open");
+
+}
+
+
+function closeAllModals(){
+
+  document
+    .querySelectorAll(".modal")
+    .forEach(m =>
+      m.classList.remove("open")
+    );
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+function logout(){
+
+  localStorage.removeItem(DB.session);
+
+  closeAllModals();
+
+  document
+    .getElementById("app")
+    .classList.add("hidden");
+
+  document
+    .getElementById("authScreen")
+    .classList.remove("hidden");
+
+  switchAuth("login");
+
+}
+
+
+/* =========================================================
+   COUNTRY
+========================================================= */
+
+function countryName(code){
+
+  const countries = {
+
+    "+234":"🇳🇬 Nigeria",
+
+    "+233":"🇬🇭 Ghana",
+
+    "+254":"🇰🇪 Kenya",
+
+    "+27":"🇿🇦 South Africa",
+
+    "+44":"🇬🇧 United Kingdom",
+
+    "+1":"🇺🇸 United States",
+
+    "+91":"🇮🇳 India",
+
+    "+971":"🇦🇪 United Arab Emirates"
+
+  };
+
+
+  return countries[code] || code;
+
+}
+
+
+/* =========================================================
+   SAFE HTML
+========================================================= */
+
+function safe(value){
+
+  return String(value || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   DATE
+========================================================= */
+
+function formatDate(date){
+
+  try{
+
+    return new Date(date)
+      .toLocaleString();
+
+  }catch(e){
+
+    return "";
+
+  }
+
+}
+
+
+/* =========================================================
+   MODAL BACKDROP
+========================================================= */
+
+document
+.querySelectorAll(".modal")
+.forEach(modal => {
+
+  modal.addEventListener(
+    "click",
+    function(e){
+
+      if(e.target === modal){
+
+        modal.classList.remove("open");
+
+      }
+
+    }
+  );
+
+});
+
+
+/* =========================================================
+   STARTUP
+========================================================= */
+
+window.addEventListener(
+  "load",
+  function(){
+
+    const user =
+      account();
+
+    const session =
+      localStorage.getItem(DB.session);
+
+
+    if(
+      user &&
+      session === "true"
+    ){
+
+      launchApp();
+
+    }
+
+  }
+);
+
+</script>
+
+</body>
+</html>

@@ -9,6 +9,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 
 <style>
 /* =========================================================
@@ -1525,7 +1526,7 @@ body.light .smallButton{
       </button>
 
     </div>
-
+    
 
     <input
       id="imageInput"
@@ -1541,13 +1542,18 @@ body.light .smallButton{
       class="hidden"
       onchange="handleVideo(this)">
 
+    <!-- Place this right below your Reels file input / upload button -->
+<div id="reelUploadStatus" style="display: none; margin-top: 10px;">
+  <progress id="reelProgressBar" value="0" max="100" style="width: 100%; height: 20px;"></progress>
+  <p id="reelProgressText" style="text-align: center; color: #fff; font-size: 14px; margin-top: 5px;">0%</p>
+</div>
 
     <button
       class="mainButton"
       onclick="createReel()">
       + Post to SYNK
     </button>
-
+    
   </div>
 
 
@@ -2657,6 +2663,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
+const storage = firebase.storage();
 
 let currentUserData = null;
 
@@ -5067,6 +5074,210 @@ function openModal(id) {
 function closeModal(id) {
   document.getElementById(id).style.display = 'none'
   };
+  // Function to fetch and display all registered users
+function loadUsersList() {
+  // Prevent running if no active auth session
+  if (!firebase.auth().currentUser) return;
+
+  db.collection("users").get().then((querySnapshot) => {
+    const userListContainer = document.getElementById("contacts");
+    if (!userListContainer) return;
+
+    userListContainer.innerHTML = "";
+
+    querySnapshot.forEach((doc) => {
+      const userData = doc.data();
+
+      if (currentUserData && userData.id === currentUserData.id) return;
+
+      const isSynked = currentUserData && currentUserData.synkedUsers && currentUserData.synkedUsers.includes(userData.id);
+
+      const contactCard = document.createElement("div");
+      contactCard.className = "contact";
+      contactCard.innerHTML = `
+        <div class="profileAvatar">${userData.name ? userData.name.charAt(0).toUpperCase() : "U"}</div>
+        <div class="contactDetails">
+          <div class="contactName">${userData.name}</div>
+          <div class="contactPhone">${userData.phone || ""}</div>
+        </div>
+        <div class="contactButtons">
+          ${isSynked 
+            ? `<button class="smallButton" onclick="startChat('${userData.id}', '${userData.name}')">💬 Chat</button>`
+            : `<button class="smallButton" onclick="sendSynkRequest('${userData.id}')">➕ Synk</button>`
+          }
+        </div>
+      `;
+      userListContainer.appendChild(contactCard);
+    });
+  }).catch((error) => console.error("Error loading contacts:", error));
+}
+
+
+function sendSynkRequest(targetUserId) {
+  if (!currentUserData) return alert("Please log in first.");
+
+  db.collection("synkRequests").add({
+    from: currentUserData.id,
+    fromName: currentUserData.name,
+    to: targetUserId,
+    status: "pending",
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    alert("Synk request sent!");
+  }).catch((error) => console.error("Error sending request:", error));
+}
+
+function listenForSynkRequests() {
+  if (!currentUserData) return;
+
+  db.collection("synkRequests")
+    .where("to", "==", currentUserData.id)
+    .where("status", "==", "pending")
+    .onSnapshot((snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          const req = change.doc.data();
+          const reqId = change.doc.id;
+          
+          if (confirm(`${req.fromName} sent you a Synk request! Accept?`)) {
+            acceptSynkRequest(reqId, req.from);
+          }
+        }
+      });
+    });
+}
+
+function acceptSynkRequest(requestId, senderId) {
+  db.collection("synkRequests").doc(requestId).update({ status: "accepted" });
+
+  db.collection("users").doc(currentUserData.id).update({
+    synkedUsers: firebase.firestore.FieldValue.arrayUnion(senderId)
+  });
+  
+  db.collection("users").doc(senderId).update({
+    synkedUsers: firebase.firestore.FieldValue.arrayUnion(currentUserData.id)
+  }).then(() => {
+    alert("You are now Synked!");
+    loadUsersList();
+  });
+}
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    db.collection("users").doc(user.uid).get().then((doc) => {
+      if (doc.exists) {
+        currentUserData = doc.data();
+        loadUsersList();
+        listenForSynkRequests(); // Starts listening for incoming requests
+      }
+    });
+  } else {
+    currentUserData = null;
+  }
+});
+// Upload large files (>50MB) to Firebase Storage
+function uploadReelFile(file) {
+  if (!file) return alert("Please select a file to upload.");
+
+  const statusContainer = document.getElementById("reelUploadStatus");
+  const progressBar = document.getElementById("reelProgressBar");
+  const progressText = document.getElementById("reelProgressText");
+
+  // Show status container
+  if (statusContainer) statusContainer.style.display = "block";
+
+  const storageRef = storage.ref(`reels/${Date.now()}_${file.name}`);
+  const uploadTask = storageRef.put(file);
+
+  uploadTask.on(
+    'state_changed',
+    (snapshot) => {
+      // Calculate progress percentage
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      
+      // Update Progress Bar & Text
+      if (progressBar) progressBar.value = progress;
+      if (progressText) progressText.innerText = `${Math.round(progress)}% Uploaded`;
+    },
+    (error) => {
+      console.error("Upload failed:", error);
+      alert("Upload failed. Please try again.");
+      if (statusContainer) statusContainer.style.display = "none";
+    },
+    () => {
+      // Upload Complete: Get Download URL & Save to Firestore
+      uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+        db.collection("reels").add({
+          userId: currentUserData.id,
+          userName: currentUserData.name,
+          videoUrl: downloadURL,
+          likeCount: 0,
+          likedBy: [],
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
+          alert("Reel published successfully!");
+          if (statusContainer) statusContainer.style.display = "none";
+          if (progressBar) progressBar.value = 0;
+        });
+      });
+    }
+  );
+}
+
+
+// Like or Unlike a Reel
+function toggleLikeReel(reelId) {
+  const reelRef = db.collection("reels").doc(reelId);
+
+  db.runTransaction((transaction) => {
+    return transaction.get(reelRef).then((reelDoc) => {
+      if (!reelDoc.exists) return;
+
+      const likes = reelDoc.data().likedBy || [];
+      const hasLiked = likes.includes(currentUserData.id);
+
+      if (hasLiked) {
+        transaction.update(reelRef, {
+          likedBy: firebase.firestore.FieldValue.arrayRemove(currentUserData.id),
+          likeCount: firebase.firestore.FieldValue.increment(-1)
+        });
+      } else {
+        transaction.update(reelRef, {
+          likedBy: firebase.firestore.FieldValue.arrayUnion(currentUserData.id),
+          likeCount: firebase.firestore.FieldValue.increment(1)
+        });
+      }
+    });
+  });
+}
+
+// Add a Comment to a Reel
+function addCommentToReel(reelId, commentText) {
+  if (!commentText.trim()) return;
+
+  db.collection("reels").doc(reelId).collection("comments").add({
+    userId: currentUserData.id,
+    userName: currentUserData.name,
+    text: commentText,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+}
+
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    db.collection("users").doc(user.uid).get().then((doc) => {
+      if (doc.exists) {
+        currentUserData = doc.data();
+        loadUsersList();
+        listenForSynkRequests();
+      }
+    }).catch((error) => {
+      console.log("Waiting for auth initialization...", error);
+    });
+  } else {
+    currentUserData = null;
+  }
+});
+
 </script>
 
 </body>

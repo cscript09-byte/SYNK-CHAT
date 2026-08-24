@@ -5094,19 +5094,23 @@ function loadUsersList() {
 
       const contactCard = document.createElement("div");
       contactCard.className = "contact";
-      contactCard.innerHTML = `
-        <div class="profileAvatar">${userData.name ? userData.name.charAt(0).toUpperCase() : "U"}</div>
-        <div class="contactDetails">
-          <div class="contactName">${userData.name}</div>
-          <div class="contactPhone">${userData.phone || ""}</div>
-        </div>
-        <div class="contactButtons">
-          ${isSynked 
-            ? `<button class="smallButton" onclick="startChat('${userData.id}', '${userData.name}')">💬 Chat</button>`
-            : `<button class="smallButton" onclick="sendSynkRequest('${userData.id}')">➕ Synk</button>`
-          }
-        </div>
-      `;
+      // Inside your loadUsersList() function, update the created card HTML:
+contactCard.innerHTML = `
+  <div class="profileAvatar" onclick="openUserProfile('${userData.id}')" style="cursor: pointer;">
+    ${userData.name ? userData.name.charAt(0).toUpperCase() : "U"}
+  </div>
+  <div class="contactDetails" onclick="openUserProfile('${userData.id}')" style="cursor: pointer;">
+    <div class="contactName">${userData.name}</div>
+    <div class="contactPhone">${userData.phone || ""}</div>
+  </div>
+  <div class="contactButtons">
+    ${isSynked 
+      ? `<button class="smallButton" onclick="startChat('${userData.id}', '${userData.name}')">💬 Chat</button>`
+      : `<button class="smallButton" onclick="sendSynkRequest('${userData.id}')">➕ Synk</button>`
+    }
+  </div>
+`;
+
       userListContainer.appendChild(contactCard);
     });
   }).catch((error) => console.error("Error loading contacts:", error));
@@ -5277,8 +5281,42 @@ firebase.auth().onAuthStateChanged((user) => {
     currentUserData = null;
   }
 });
+function startChat(targetUserId, targetUserName) {
+  // Hide all other views
+  document.querySelectorAll(".view-section").forEach(el => el.classList.add("hidden"));
+
+  // Show Chat View
+  const chatView = document.getElementById("chatView");
+  if (chatView) chatView.classList.remove("hidden");
+
+  // Update header with recipient name
+  const chatHeader = document.getElementById("chatRecipientName");
+  if (chatHeader) chatHeader.innerText = targetUserName;
+
+  // Save current active chat ID
+  window.activeChatUserId = targetUserId;
+
+  // Load messages
+  loadChatMessages(targetUserId);
+}
+function openUserProfile(targetUserId) {
+  db.collection("users").doc(targetUserId).get().then((doc) => {
+    if (!doc.exists) return alert("User profile not found.");
+
+    const data = doc.data();
+    
+    // Update Profile Modal / View Elements
+    document.getElementById("profileViewName").innerText = data.name || "User";
+    document.getElementById("profileViewPhone").innerText = data.phone || "No phone listed";
+    document.getElementById("profileAvatarLarge").innerText = data.name ? data.name.charAt(0).toUpperCase() : "U";
+
+    // Show Profile View / Overlay
+    document.querySelectorAll(".view-section").forEach(el => el.classList.add("hidden"));
+    const profileView = document.getElementById("userProfileView");
+    if (profileView) profileView.classList.remove("hidden");
+  }).catch((error) => console.error("Error loading profile:", error));
+}
 
 </script>
 
 </body>
-</html>

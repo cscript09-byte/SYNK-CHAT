@@ -1806,11 +1806,9 @@ body.light .smallButton{
       My SYNK Profile
     </h2>
 
-    <button
-      class="close"
-      onclick="closeModal('profileModal')">
+    <button class="close" onclick="closeModal('profilemodal')">
       ×
-    </button>
+      </button>
 
   </div>
 
@@ -1927,7 +1925,7 @@ body.light .smallButton{
     <button
       class="secondaryButton"
       style="width:100%;margin-bottom:8px;"
-      onclick="openSettings()">
+      onclick="openModal('settingsModal')">
 
       ⚙️ Settings
 
@@ -3425,7 +3423,7 @@ function whatsappInvite(){
 
 
   const message =
-    "Join me on SYNK — Connect. Share. Belong.";
+    "Join me on SYNK — Connect. Share. Belong.https://cscript09-byte.github.io/SYNK-CHAT/";
 
 
   window.open(
@@ -4816,7 +4814,7 @@ function countryName(code){
 
     "+91":"🇮🇳 India",
 
-    "+971":"🇦🇪 United Arab Emirates"
+    "+971":"🇦🇪 United : Emirates"
 
   };
 
@@ -4912,7 +4910,13 @@ window.addEventListener(
 
   }
 );
+function openModal(id) {
+  document.getElementById(id).style.display = 'flex';
+}
 
+function closeModal(id) {
+  document.getElementById(id).style.display = 'none'
+  };
 </script>
 
 </body>

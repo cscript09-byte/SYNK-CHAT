@@ -4418,73 +4418,260 @@ window.inviteEmail=function(){
    USER PROFILE VIEW
 ===================================================== */
 
-window.showUserProfile=function(user){
+window.showUserProfile = async function(user) {
+    
+    if (!user || !currentUser) {
+        return;
+    }
+    
+    
+    /* ==========================================
+       CHECK WHETHER A CHAT ALREADY EXISTS
+    ========================================== */
+    
+    const chatId =
+        makeChatId(
+            currentUser.uid,
+            user.uid
+        );
+    
+    
+    const chatSnap =
+        await getDoc(
+            doc(
+                db,
+                "chats",
+                chatId
+            )
+        );
+    
+    
+    const alreadyConnected =
+        chatSnap.exists();
+    
+    
+    /* ==========================================
+       PROFILE BUTTON
+    ========================================== */
+    
+    let actionButton = "";
+    
+    
+    if (alreadyConnected) {
+        
+        actionButton = `
 
+            <button
+                class="primary-btn"
+                id="profileChatBtn"
+                style="width:100%;margin-top:20px;">
+
+                💬 Open Chat
+
+            </button>
+
+        `;
+        
+    } else if (
+        user.uid !== currentUser.uid
+    ) {
+        
+        actionButton = `
+
+            <button
+                class="primary-btn"
+                id="profileRequestBtn"
+                style="width:100%;margin-top:20px;">
+
+                ➕ Send SYNK Request
+
+            </button>
+
+        `;
+        
+    }
+    
+    
+    /* ==========================================
+       SHOW PROFILE
+    ========================================== */
+    
     openModal(
-
-        user.name || "SYNK User",
-
+        
+        user.name ||
+        "SYNK User",
+        
         `
 
         <div style="text-align:center">
 
             <img
-                src="${user.photoURL ||
-                "https://via.placeholder.com/100"}"
-                class="profile-big">
+                src="${
+                    user.photoURL ||
+                    "https://via.placeholder.com/100"
+                }"
+                class="profile-big"
+                style="
+                    width:100px;
+                    height:100px;
+                    border-radius:50%;
+                    object-fit:cover;
+                "
+            >
+
 
             <h2 style="margin-top:12px">
-                ${escapeHTML(user.name || "")}
+
+                ${
+                    escapeHTML(
+                        user.name ||
+                        "SYNK User"
+                    )
+                }
+
             </h2>
 
+
             <p style="color:#777">
-                @${escapeHTML(user.username || "")}
+
+                @${escapeHTML(
+                    user.username || ""
+                )}
+
             </p>
 
         </div>
 
+
         <br>
 
+
         <p>
+
             <b>Country:</b>
-            ${escapeHTML(user.country || "Not set")}
+
+            ${
+                escapeHTML(
+                    user.country ||
+                    "Not set"
+                )
+            }
+
         </p>
+
 
         <br>
 
+
         <p>
+
             <b>Age:</b>
-            ${escapeHTML(String(user.age || "Not set"))}
+
+            ${
+                escapeHTML(
+                    String(
+                        user.age ||
+                        "Not set"
+                    )
+                )
+            }
+
         </p>
+
 
         <br>
 
+
         <p>
+
             <b>About:</b><br>
-            ${escapeHTML(user.description || "No description")}
+
+            ${
+                escapeHTML(
+                    user.description ||
+                    "No description"
+                )
+            }
+
         </p>
+
 
         <br>
 
+
         <p>
+
             <b>Hobbies:</b><br>
-            ${(user.hobbies || []).join(", ") || "None"}
+
+            ${
+                (user.hobbies || [])
+                .join(", ") ||
+                "None"
+            }
+
         </p>
+
+
+        ${actionButton}
 
         `
-
+        
     );
-
-};
-
-
-window.viewChatProfile=function(){
-
-    if(currentChatUser)
-        showUserProfile(
-            currentChatUser
-        );
-
+    
+    
+    /* ==========================================
+       CHAT BUTTON
+    ========================================== */
+    
+    if (alreadyConnected) {
+        
+        const button =
+            document.getElementById(
+                "profileChatBtn"
+            );
+        
+        
+        if (button) {
+            
+            button.onclick = () => {
+                
+                closeModal();
+                
+                openChat(user);
+                
+            };
+            
+        }
+        
+    }
+    
+    
+    /* ==========================================
+       REQUEST BUTTON
+    ========================================== */
+    
+    if (!alreadyConnected) {
+        
+        const button =
+            document.getElementById(
+                "profileRequestBtn"
+            );
+        
+        
+        if (button) {
+            
+            button.onclick = async () => {
+                
+                await sendRequest(user);
+                
+                closeModal();
+                
+            };
+            
+        }
+        
+    }
+    
 };
 
 
@@ -5194,4 +5381,4 @@ window.deleteMyAccount = async function(){
 </script>
 
 </body>
-</html>
+      </html>

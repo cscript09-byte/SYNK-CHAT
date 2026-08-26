@@ -2,4992 +2,4973 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#ff4d00">
-<title>SYNK — Connect. Share. Belong.</title>
-<!-- Firebase Compatibility SDKs -->
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+<meta name="viewport"
+      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+<title>SYNK</title>
 
 <style>
-/* =========================================================
-   SYNK
-   ONE FILE — HTML + CSS + JAVASCRIPT
-========================================================= */
-
 :root{
-  --orange:#ff4d00;
-  --orange2:#ff7300;
-  --pink:#ff007f;
-  --pink2:#ff28a8;
-  --black:#060606;
-  --dark:#0d0d0d;
-  --card:#121212;
-  --card2:#191919;
-  --white:#fff;
-  --gray:#999;
-  --gray2:#666;
-  --line:rgba(255,255,255,.09);
-  --green:#21d07a;
-  --red:#ff4545;
-  --shadow:0 15px 45px rgba(0,0,0,.35);
+    --orange:#ff6500;
+    --pink:#ff008c;
+    --bg:#050505;
+    --card:#111114;
+    --card2:#18181c;
+    --text:#fff;
+    --muted:#9b9b9b;
+    --border:#29292e;
+    --accent:linear-gradient(135deg,var(--orange),var(--pink));
 }
 
 *{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  -webkit-tap-highlight-color:transparent;
-}
-
-html,
-body{
-  width:100%;
-  min-height:100%;
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
 body{
-  font-family:Inter,Arial,Helvetica,sans-serif;
-  background:var(--black);
-  color:var(--white);
-  overflow-x:hidden;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
 }
 
 button,
 input,
 textarea,
 select{
-  font:inherit;
+    font:inherit;
 }
 
 button{
-  cursor:pointer;
-  border:0;
-}
-
-input,
-textarea,
-select{
-  outline:none;
+    cursor:pointer;
 }
 
 .hidden{
-  display:none!important;
+    display:none!important;
 }
 
-/* =========================================================
-   AUTH
-========================================================= */
+/* =========================
+   SPLASH
+========================= */
 
-#authScreen{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  background:
-    radial-gradient(circle at 10% 10%,rgba(255,77,0,.25),transparent 35%),
-    radial-gradient(circle at 90% 90%,rgba(255,0,127,.22),transparent 35%),
-    #050505;
-}
-
-.authCard{
-  width:100%;
-  max-width:450px;
-  padding:30px 24px;
-  background:rgba(14,14,14,.96);
-  border:1px solid var(--line);
-  border-radius:28px;
-  box-shadow:
-    0 0 70px rgba(255,77,0,.1),
-    0 0 70px rgba(255,0,127,.08);
+#splash{
+    position:fixed;
+    inset:0;
+    background:#000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
 }
 
 .logo{
-  text-align:center;
-  font-size:45px;
-  font-weight:1000;
-  letter-spacing:6px;
-  background:linear-gradient(90deg,var(--orange),var(--pink));
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
+    font-size:52px;
+    font-weight:900;
+    font-style:italic;
+    letter-spacing:-4px;
+    background:linear-gradient(90deg,var(--orange),var(--pink));
+    -webkit-background-clip:text;
+    color:transparent;
+    text-shadow:0 0 35px rgba(255,0,140,.3);
 }
 
-.logoSub{
-  text-align:center;
-  color:#777;
-  margin:7px 0 28px;
+/* =========================
+   AUTH
+========================= */
+
+#authPage{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:25px;
+    background:
+      radial-gradient(circle at top left,#ff650022,transparent 40%),
+      radial-gradient(circle at bottom right,#ff008c22,transparent 40%),
+      #050505;
 }
 
-.authTabs{
-  display:flex;
-  gap:4px;
-  padding:4px;
-  border-radius:14px;
-  background:#080808;
-  margin-bottom:22px;
+.auth-box{
+    width:100%;
+    max-width:430px;
+    padding:30px;
+    border:1px solid #ff650044;
+    border-radius:25px;
+    background:#0c0c0ef2;
+    box-shadow:0 0 50px #ff008c16;
 }
 
-.authTabs button{
-  flex:1;
-  padding:12px;
-  border-radius:10px;
-  color:#777;
-  background:transparent;
+.auth-logo{
+    text-align:center;
+    margin-bottom:10px;
 }
 
-.authTabs button.active{
-  color:#fff;
-  background:linear-gradient(90deg,var(--orange),var(--pink));
+.auth-subtitle{
+    text-align:center;
+    color:var(--muted);
+    margin-bottom:25px;
 }
 
-.formGroup{
-  margin-bottom:15px;
+.auth-tabs{
+    display:flex;
+    background:#151519;
+    padding:4px;
+    border-radius:12px;
+    margin-bottom:20px;
 }
 
-.formGroup label{
-  display:block;
-  color:#aaa;
-  font-size:13px;
-  margin-bottom:7px;
+.auth-tabs button{
+    flex:1;
+    padding:12px;
+    border:0;
+    background:transparent;
+    color:#aaa;
+    border-radius:9px;
 }
 
-.formGroup input,
-.formGroup select,
-.formGroup textarea{
-  width:100%;
-  color:#fff;
-  background:#090909;
-  border:1px solid var(--line);
-  border-radius:13px;
-  padding:14px;
+.auth-tabs button.active{
+    background:var(--accent);
+    color:white;
 }
 
-.formGroup input:focus,
-.formGroup select:focus,
-.formGroup textarea:focus{
-  border-color:var(--orange);
-  box-shadow:0 0 0 3px rgba(255,77,0,.08);
+.field{
+    margin-bottom:15px;
 }
 
-.phoneGrid{
-  display:grid;
-  grid-template-columns:125px 1fr;
-  gap:8px;
+.field label{
+    display:block;
+    margin-bottom:7px;
+    color:#bbb;
+    font-size:14px;
 }
 
-.mainButton{
-  width:100%;
-  padding:14px;
-  border-radius:14px;
-  color:#fff;
-  font-weight:800;
-  background:linear-gradient(100deg,var(--orange),var(--pink));
-  box-shadow:0 10px 30px rgba(255,77,0,.18);
+.field input,
+.field select,
+.field textarea{
+    width:100%;
+    background:#111116;
+    border:1px solid var(--border);
+    color:white;
+    padding:14px;
+    border-radius:12px;
+    outline:none;
 }
 
-.authFooter{
-  text-align:center;
-  color:#666;
-  font-size:11px;
-  margin-top:18px;
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+    border-color:var(--pink);
 }
 
-/* =========================================================
+.primary-btn{
+    width:100%;
+    border:0;
+    padding:14px;
+    border-radius:12px;
+    color:white;
+    font-weight:bold;
+    background:var(--accent);
+}
+
+.google-btn{
+    width:100%;
+    margin-top:12px;
+    padding:13px;
+    border-radius:12px;
+    border:1px solid #444;
+    background:#fff;
+    color:#111;
+    font-weight:bold;
+}
+
+.divider{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:20px 0;
+    color:#777;
+}
+
+.divider span{
+    height:1px;
+    background:#333;
+    flex:1;
+}
+
+.auth-message{
+    color:#ff6464;
+    font-size:13px;
+    margin-top:12px;
+}
+
+/* =========================
    APP
-========================================================= */
+========================= */
 
 #app{
-  min-height:100vh;
-  background:
-    radial-gradient(circle at 100% 0,rgba(255,0,127,.07),transparent 30%),
-    var(--black);
+    min-height:100vh;
+    padding-top:72px;
+    padding-bottom:75px;
 }
 
-.topDashboard{
-  position:fixed;
-  z-index:100;
-  top:0;
-  left:0;
-  right:0;
-  height:68px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 16px;
-  border-bottom:1px solid var(--line);
-  background:rgba(6,6,6,.92);
-  backdrop-filter:blur(20px);
+.topbar{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    height:70px;
+    z-index:100;
+    background:#080808eF;
+    backdrop-filter:blur(15px);
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 18px;
 }
 
-.brand{
-  font-weight:1000;
-  letter-spacing:3px;
-  font-size:22px;
-  background:linear-gradient(90deg,var(--orange),var(--pink));
-  -webkit-background-clip:text;
-  color:transparent;
+.top-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
-.topProfile{
-  display:flex;
-  align-items:center;
-  gap:10px;
+.menu-btn{
+    background:none;
+    border:0;
+    color:white;
+    font-size:27px;
 }
 
-.topName{
-  font-size:14px;
-  font-weight:700;
-  max-width:130px;
-  overflow:hidden;
-  white-space:nowrap;
-  text-overflow:ellipsis;
+.small-logo{
+    font-size:25px;
+    font-weight:900;
+    font-style:italic;
+    background:var(--accent);
+    -webkit-background-clip:text;
+    color:transparent;
 }
 
-.profileAvatar{
-  width:39px;
-  height:39px;
-  border-radius:50%;
-  object-fit:cover;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:linear-gradient(135deg,var(--orange),var(--pink));
-  color:#fff;
-  font-weight:900;
-  overflow:hidden;
+.user-top{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    cursor:pointer;
 }
 
-.profileAvatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
+.avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    object-fit:cover;
+    background:#222;
+    border:2px solid var(--pink);
 }
 
-.main{
-  max-width:900px;
-  min-height:100vh;
-  margin:auto;
-  padding:88px 15px 95px;
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    height:68px;
+    background:#080808ed;
+    backdrop-filter:blur(15px);
+    border-top:1px solid var(--border);
+    z-index:100;
+    display:flex;
+    justify-content:space-around;
 }
 
-/* =========================================================
-   BOTTOM NAV
-========================================================= */
-
-.bottomDashboard{
-  position:fixed;
-  z-index:100;
-  bottom:0;
-  left:0;
-  right:0;
-  height:74px;
-  border-top:1px solid var(--line);
-  background:rgba(7,7,7,.96);
-  backdrop-filter:blur(20px);
+.nav-btn{
+    flex:1;
+    border:0;
+    background:none;
+    color:#777;
+    font-size:11px;
 }
 
-.navInner{
-  height:100%;
-  max-width:700px;
-  margin:auto;
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
+.nav-btn span{
+    display:block;
+    font-size:23px;
+    margin-bottom:3px;
 }
 
-.navButton{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
-  color:#666;
-  background:transparent;
-  font-size:10px;
+.nav-btn.active{
+    color:var(--pink);
 }
 
-.navButton .navIcon{
-  font-size:21px;
-}
-
-.navButton.active{
-  color:#fff;
-}
-
-.navButton.active .navIcon{
-  filter:drop-shadow(0 0 7px var(--orange));
-}
-
-/* =========================================================
+/* =========================
    PAGES
-========================================================= */
+========================= */
 
 .page{
-  display:none;
+    display:none;
+    padding:18px;
+    max-width:1100px;
+    margin:auto;
 }
 
 .page.active{
-  display:block;
+    display:block;
 }
 
-.pageTitle{
-  font-size:27px;
-  margin-bottom:6px;
+.page-title{
+    font-size:25px;
+    margin-bottom:18px;
 }
 
-.pageSubtitle{
-  color:#777;
-  margin-bottom:20px;
+/* =========================
+   CHAT
+========================= */
+
+.search-box{
+    display:flex;
+    gap:8px;
+    margin-bottom:15px;
 }
 
-/* =========================================================
-   SEARCH
-========================================================= */
-
-.search{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  padding:13px 15px;
-  border-radius:15px;
-  background:var(--card);
-  border:1px solid var(--line);
-  margin-bottom:15px;
+.search-box input{
+    flex:1;
+    padding:13px;
+    background:#111116;
+    border:1px solid var(--border);
+    border-radius:12px;
+    color:white;
 }
 
-.search input{
-  width:100%;
-  border:0;
-  background:transparent;
-  color:#fff;
+.icon-btn{
+    width:48px;
+    border:0;
+    border-radius:12px;
+    background:var(--accent);
+    color:white;
 }
 
-/* =========================================================
-   CONTACTS
-========================================================= */
-
-.contact{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:14px;
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:17px;
-  margin-bottom:9px;
+.user-result,
+.chat-card{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:13px;
+    margin-bottom:8px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:15px;
+    cursor:pointer;
 }
 
-.contactDetails{
-  flex:1;
-  min-width:0;
+.user-info{
+    flex:1;
 }
 
-.contactName{
-  font-weight:800;
+.user-info strong{
+    display:block;
 }
 
-.contactPhone{
-  color:#777;
-  font-size:11px;
-  margin-top:4px;
+.user-info small{
+    color:#888;
 }
 
-.contactButtons{
-  display:flex;
-  gap:5px;
-}
-
-.smallButton{
-  width:35px;
-  height:35px;
-  border-radius:10px;
-  background:#222;
-  color:#fff;
+.online{
+    color:#35e06f;
+    font-size:11px;
 }
 
 .empty{
-  min-height:55vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  color:#666;
+    text-align:center;
+    color:#777;
+    padding:60px 15px;
 }
 
-.emptyIcon{
-  font-size:55px;
-  margin-bottom:10px;
-}
-
-/* =========================================================
+/* =========================
    FLOATING +
-========================================================= */
-
-.addButton{
-  position:fixed;
-  z-index:90;
-  right:20px;
-  bottom:91px;
-  width:58px;
-  height:58px;
-  border-radius:50%;
-  color:#fff;
-  font-size:30px;
-  font-weight:300;
-  background:linear-gradient(135deg,var(--orange),var(--pink));
-  box-shadow:
-    0 8px 30px rgba(255,77,0,.35),
-    0 4px 25px rgba(255,0,127,.2);
-}
-
-/* =========================================================
-   MODALS
-========================================================= */
-
-.modal{
-  position:fixed;
-  z-index:500;
-  inset:0;
-  display:none;
-  align-items:flex-end;
-  justify-content:center;
-  background:rgba(0,0,0,.75);
-  backdrop-filter:blur(8px);
-}
-
-.modal.open{
-  display:flex;
-}
-
-.modalCard{
-  width:100%;
-  max-width:580px;
-  max-height:92vh;
-  overflow-y:auto;
-  padding:22px;
-  border-radius:25px 25px 0 0;
-  background:#111;
-  border:1px solid var(--line);
-  box-shadow:var(--shadow);
-}
-
-.modalHeader{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:20px;
-}
-
-.close{
-  width:35px;
-  height:35px;
-  border-radius:50%;
-  color:#fff;
-  background:#222;
-}
-
-/* =========================================================
-   INVITE
-========================================================= */
-
-.inviteGrid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
-
-.inviteOption{
-  padding:16px 8px;
-  border-radius:15px;
-  color:#fff;
-  background:#1a1a1a;
-  text-align:center;
-}
-
-.inviteOption div{
-  font-size:27px;
-  margin-bottom:7px;
-}
-
-/* =========================================================
-   PROFILE
-========================================================= */
-
-.profileHeader{
-  text-align:center;
-  padding:10px 0 25px;
-}
-
-.largeAvatar{
-  width:100px;
-  height:100px;
-  border-radius:50%;
-  margin:auto;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  font-size:34px;
-  font-weight:900;
-  background:linear-gradient(135deg,var(--orange),var(--pink));
-}
-
-.largeAvatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.profileHeader h2{
-  margin-top:12px;
-}
-
-.profileHeader p{
-  color:#777;
-  margin-top:5px;
-}
-
-.profileButtons{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin-top:15px;
-}
-
-.secondaryButton{
-  padding:12px;
-  color:#fff;
-  border:1px solid var(--line);
-  border-radius:13px;
-  background:#1b1b1b;
-}
-
-.profileSection{
-  margin-top:22px;
-}
-
-.profileSection h3{
-  font-size:12px;
-  text-transform:uppercase;
-  color:#666;
-  letter-spacing:1px;
-  margin-bottom:9px;
-}
-
-.infoBox{
-  padding:15px;
-  border-radius:15px;
-  background:#171717;
-  border:1px solid var(--line);
-  margin-bottom:8px;
-}
-
-.infoBox small{
-  display:block;
-  color:#666;
-  margin-bottom:5px;
-}
-
-.infoBox p{
-  color:#ddd;
-  line-height:1.5;
-}
-
-.hobbyGrid{
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-}
-
-.hobby{
-  padding:8px 11px;
-  border-radius:20px;
-  color:#bbb;
-  background:#191919;
-  border:1px solid var(--line);
-}
-
-.hobby.selected{
-  color:#fff;
-  background:linear-gradient(90deg,var(--orange),var(--pink));
-}
-
-/* =========================================================
-   REELS
-========================================================= */
-
-.composer{
-  padding:15px;
-  border-radius:18px;
-  background:var(--card);
-  border:1px solid var(--line);
-  margin-bottom:17px;
-}
-
-.composer textarea{
-  width:100%;
-  min-height:85px;
-  resize:none;
-  padding:13px;
-  border-radius:12px;
-  background:#080808;
-  color:#fff;
-  border:1px solid var(--line);
-  margin-bottom:9px;
-}
-
-.mediaRow{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin-bottom:9px;
-}
-
-.mediaButton{
-  padding:11px;
-  border-radius:11px;
-  color:#ddd;
-  background:#1b1b1b;
-  border:1px solid var(--line);
-}
-
-.reel{
-  overflow:hidden;
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:20px;
-  margin-bottom:16px;
-}
-
-.reelTop{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:14px;
-}
-
-.reelTopInfo{
-  flex:1;
-}
-
-.reelTopInfo strong{
-  display:block;
-}
-
-.reelTopInfo small{
-  color:#666;
-}
-
-.reelText{
-  padding:0 15px 15px;
-  white-space:pre-wrap;
-  line-height:1.5;
-  color:#eee;
-}
-
-.reelMedia{
-  width:100%;
-  max-height:500px;
-  object-fit:cover;
-  display:block;
-  background:#000;
-}
-
-.reelActions{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  border-top:1px solid var(--line);
-}
-
-.reelActions button{
-  padding:13px 5px;
-  color:#aaa;
-  background:transparent;
-  font-size:12px;
-}
-
-.reelActions button:hover{
-  color:#fff;
-}
-
-.reelActions .liked{
-  color:#ff238e;
-}
-
-.comments{
-  padding:12px 15px;
-  border-top:1px solid var(--line);
-}
-
-.comment{
-  padding:7px 0;
-  font-size:13px;
-  color:#aaa;
-}
-
-.comment strong{
-  color:#fff;
-}
-
-.commentInput{
-  display:flex;
-  gap:7px;
-  margin-top:9px;
-}
-
-.commentInput input{
-  flex:1;
-  padding:9px 11px;
-  border-radius:15px;
-  background:#090909;
-  color:#fff;
-  border:1px solid var(--line);
-}
-
-.commentInput button{
-  padding:8px 12px;
-  border-radius:13px;
-  color:#fff;
-  background:var(--orange);
-}
-
-/* =========================================================
-   REQUESTS
-========================================================= */
-
-.request{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:14px;
-  border-radius:17px;
-  background:var(--card);
-  border:1px solid var(--line);
-  margin-bottom:9px;
-}
-
-.requestInfo{
-  flex:1;
-}
-
-.requestActions{
-  display:flex;
-  gap:5px;
-}
-
-.accept{
-  padding:8px 11px;
-  border-radius:9px;
-  color:#000;
-  background:var(--green);
-}
-
-.reject{
-  padding:8px 11px;
-  border-radius:9px;
-  color:#fff;
-  background:#292929;
-}
-
-/* =========================================================
-   NEWS
-========================================================= */
-
-.news{
-  padding:20px;
-  border-radius:20px;
-  background:
-    linear-gradient(135deg,rgba(255,77,0,.11),rgba(255,0,127,.09)),
-    var(--card);
-  border:1px solid var(--line);
-  margin-bottom:14px;
-}
-
-.newsLabel{
-  color:var(--orange);
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:1.3px;
-  margin-bottom:7px;
-}
-
-.news h3{
-  margin-bottom:7px;
-}
-
-.news p{
-  color:#999;
-  line-height:1.55;
-}
-
-/* =========================================================
-   SETTINGS
-========================================================= */
-
-.settingGroup{
-  margin-bottom:24px;
-}
-
-.settingGroupTitle{
-  color:#666;
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:1px;
-  margin-bottom:7px;
-}
-
-.setting{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  min-height:65px;
-  padding:13px;
-  background:#161616;
-  border-bottom:1px solid var(--line);
-}
-
-.setting:first-of-type{
-  border-radius:14px 14px 0 0;
-}
-
-.setting:last-of-type{
-  border-radius:0 0 14px 14px;
-}
-
-.settingInfo{
-  flex:1;
-}
-
-.settingInfo strong{
-  display:block;
-  margin-bottom:4px;
-}
-
-.settingInfo small{
-  color:#666;
-}
-
-.switch{
-  width:48px;
-  height:27px;
-  border-radius:20px;
-  background:#333;
-  position:relative;
-  transition:.2s;
-}
-
-.switch:after{
-  content:"";
-  width:21px;
-  height:21px;
-  position:absolute;
-  top:3px;
-  left:4px;
-  background:#fff;
-  border-radius:50%;
-  transition:.2s;
-}
-
-.switch.on{
-  background:linear-gradient(90deg,var(--orange),var(--pink));
-}
-
-.switch.on:after{
-  left:23px;
-}
-
-/* =========================================================
-   AI
-========================================================= */
-
-.aiWindow{
-  height:75vh;
-  display:flex;
-  flex-direction:column;
-}
-
-.aiMessages{
-  flex:1;
-  overflow-y:auto;
-  padding-bottom:15px;
-}
-
-.aiBubble{
-  max-width:88%;
-  padding:13px 15px;
-  border-radius:18px;
-  line-height:1.5;
-  margin-bottom:11px;
-}
-
-.aiBubble.user{
-  margin-left:auto;
-  color:#fff;
-  background:linear-gradient(135deg,var(--orange),var(--pink));
-}
-
-.aiBubble.assistant{
-  background:#181818;
-  border:1px solid var(--line);
-}
-
-.aiInputRow{
-  display:flex;
-  gap:8px;
-  padding-top:10px;
-}
-
-.aiInputRow input{
-  flex:1;
-  padding:13px 16px;
-  border-radius:22px;
-  color:#fff;
-  background:#171717;
-  border:1px solid var(--line);
-}
-
-.aiSend{
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  color:#fff;
-  background:linear-gradient(135deg,var(--orange),var(--pink));
-}
-
-.aiProvider{
-  margin-top:9px;
-  display:flex;
-  gap:7px;
-}
-
-.aiProvider button{
-  flex:1;
-  padding:9px;
-  border-radius:10px;
-  color:#aaa;
-  background:#191919;
-}
-
-.aiProvider button.active{
-  color:#fff;
-  border:1px solid var(--orange);
-}
-
-/* =========================================================
-   ABOUT
-========================================================= */
-
-.aboutHero{
-  text-align:center;
-  padding:30px 15px;
-}
-
-.aboutLogo{
-  font-size:58px;
-  font-weight:1000;
-  letter-spacing:8px;
-  background:linear-gradient(90deg,var(--orange),var(--pink));
-  -webkit-background-clip:text;
-  color:transparent;
-}
-
-.aboutHero p{
-  color:#777;
-  margin-top:8px;
-}
-
-.feature{
-  padding:17px;
-  border-radius:17px;
-  background:#171717;
-  border:1px solid var(--line);
-  margin-bottom:9px;
-}
-
-.feature h3{
-  margin-bottom:6px;
-}
-
-.feature p{
-  color:#888;
-  line-height:1.5;
-}
-
-.creator{
-  text-align:center;
-  margin-top:20px;
-  padding:22px;
-  border-radius:20px;
-  background:linear-gradient(
-    135deg,
-    rgba(255,77,0,.11),
-    rgba(255,0,127,.11)
-  );
-}
-
-/* =========================================================
+========================= */
+
+.floating-plus{
+    position:fixed;
+    right:20px;
+    bottom:85px;
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    border:0;
+    color:white;
+    font-size:30px;
+    background:var(--accent);
+    box-shadow:0 8px 30px #ff008c44;
+    z-index:90;
+}
+
+/* =========================
    CHAT ROOM
-========================================================= */
+========================= */
 
-.chatRoom{
-  position:fixed;
-  z-index:300;
-  inset:0;
-  display:none;
-  flex-direction:column;
-  background:#080808;
+#chatRoom{
+    position:fixed;
+    inset:0;
+    background:#050505;
+    z-index:300;
+    display:none;
+    flex-direction:column;
 }
 
-.chatRoom.open{
-  display:flex;
+.chat-header{
+    height:68px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:0 15px;
 }
 
-.chatHeader{
-  height:66px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:0 15px;
-  background:#0d0d0d;
-  border-bottom:1px solid var(--line);
+.chat-header .back{
+    background:none;
+    border:0;
+    color:white;
+    font-size:25px;
 }
 
-.back{
-  background:transparent;
-  color:#fff;
-  font-size:28px;
+.chat-header-info{
+    flex:1;
 }
 
-.chatMessages{
-  flex:1;
-  overflow-y:auto;
-  padding:20px 15px 85px;
+.chat-header-info strong{
+    display:block;
+}
+
+.chat-header-info small{
+    color:#42e26e;
+}
+
+.chat-messages{
+    flex:1;
+    overflow-y:auto;
+    padding:20px;
 }
 
 .message{
-  max-width:80%;
-  padding:11px 14px;
-  border-radius:17px;
-  margin-bottom:9px;
-  line-height:1.45;
-  word-break:break-word;
+    max-width:75%;
+    padding:10px 13px;
+    border-radius:17px;
+    margin-bottom:10px;
+    word-wrap:break-word;
 }
 
 .message.mine{
-  margin-left:auto;
-  background:linear-gradient(135deg,var(--orange),var(--pink));
+    margin-left:auto;
+    background:linear-gradient(135deg,#ff6500,#ff008c);
 }
 
-.message.other{
-  background:#1b1b1b;
+.message.theirs{
+    background:#17171b;
 }
 
-.chatComposer{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  display:flex;
-  gap:7px;
-  padding:10px;
-  background:rgba(8,8,8,.98);
-  border-top:1px solid var(--line);
+.message img{
+    max-width:240px;
+    border-radius:12px;
+    margin-top:5px;
 }
 
-.chatComposer input{
-  flex:1;
-  padding:12px 15px;
-  color:#fff;
-  background:#171717;
-  border:1px solid var(--line);
-  border-radius:22px;
+.chat-input{
+    padding:10px;
+    display:flex;
+    gap:7px;
+    border-top:1px solid var(--border);
 }
 
-.send{
-  width:46px;
-  height:46px;
-  border-radius:50%;
-  color:#fff;
-  background:linear-gradient(135deg,var(--orange),var(--pink));
+.chat-input input{
+    flex:1;
+    border:1px solid var(--border);
+    background:#111116;
+    color:white;
+    padding:13px;
+    border-radius:25px;
 }
 
-/* =========================================================
-   LIGHT MODE
-========================================================= */
+.chat-input button{
+    width:48px;
+    border:0;
+    border-radius:50%;
+    color:white;
+    background:var(--accent);
+}
+
+/* =========================
+   REQUESTS
+========================= */
+
+.request-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:15px;
+    margin-bottom:10px;
+}
+
+.request-actions{
+    display:flex;
+    gap:8px;
+    margin-top:12px;
+}
+
+.accept{
+    flex:1;
+    border:0;
+    background:var(--accent);
+    color:white;
+    padding:10px;
+    border-radius:10px;
+}
+
+.decline{
+    flex:1;
+    border:1px solid #444;
+    background:#111;
+    color:white;
+    padding:10px;
+    border-radius:10px;
+}
+
+/* =========================
+   REELS
+========================= */
+
+/* Reel creator section */
+.reel-author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 10%;
+    min-width: 0;
+}
+
+.reel-author-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.reel-author-name {
+    font-size: clamp(16px, 4vw, 22px);
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.reel-content{
+    padding:0 15px 15px;
+}
+
+/* Reel media only */
+.reel>img,
+.reel>video {
+    display: block;
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+}
+
+/* NEVER stretch the Reel author's profile picture */
+.reel .avatar,
+.reel-header .avatar {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    max-height: 48px !important;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    object-fit: cover !important;
+    object-position: center;
+    flex-shrink: 0;
+}
+
+.reel-text{
+    padding:15px;
+    line-height:1.5;
+}
+
+.reel-actions{
+    display:flex;
+    border-top:1px solid var(--border);
+}
+
+.reel-actions button{
+    flex:1;
+    border:0;
+    background:none;
+    color:#aaa;
+    padding:13px;
+}
+
+.reel-actions button:hover{
+    color:var(--pink);
+}
+
+/* =========================
+   NEWS
+========================= */
+
+.news-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:18px;
+    margin-bottom:15px;
+}
+
+.news-card h3{
+    margin-bottom:8px;
+}
+
+.news-card p{
+    color:#aaa;
+    line-height:1.5;
+}
+
+/* =========================
+   PROFILE
+========================= */
+
+.profile-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:20px;
+}
+
+.profile-center{
+    text-align:center;
+}
+
+.profile-big{
+    width:105px;
+    height:105px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid var(--pink);
+}
+
+.profile-item{
+    margin-top:14px;
+}
+
+.profile-item label{
+    color:#777;
+    font-size:12px;
+}
+
+.profile-item div{
+    margin-top:5px;
+}
+
+.hobbies{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin-top:10px;
+}
+
+.hobby{
+    padding:8px 11px;
+    border:1px solid #333;
+    border-radius:20px;
+    color:#aaa;
+    cursor:pointer;
+}
+
+.hobby.selected{
+    background:var(--accent);
+    color:white;
+    border-color:transparent;
+}
+
+.profile-buttons{
+    margin-top:20px;
+    display:grid;
+    gap:10px;
+}
+
+.secondary-btn{
+    border:1px solid #333;
+    background:#111;
+    color:white;
+    padding:12px;
+    border-radius:12px;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:#000b;
+    z-index:500;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:100%;
+    max-width:500px;
+    max-height:90vh;
+    overflow-y:auto;
+    background:#101014;
+    border:1px solid #333;
+    border-radius:20px;
+    padding:20px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.close{
+    border:0;
+    background:none;
+    color:white;
+    font-size:25px;
+}
+
+/* =========================
+   SETTINGS
+========================= */
+
+.setting{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 0;
+    border-bottom:1px solid #222;
+}
+
+.setting-info strong{
+    display:block;
+}
+
+.setting-info small{
+    color:#777;
+}
+
+.switch{
+    width:48px;
+    height:26px;
+    border-radius:20px;
+    background:#333;
+    position:relative;
+    cursor:pointer;
+}
+
+.switch::after{
+    content:"";
+    position:absolute;
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    background:white;
+    top:3px;
+    left:4px;
+    transition:.2s;
+}
+
+.switch.on{
+    background:var(--pink);
+}
+
+.switch.on::after{
+    left:24px;
+}
+
+/* =========================
+   AI
+========================= */
+
+.ai-messages{
+    min-height:400px;
+    max-height:60vh;
+    overflow-y:auto;
+    padding:10px;
+}
+
+.ai-message{
+    max-width:80%;
+    padding:12px;
+    border-radius:15px;
+    margin-bottom:10px;
+}
+
+.ai-user{
+    margin-left:auto;
+    background:var(--accent);
+}
+
+.ai-bot{
+    background:#18181c;
+}
+
+.ai-input{
+    display:flex;
+    gap:8px;
+}
+
+.ai-input input{
+    flex:1;
+    padding:13px;
+    background:#111;
+    border:1px solid #333;
+    color:white;
+    border-radius:20px;
+}
+
+@media(max-width:600px){
+
+    .page{
+        padding:14px;
+    }
+
+    .auth-box{
+        padding:22px;
+    }
+
+    .logo{
+        font-size:45px;
+    }
+
+    .message{
+        max-width:85%;
+    }
+}
+
+/* LIGHT MODE */
 
 body.light{
-  --black:#f3f3f3;
-  --dark:#fff;
-  --card:#fff;
-  --card2:#eee;
-  --white:#111;
-  --gray:#666;
-  --gray2:#888;
-  --line:rgba(0,0,0,.1);
+    --bg:#f5f5f7;
+    --card:#fff;
+    --card2:#eee;
+    --text:#111;
+    --muted:#666;
+    --border:#ddd;
 }
 
-body.light #app{
-  background:#f3f3f3;
+body.light .topbar,
+body.light .bottom-nav{
+    background:#ffffffed;
 }
 
-body.light .topDashboard,
-body.light .bottomDashboard,
-body.light .chatHeader,
-body.light .chatRoom{
-  background:rgba(255,255,255,.95);
+body.light .chat-input input,
+body.light .search-box input,
+body.light .field input,
+body.light .field select,
+body.light .field textarea{
+    background:#fff;
+    color:#111;
 }
 
-body.light .search,
-body.light .contact,
-body.light .reel,
-body.light .news,
-body.light .request,
-body.light .setting,
-body.light .feature{
-  background:#fff;
+body.light .secondary-btn{
+    background:#fff;
+    color:#111;
 }
 
-body.light .composer textarea,
-body.light .formGroup input,
-body.light .formGroup select,
-body.light .formGroup textarea,
-body.light .chatComposer input,
-body.light .aiInputRow input,
-body.light .commentInput input{
-  color:#111;
-  background:#f5f5f5;
+body.light #chatRoom{
+    background:#f5f5f7;
 }
 
-body.light .modalCard{
-  background:#fff;
-  color:#111;
+body.light .chat-header{
+    background:#fff;
 }
 
-body.light .inviteOption,
-body.light .secondaryButton,
-body.light .smallButton{
-  background:#eee;
-  color:#111;
+body.light .message.theirs{
+    background:#fff;
+}
+/* ================================
+   SYNK RESPONSIVE SYSTEM
+================================ */
+
+* {
+  box-sizing: border-box;
 }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+html {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+}
 
-@media(max-width:520px){
+body {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+}
 
-  .main{
-    padding-left:10px;
-    padding-right:10px;
+img,
+video {
+  max-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+  max-width: 100%;
+}
+
+/* Main app */
+.app {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+}
+
+/* Top navigation */
+.top-bar {
+  width: 100%;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  padding: 10px clamp(12px, 3vw, 30px);
+}
+
+/* Main content */
+.main-content {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(15px, 4vw, 30px);
+}
+
+/* Search */
+.search-container {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+}
+
+.search-container input {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Bottom navigation */
+.bottom-nav {
+  width: 100%;
+  left: 0;
+  right: 0;
+}
+
+/* Cards */
+.card,
+.reel-card,
+.chat-card {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  
+  .top-bar {
+    min-height: 64px;
+    padding: 8px 12px;
   }
-
-  .topName{
-    max-width:95px;
+  
+  .logo {
+    font-size: 28px;
   }
-
-  .pageTitle{
-    font-size:24px;
+  
+  .username {
+    font-size: 15px;
+    max-width: 35vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-
-  .inviteGrid{
-    grid-template-columns:1fr;
+  
+  .main-content {
+    padding: 15px 12px 90px;
   }
-
-  .reelActions button{
-    font-size:11px;
+  
+  .bottom-nav {
+    height: 72px;
   }
-
-  .message{
-    max-width:88%;
+  
+  .bottom-nav button {
+    font-size: 12px;
   }
-
+  
+  .reel-card {
+    border-radius: 16px;
+  }
+  
+  .reel-avatar {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+  }
 }
 
-@media(min-width:800px){
+/* Tablets */
+@media (min-width: 601px) and (max-width: 900px) {
+  
+  .main-content {
+    max-width: 750px;
+  }
+  
+  .reel-card {
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
 
-  .modal{
+/* Large screens */
+@media (min-width: 901px) {
+  
+  .main-content {
+    max-width: 1000px;
+  }
+  
+  .reel-card {
+    max-width: 850px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -320px;
+  width: min(320px, 85vw);
+  height: 100vh;
+  background: #0b0b0f;
+  z-index: 9999;
+  padding: 20px;
+  transition: left 0.3s ease;
+  box-shadow: 5px 0 30px rgba(255, 0, 120, 0.25);
+  overflow-y: auto;
+}
+
+.side-menu.active {
+  left: 0;
+}
+
+.side-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.side-menu-logo {
+  font-size: 32px;
+  font-weight: 900;
+  background: linear-gradient(90deg, #ff4500, #ff008c);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.side-menu-header button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 35px;
+  cursor: pointer;
+}
+
+.side-menu>button:not(.delete-account-button) {
+  width: 100%;
+  padding: 16px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 12px;
+  background: #15151b;
+  color: white;
+  text-align: left;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.side-menu>button:hover {
+  background: #24242c;
+}
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .65);
+  z-index: 9998;
+  display: none;
+}
+
+.menu-overlay.active {
+  display: block;
+}
+
+.menu-divider {
+  height: 1px;
+  background: #333;
+  margin: 20px 0;
+}
+
+.delete-account-button {
+  width: 100%;
+  padding: 16px;
+  margin-top: 20px;
+  border: 1px solid #ff3355;
+  border-radius: 12px;
+  background: transparent;
+  color: #ff5570;
+  font-size: 16px;
+}
+/* =====================================================
+   SYNK REEL MEDIA
+===================================================== */
+
+.reel > img,
+.reel > video,
+.reel .reel-media{
+    width:100%;
+    max-width:100%;
+    max-height:500px;
+    display:block;
+    object-fit:cover;
+}
+
+
+/* NEVER stretch profile pictures */
+
+.reel-header .avatar{
+    width:48px !important;
+    height:48px !important;
+    min-width:48px !important;
+    max-width:48px !important;
+    max-height:48px !important;
+
+    aspect-ratio:1 / 1;
+
+    border-radius:50%;
+
+    object-fit:cover !important;
+
+    object-position:center;
+
+    flex-shrink:0;
+}
+
+
+/* AUDIO */
+
+.reel-audio{
+
+    display:flex;
+
     align-items:center;
-  }
 
-  .modalCard{
-    border-radius:25px;
-  }
+    gap:12px;
+
+    padding:16px;
+
+    margin:10px 0;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,80,0,.12),
+            rgba(255,0,160,.12)
+        );
+
+    border:1px solid var(--border);
+
+    border-radius:15px;
+
+}
+
+
+.audio-icon{
+
+    width:48px;
+
+    height:48px;
+
+    min-width:48px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff5a00,
+            #ff008c
+        );
+
+    font-size:23px;
+
+}
+
+
+.audio-info{
+
+    flex:1;
+
+    min-width:0;
+
+}
+
+
+.audio-info strong{
+
+    display:block;
+
+    color:white;
+
+}
+
+
+.audio-info small{
+
+    display:block;
+
+    color:#888;
+
+    margin-top:3px;
+
+}
+
+
+.reel-audio audio{
+
+    max-width:45%;
+
+}
+
+
+/* DELETE */
+
+.deleteReelBtn{
+
+    color:#ff4d6d !important;
+
+}
+
+
+.deleteReelBtn:hover{
+
+    color:#ff1744 !important;
+
+}
+
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    .reel-audio{
+
+        flex-wrap:wrap;
+
+    }
+
+    .reel-audio audio{
+
+        width:100%;
+
+        max-width:100%;
+
+    }
+
+    .reel-actions{
+
+        overflow-x:auto;
+
+    }
+
+    .reel-actions button{
+
+        min-width:90px;
+
+        white-space:nowrap;
+
+    }
 
 }
 </style>
 </head>
 
 <body>
+<div id="sideMenu" class="side-menu">
 
-<!-- =======================================================
-     AUTH
-======================================================= -->
+    <div class="side-menu-header">
+        <div class="side-menu-logo">SYNK</div>
+        <button id="closeMenu">×</button>
+    </div>
 
-<section id="authScreen">
+   
+    <button onclick="openSettings()">⚙️ Settings</button>
+    Personal AI</button>
+   
+    <button onclick="openAbout()">ℹ️ About SYNK</button>
 
-<div class="authCard">
+    <div class="menu-divider"></div>
 
-  <div class="logo">SYNK</div>
-  <div class="logoSub">Connect. Share. Belong.</div>
+    <button onclick="logoutUser()">🚪 Log out</button>
 
-  <div class="authTabs">
-    <button id="signupTab"
-      class="active"
-      onclick="switchAuth('signup')">
-      Sign Up
+    <button class="delete-account-button"
+            onclick="deleteMyAccount()">
+        🗑️ Delete Account
     </button>
-
-    <button id="loginTab"
-      onclick="switchAuth('login')">
-      Login
-    </button>
-  </div>
-
-
-  <!-- SIGN UP -->
-
-  <form id="signupForm">
-
-    <div class="formGroup">
-      <label>Full Name</label>
-      <input
-        id="signupName"
-        type="text"
-        placeholder="Your name"
-        required>
-    </div>
-
-    <div class="formGroup">
-      <label>Country</label>
-
-      <select id="signupCountry">
-
-        <option value="+234">
-          🇳🇬 Nigeria (+234)
-        </option>
-
-        <option value="+233">
-          🇬🇭 Ghana (+233)
-        </option>
-
-        <option value="+254">
-          🇰🇪 Kenya (+254)
-        </option>
-
-        <option value="+27">
-          🇿🇦 South Africa (+27)
-        </option>
-
-        <option value="+44">
-          🇬🇧 United Kingdom (+44)
-        </option>
-
-        <option value="+1">
-          🇺🇸 United States (+1)
-        </option>
-
-        <option value="+91">
-          🇮🇳 India (+91)
-        </option>
-
-        <option value="+971">
-          🇦🇪 UAE (+971)
-        </option>
-
-      </select>
-    </div>
-
-    <div class="formGroup">
-
-      <label>Phone Number</label>
-
-      <input
-        id="signupPhone"
-        type="tel"
-        placeholder="8012345678"
-        required>
-
-    </div>
-
-    <div class="formGroup">
-
-      <label>Password</label>
-
-      <input
-        id="signupPassword"
-        type="password"
-        placeholder="Create password"
-        required>
-
-    </div>
-
-    <button class="mainButton">
-      Create SYNK Account
-    </button>
-    
-    
-  </form>
-
-  <!-- LOGIN -->
-
-  <form id="loginForm" class="hidden">
-
-    <div class="formGroup">
-
-      <label>Phone Number</label>
-
-      <input
-        id="loginPhone"
-        type="tel"
-        placeholder="Phone number"
-        required>
-
-    </div>
-
-    <div class="formGroup">
-
-      <label>Password</label>
-
-      <input
-        id="loginPassword"
-        type="password"
-        placeholder="Password"
-        required>
-
-    </div>
-
-    <button class="mainButton">
-      Login to SYNK
-    </button>
-
-  </form>
-
-
-  <div class="authFooter">
-    SYNK frontend mode — backend can be connected later.
-  </div>
 
 </div>
 
+<div id="menuOverlay" class="menu-overlay"></div>
+<!-- ================= SPLASH ================= -->
+
+<div id="splash">
+    <div class="logo">SYNK</div>
+</div>
+
+<!-- ================= AUTH ================= -->
+
+<section id="authPage" class="hidden">
+
+<div class="auth-box">
+
+    <div class="auth-logo">
+        <div class="logo">SYNK</div>
+    </div>
+
+    <div class="auth-subtitle">
+        Connect. Share. Belong.
+    </div>
+
+    <div class="auth-tabs">
+        <button id="loginTab" class="active">Login</button>
+        <button id="signupTab">Sign Up</button>
+    </div>
+
+    <form id="authForm">
+
+        <div class="field">
+            <label>Gmail / Email</label>
+            <input id="email" type="email" required>
+        </div>
+
+        <div class="field">
+            <label>Password</label>
+            <input id="password" type="password" required>
+        </div>
+
+        <div id="signupFields" class="hidden">
+
+            <div class="field">
+                <label>Display Name</label>
+                <input id="signupName" type="text">
+            </div>
+
+            <div class="field">
+                <label>Country</label>
+                <select id="signupCountry">
+                    <option value="">Select country</option>
+                    <option>Nigeria</option>
+                    <option>Ghana</option>
+                    <option>United Kingdom</option>
+                    <option>United States</option>
+                    <option>Canada</option>
+                    <option>South Africa</option>
+                    <option>Kenya</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+        </div>
+
+        <button class="primary-btn" id="authSubmit">
+            Login
+        </button>
+
+    </form>
+
+    <div class="divider">
+        <span></span>
+        OR
+        <span></span>
+    </div>
+
+    <button class="google-btn" id="googleBtn">
+        <b style="color:#4285F4">G</b>
+        &nbsp; Continue with Google
+    </button>
+
+    <div id="authMessage" class="auth-message"></div>
+
+</div>
 </section>
 
-
-<!-- =======================================================
-     APP
-======================================================= -->
+<!-- ================= APP ================= -->
 
 <div id="app" class="hidden">
 
+<header class="topbar">
 
-<!-- TOP DASHBOARD -->
+    <div class="top-left">
+        <button id="menuButton" class="menu-button">
+    ☰
+</button>
 
-<header class="topDashboard">
-
-  <div class="brand">
-    SYNK
-  </div>
-
-  <div class="topProfile">
-
-    <div
-      id="topName"
-      class="topName">
-      User
+        <div class="small-logo">SYNK</div>
     </div>
 
-    <button
-      class="profileAvatar"
-      onclick="openProfile()"
-      id="topAvatar">
-      U
-    </button>
-
-  </div>
+    <div class="user-top" onclick="openMyProfile()">
+        <span id="topUsername">User</span>
+        <img id="topAvatar" class="avatar"
+             src=""
+             alt="">
+    </div>
 
 </header>
 
 
-<!-- MAIN -->
+<!-- ================= CHAT PAGE ================= -->
 
-<main class="main">
+<section id="chatPage" class="page active">
 
-<!-- =====================================================
-     CHAT
-===================================================== -->
+    <h2 class="page-title">Chats</h2>
 
-<section
-  id="chatPage"
-  class="page active">
+    <div class="search-box">
+        <input id="userSearch"
+               placeholder="Search SYNK username...">
 
-  <h1 class="pageTitle">
-    Chats
-  </h1>
-
-  <p class="pageSubtitle">
-    Your SYNK conversations
-  </p>
-
-  <div class="search">
-
-    🔎
-
-    <input
-      id="contactSearch"
-      placeholder="Search contacts..."
-      oninput="renderContacts()">
-
-  </div>
-
-  <div id="contacts"></div>
-
-  <div
-    id="chatEmpty"
-    class="empty">
-
-    <div>
-
-      <div class="emptyIcon">
-        💬
-      </div>
-
-      <h3>No chats yet</h3>
-
-      <p>
-        Use the + button to invite people to SYNK.
-      </p>
-
+        <button class="icon-btn"
+                onclick="searchUsers()">
+            🔎
+        </button>
     </div>
 
-  </div>
+    <div id="searchResults"></div>
+
+    <div id="chatList"></div>
 
 </section>
 
 
-<!-- =====================================================
-     REQUESTS
-===================================================== -->
+<!-- ================= REQUEST PAGE ================= -->
 
-<section
-  id="requestPage"
-  class="page">
+<section id="requestPage" class="page">
 
-  <h1 class="pageTitle">
-    SYNK Requests
-  </h1>
+    <h2 class="page-title">SYNK Requests</h2>
 
-  <p class="pageSubtitle">
-    Manage your connection requests.
-  </p>
-
-  <div id="requests"></div>
+    <div id="requestList">
+        <div class="empty">
+            No SYNK requests yet.
+        </div>
+    </div>
 
 </section>
 
 
-<!-- =====================================================
-     REELS
-===================================================== -->
+<!-- ================= REELS ================= -->
 
-<section
-  id="reelsPage"
-  class="page">
+<section id="reelsPage" class="page">
 
-  <h1 class="pageTitle">
-    Reels
-  </h1>
+    <h2 class="page-title">Reels</h2>
 
-  <p class="pageSubtitle">
-    Share your moments with SYNK.
-  </p>
-
-
-  <div class="composer">
-
-    <textarea
-      id="reelText"
-      placeholder="What's happening?"></textarea>
-
-
-    <div class="mediaRow">
-
-      <button
-        class="mediaButton"
-        onclick="chooseImage()">
-        🖼️ Add Picture
-      </button>
-
-      <button
-        class="mediaButton"
-        onclick="chooseVideo()">
-        🎥 Add Video
-      </button>
-
+    <div id="reelsList">
+        <div class="empty">
+            No posts yet.
+        </div>
     </div>
-    
-
-    <input
-      id="imageInput"
-      type="file"
-      accept="image/*"
-      class="hidden"
-      onchange="handleImage(this)">
-
-    <input
-      id="videoInput"
-      type="file"
-      accept="video/*"
-      class="hidden"
-      onchange="handleVideo(this)">
-
-    <!-- Place this right below your Reels file input / upload button -->
-<div id="reelUploadStatus" style="display: none; margin-top: 10px;">
-  <progress id="reelProgressBar" value="0" max="100" style="width: 100%; height: 20px;"></progress>
-  <p id="reelProgressText" style="text-align: center; color: #fff; font-size: 14px; margin-top: 5px;">0%</p>
-</div>
-
-    <button
-      class="mainButton"
-      onclick="createReel()">
-      + Post to SYNK
-    </button>
-    
-  </div>
-
-
-  <div id="reels"></div>
 
 </section>
 
 
-<!-- =====================================================
-     NEWS
-===================================================== -->
+<!-- ================= NEWS ================= -->
 
-<section
-  id="newsPage"
-  class="page">
+<section id="newsPage" class="page">
 
-  <h1 class="pageTitle">
-    SYNK News
-  </h1>
+    <h2 class="page-title">SYNK News</h2>
 
-  <p class="pageSubtitle">
-    Official SYNK company updates.
-  </p>
+    <div id="newsList">
 
+        <div class="news-card">
+            <h3>🔥 Welcome to SYNK</h3>
+            <p>
+                Welcome to SYNK — a social platform built to
+                connect people, share moments and communicate.
+            </p>
+        </div>
 
-  <div class="news">
+        <div class="news-card">
+            <h3>🚀 Coming Soon</h3>
+            <p>
+                More SYNK features, communities, improved
+                AI capabilities and more updates are coming.
+            </p>
+        </div>
 
-    <div class="newsLabel">
-      SYNK OFFICIAL
     </div>
-
-    <h3>
-      Welcome to SYNK
-    </h3>
-
-    <p>
-      Welcome to SYNK — a new social communication platform
-      built around conversations, connections and sharing.
-    </p>
-
-  </div>
-
-
-  <div class="news">
-
-    <div class="newsLabel">
-      DEVELOPMENT UPDATE
-    </div>
-
-    <h3>
-      SYNK is growing
-    </h3>
-
-    <p>
-      The next development stage includes real-time messaging,
-      cloud accounts, notifications, media sharing and
-      improved social features.
-    </p>
-
-  </div>
-
-
-  <div class="news">
-
-    <div class="newsLabel">
-      COMING SOON
-    </div>
-
-    <h3>
-      SYNK Calls
-    </h3>
-
-    <p>
-      Voice and video calling are planned for a future release.
-    </p>
-
-  </div>
-
-
-  <div class="news">
-
-    <div class="newsLabel">
-      COMING SOON
-    </div>
-
-    <h3>
-      SYNK Communities
-    </h3>
-
-    <p>
-      Create communities, discover people with similar interests
-      and build your own SYNK network.
-    </p>
-
-  </div>
 
 </section>
 
-</main>
+
+<!-- ================= PROFILE ================= -->
+
+<section id="profilePage" class="page">
+
+    <h2 class="page-title">My Profile</h2>
+
+    <div class="profile-card">
+
+        <div class="profile-center">
+
+            <img id="profileAvatar"
+                 class="profile-big"
+                 src="">
+
+            <br><br>
+
+            <input type="file"
+                   id="profileImageInput"
+                   accept="image/*">
+
+        </div>
+
+        <div class="field profile-item">
+            <label>Name</label>
+            <input id="profileName">
+        </div>
+
+        <div class="field profile-item">
+            <label>Country</label>
+
+            <select id="profileCountry">
+
+                <option>Nigeria</option>
+                <option>Ghana</option>
+                <option>United Kingdom</option>
+                <option>United States</option>
+                <option>Canada</option>
+                <option>South Africa</option>
+                <option>Kenya</option>
+                <option>Other</option>
+
+            </select>
+        </div>
+
+        <div class="field profile-item">
+
+            <label>Age</label>
+
+            <input id="profileAge"
+                   type="number"
+                   min="1"
+                   max="120">
+
+        </div>
+
+        <div class="field profile-item">
+
+            <label>Description</label>
+
+            <textarea id="profileDescription"
+                      rows="3"></textarea>
+
+        </div>
 
 
-<!-- FLOATING ADD -->
+        <div class="profile-item">
 
-<button
-  class="addButton"
-  onclick="openInvite()">
-  +
+            <label>Hobbies</label>
+
+            <div id="hobbies"
+                 class="hobbies"></div>
+
+        </div>
+
+        <div class="profile-buttons">
+
+            <button class="primary-btn"
+                    onclick="saveProfile()">
+                Save Profile
+            </button>
+
+            <button class="secondary-btn"
+                    onclick="openSettings()">
+                ⚙ Settings
+            </button>
+
+            <button class="secondary-btn"
+                    onclick="openAI()">
+                🤖 Personal AI
+            </button>
+
+            <button class="secondary-btn"
+                    onclick="openAbout()">
+                ℹ About SYNK
+            </button>
+
+            <button class="secondary-btn"
+                    onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FLOATING PLUS ================= -->
+
+<button class="floating-plus"
+        onclick="openCreateMenu()">
+    +
 </button>
 
 
-<!-- BOTTOM DASHBOARD -->
+<!-- ================= BOTTOM NAV ================= -->
 
-<nav class="bottomDashboard">
+<nav class="bottom-nav">
 
-<div class="navInner">
+    <button class="nav-btn active"
+            onclick="showPage('chatPage')">
+        <span>💬</span>
+        Chat
+    </button>
 
-  <button
-    class="navButton active"
-    onclick="navigate('chatPage',this)">
+    <button class="nav-btn"
+            onclick="showPage('requestPage')">
+        <span>👥</span>
+        SYNK Request
+    </button>
 
-    <span class="navIcon">💬</span>
-    Chat
+    <button class="nav-btn"
+            onclick="showPage('reelsPage')">
+        <span>🎬</span>
+        Reels
+    </button>
 
-  </button>
-
-
-  <button
-    class="navButton"
-    onclick="navigate('requestPage',this)">
-
-    <span class="navIcon">👥</span>
-    SYNK Request
-
-  </button>
-
-
-  <button
-    class="navButton"
-    onclick="navigate('reelsPage',this)">
-
-    <span class="navIcon">▶</span>
-    Reels
-
-  </button>
-
-
-  <button
-    class="navButton"
-    onclick="navigate('newsPage',this)">
-
-    <span class="navIcon">📰</span>
-    SYNK News
-
-  </button>
-
-</div>
+    <button class="nav-btn"
+            onclick="showPage('newsPage')">
+        <span>📰</span>
+        SYNK News
+    </button>
 
 </nav>
 
 </div>
 
 
-<!-- =======================================================
-     INVITE MODAL
-======================================================= -->
+<!-- ================= CHAT ROOM ================= -->
 
-<div
-  id="inviteModal"
-  class="modal">
+<div id="chatRoom">
 
-<div class="modalCard">
+    <div class="chat-header">
 
-  <div class="modalHeader">
+        <button class="back"
+                onclick="closeChat()">
+            ←
+        </button>
 
-    <h2>
-      Add someone to SYNK
-    </h2>
+        <img id="chatAvatar"
+             class="avatar">
 
-    <button
-      class="close"
-      onclick="closeModal('inviteModal')">
-      ×
-    </button>
+        <div class="chat-header-info">
 
-  </div>
+            <strong id="chatName">
+                User
+            </strong>
 
+            <small>
+                SYNK
+            </small>
 
-  <div class="formGroup">
+        </div>
 
-    <label>
-      Phone Number
-    </label>
+        <button class="icon-btn"
+                onclick="viewChatProfile()">
+            👤
+        </button>
 
-    <input
-      id="invitePhone"
-      type="tel"
-      placeholder="+2348012345678">
-
-  </div>
+    </div>
 
 
-  <div class="inviteGrid">
-
-    <button
-      class="inviteOption"
-      onclick="whatsappInvite()">
-
-      <div>🟢</div>
-      WhatsApp
-
-    </button>
+    <div id="chatMessages"
+         class="chat-messages"></div>
 
 
-    <button
-      class="inviteOption"
-      onclick="smsInvite()">
+    <div class="chat-input">
 
-      <div>💬</div>
-      SMS
+        <input id="messageInput"
+               placeholder="Type a message...">
 
-    </button>
+        <input type="file"
+               id="chatImageInput"
+               accept="image/*"
+               class="hidden">
 
+        <button onclick="document.getElementById('chatImageInput').click()">
+            📎
+        </button>
 
-    <button
-      class="inviteOption"
-      onclick="gmailInvite()">
+        <button onclick="sendMessage()">
+            ➤
+        </button>
 
-      <div>✉️</div>
-      Gmail
-
-    </button>
-
-  </div>
-
-  <p
-    style="color:#666;font-size:12px;margin-top:15px;">
-    They can create their own SYNK account after receiving
-    your invitation.
-  </p>
-
-</div>
+    </div>
 
 </div>
 
 
-<!-- =======================================================
-     PROFILE
-======================================================= -->
+<!-- ================= MODAL ================= -->
 
-<div
-  id="profileModal"
-  class="modal">
+<div id="modal"
+     class="modal">
 
-<div class="modalCard">
+    <div class="modal-box">
 
-  <div class="modalHeader">
+        <div class="modal-header">
 
-    <h2>
-      My SYNK Profile
-    </h2>
+            <h2 id="modalTitle">
+                SYNK
+            </h2>
 
-    <button class="close" onclick="closeModal('profilemodal')">
-      ×
-      </button>
+            <button class="close"
+                    onclick="closeModal()">
+                ×
+            </button>
 
-  </div>
+        </div>
 
-
-  <div class="profileHeader">
-
-    <div
-      id="largeAvatar"
-      class="largeAvatar">
-      U
-    </div>
-
-
-    <h2 id="profileName">
-      User
-    </h2>
-
-    <p id="profileCountry">
-      Country
-    </p>
-
-
-    <div class="profileButtons">
-
-      <button
-        class="secondaryButton"
-        onclick="changeProfileImage()">
-        📷 Add Profile Image
-      </button>
-
-      <button
-        class="secondaryButton"
-        onclick="editName()">
-        ✏️ Edit Name
-      </button>
+        <div id="modalContent"></div>
 
     </div>
-
-  </div>
-
-
-  <input
-    id="profileImageInput"
-    type="file"
-    accept="image/*"
-    class="hidden"
-    onchange="saveProfileImage(this)">
-
-
-  <div class="profileSection">
-
-    <h3>
-      Personal Information
-    </h3>
-
-
-    <div class="infoBox">
-
-      <small>
-        Country
-      </small>
-
-      <p id="countryInfo">
-        —
-      </p>
-
-    </div>
-
-
-    <div class="infoBox">
-
-      <small>
-        Age
-      </small>
-
-      <p id="ageInfo">
-        Not set
-      </p>
-
-    </div>
-
-
-    <div class="infoBox">
-
-      <small>
-        Description
-      </small>
-
-      <p id="descriptionInfo">
-        No description yet.
-      </p>
-
-    </div>
-
-  </div>
-
-
-  <div class="profileSection">
-
-    <h3>
-      Hobbies
-    </h3>
-
-    <div
-      id="hobbies"
-      class="hobbyGrid">
-    </div>
-
-  </div>
-
-
-  <div class="profileSection">
-
-    <button
-      class="secondaryButton"
-      style="width:100%;margin-bottom:8px;"
-      onclick="openModal('settingsModal')">
-
-      ⚙️ Settings
-
-    </button>
-
-
-    <button
-      class="secondaryButton"
-      style="width:100%;margin-bottom:8px;"
-      onclick="openAI()">
-
-      🤖 Personal AI
-
-    </button>
-
-
-    <button
-      class="secondaryButton"
-      style="width:100%;"
-      onclick="openAbout()">
-
-      ⓘ About SYNK
-
-    </button>
-
-  </div>
-
-</div>
 
 </div>
 
 
-<!-- =======================================================
-     EDIT PROFILE
-======================================================= -->
+<!-- ================= FIREBASE ================= -->
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup,
+    onAuthStateChanged,
+    signOut,
+    deleteUser
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+    getFirestore,
+    collection,
+    doc,
+    setDoc,
+    getDoc,
+    getDocs,
+    addDoc,
+    updateDoc,
+    deleteDoc,
+    query,
+    where,
+    orderBy,
+    onSnapshot,
+    serverTimestamp,
+    arrayUnion,
+    arrayRemove,
+    runTransaction
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+    getStorage,
+    ref,
+    uploadBytes,
+    getDownloadURL,
+    deleteObject
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+/* =====================================================
+   FIREBASE CONFIG
+   =====================================================
+
+   REPLACE THIS WITH THE CONFIG FROM YOUR CURRENT SYNK FILE.
+*/
 
-<div
-  id="editProfileModal"
-  class="modal">
-
-<div class="modalCard">
-
-  <div class="modalHeader">
-
-    <h2>
-      Edit Profile
-    </h2>
-
-    <button
-      class="close"
-      onclick="closeModal('editProfileModal')">
-      ×
-    </button>
-
-  </div>
-
-
-  <div class="formGroup">
-
-    <label>
-      Age
-    </label>
-
-    <input
-      id="editAge"
-      type="number"
-      min="1"
-      max="120"
-      placeholder="Your age">
-
-  </div>
-
-
-  <div class="formGroup">
-
-    <label>
-      Description
-    </label>
-
-    <textarea
-      id="editDescription"
-      rows="4"
-      placeholder="Tell people something about yourself...">
-    </textarea>
-
-  </div>
-
-
-  <div class="formGroup">
-
-    <label>
-      Hobbies — choose multiple
-    </label>
-
-    <div
-      id="editHobbies"
-      class="hobbyGrid">
-    </div>
-
-  </div>
-
-
-  <button
-    class="mainButton"
-    onclick="saveProfileDetails()">
-
-    Save Profile
-
-  </button>
-
-</div>
-
-</div>
-
-
-<!-- =======================================================
-     SETTINGS
-======================================================= -->
-
-<div
-  id="settingsModal"
-  class="modal">
-
-<div class="modalCard">
-
-  <div class="modalHeader">
-
-    <h2>
-      Settings
-    </h2>
-
-    <button
-      class="close"
-      onclick="closeModal('settingsModal')">
-      ×
-    </button>
-
-  </div>
-
-
-  <!-- APPEARANCE -->
-
-  <div class="settingGroup">
-
-    <div class="settingGroupTitle">
-      Appearance
-    </div>
-
-
-    <div class="setting">
-
-      <div class="settingInfo">
-
-        <strong>
-          Dark Mode
-        </strong>
-
-        <small>
-          Default SYNK neon dark appearance.
-        </small>
-
-      </div>
-
-      <button
-        id="darkSwitch"
-        class="switch on"
-        onclick="toggleDarkMode()">
-      </button>
-
-    </div>
-
-
-    <div class="setting">
-
-      <div class="settingInfo">
-
-        <strong>
-          Neon Effects
-        </strong>
-
-        <small>
-          Enable SYNK glow effects.
-        </small>
-
-      </div>
-
-      <button
-        id="neonSwitch"
-        class="switch on"
-        onclick="toggleSetting('neon')">
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <!-- NOTIFICATIONS -->
-
-  <div class="settingGroup">
-
-    <div class="settingGroupTitle">
-      Notifications
-    </div>
-
-
-    <div class="setting">
-
-      <div class="settingInfo">
-
-        <strong>
-          Notifications
-        </strong>
-
-        <small>
-          SYNK notifications.
-        </small>
-
-      </div>
-
-      <button
-        id="notificationSwitch"
-        class="switch on"
-        onclick="toggleSetting('notifications')">
-      </button>
-
-    </div>
-
-
-    <div class="setting">
-
-      <div class="settingInfo">
-
-        <strong>
-          Message Sounds
-        </strong>
-
-        <small>
-          Play sounds for new messages.
-        </small>
-
-      </div>
-
-      <button
-        id="soundSwitch"
-        class="switch on"
-        onclick="toggleSetting('sounds')">
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <!-- PRIVACY -->
-
-  <div class="settingGroup">
-
-    <div class="settingGroupTitle">
-      Privacy
-    </div>
-
-
-    <div class="setting">
-
-      <div class="settingInfo">
-
-        <strong>
-          Profile Visibility
-        </strong>
-
-        <small>
-          Choose who can see your profile.
-        </small>
-
-      </div>
-
-      <select
-        id="visibilitySelect"
-        onchange="saveSettingSelect('visibility',this.value)"
-        style="background:#222;color:#fff;border:1px solid var(--line);padding:8px;border-radius:9px;">
-
-        <option value="everyone">
-          Everyone
-        </option>
-
-        <option value="contacts">
-          Contacts
-        </option>
-
-        <option value="private">
-          Private
-        </option>
-
-      </select>
-
-    </div>
-
-
-    <div class="setting">
-
-      <div class="settingInfo">
-
-        <strong>
-          Read Receipts
-        </strong>
-
-        <small>
-          Show when messages have been read.
-        </small>
-
-      </div>
-
-      <button
-        id="readSwitch"
-        class="switch on"
-        onclick="toggleSetting('readReceipts')">
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <!-- CHAT -->
-
-  <div class="settingGroup">
-
-    <div class="settingGroupTitle">
-      Chat
-    </div>
-
-
-    <div class="setting">
-
-      <div class="settingInfo">
-
-        <strong>
-          Enter to Send
-        </strong>
-
-        <small>
-          Press Enter to send messages.
-        </small>
-
-      </div>
-
-      <button
-        id="enterSwitch"
-        class="switch on"
-        onclick="toggleSetting('enterSend')">
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <button
-    class="secondaryButton"
-    style="width:100%;color:#ff5050;margin-bottom:8px;"
-    onclick="clearPosts()">
-
-    Delete My SYNK Posts
-
-  </button>
-
-
-  <button
-    class="secondaryButton"
-    style="width:100%;color:#ff5050;"
-    onclick="logout()">
-
-    Logout
-
-  </button>
-
-</div>
-
-</div>
-
-
-<!-- =======================================================
-     AI
-======================================================= -->
-
-<div
-  id="aiModal"
-  class="modal">
-
-<div
-  class="modalCard"
-  style="height:92vh;display:flex;flex-direction:column;">
-
-  <div class="modalHeader">
-
-    <h2>
-      🤖 Personal AI
-    </h2>
-
-    <button
-      class="close"
-      onclick="closeModal('aiModal')">
-      ×
-    </button>
-
-  </div>
-
-
-  <div class="aiWindow">
-
-    <div
-      id="aiMessages"
-      class="aiMessages">
-
-      <div class="aiBubble assistant">
-
-        Hi! I'm your SYNK Personal AI.
-        Ask me anything.
-
-        <br><br>
-
-        <span style="color:#666;font-size:12px;">
-          The frontend is ready for a ChatGPT or
-          DeepSeek API/backend connection.
-        </span>
-
-      </div>
-
-    </div>
-
-
-    <div class="aiInputRow">
-
-      <input
-        id="aiInput"
-        placeholder="Ask Personal AI..."
-        onkeydown="aiKeyDown(event)">
-
-      <button
-        class="aiSend"
-        onclick="sendAI()">
-        ➤
-      </button>
-
-    </div>
-
-
-    <div class="aiProvider">
-
-      <button
-        id="chatGPTProvider"
-        class="active"
-        onclick="selectAI('ChatGPT',this)">
-        ChatGPT
-      </button>
-
-      <button
-        onclick="selectAI('DeepSeek',this)">
-        DeepSeek
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-</div>
-
-
-<!-- =======================================================
-     ABOUT
-======================================================= -->
-
-<div
-  id="aboutModal"
-  class="modal">
-
-<div class="modalCard">
-
-  <div class="modalHeader">
-
-    <h2>
-      About SYNK
-    </h2>
-
-    <button
-      class="close"
-      onclick="closeModal('aboutModal')">
-      ×
-    </button>
-
-  </div>
-
-
-  <div class="aboutHero">
-
-    <div class="aboutLogo">
-      SYNK
-    </div>
-
-    <p>
-      Connect. Share. Belong.
-    </p>
-
-  </div>
-
-
-  <div class="feature">
-
-    <h3>
-      💬 Messaging
-    </h3>
-
-    <p>
-      Connect and communicate with your SYNK contacts.
-    </p>
-
-  </div>
-
-
-  <div class="feature">
-
-    <h3>
-      👥 SYNK Network
-    </h3>
-
-    <p>
-      Find people and build your personal SYNK network.
-    </p>
-
-  </div>
-
-
-  <div class="feature">
-
-    <h3>
-      🎬 SYNK Reels
-    </h3>
-
-    <p>
-      Post text, pictures and videos. Like, comment and
-      share posts to WhatsApp.
-    </p>
-
-  </div>
-
-
-  <div class="feature">
-
-    <h3>
-      📰 SYNK News
-    </h3>
-
-    <p>
-      Official updates and announcements from the SYNK company.
-    </p>
-
-  </div>
-
-
-  <div class="feature">
-
-    <h3>
-      🤖 Personal AI
-    </h3>
-
-    <p>
-      A dedicated AI assistant interface designed for
-      ChatGPT and DeepSeek integration.
-    </p>
-
-  </div>
-
-
-  <div class="feature">
-
-    <h3>
-      🎨 Custom Profiles
-    </h3>
-
-    <p>
-      Add a profile image, country, age, description and
-      multiple hobbies.
-    </p>
-
-  </div>
-
-
-  <div class="feature">
-
-    <h3>
-      🌙 Custom Appearance
-    </h3>
-
-    <p>
-      Switch between the signature SYNK neon dark appearance
-      and a clean light mode.
-    </p>
-
-  </div>
-
-
-  <h3 style="margin:22px 0 10px;">
-    Coming Soon
-  </h3>
-
-
-  <div class="feature">
-
-    <p>
-      Real-time messaging • Online status • Push notifications •
-      Voice calls • Video calls • Communities • Stories •
-      Cloud synchronization • Advanced Reels • Media sharing
-    </p>
-
-  </div>
-
-
-  <div class="creator">
-
-    <h3>
-      Created by Alex Artie
-    </h3>
-
-    <p
-      style="color:#777;margin-top:7px;line-height:1.5;">
-
-      SYNK is an independent social communication project
-      created by Alex Artie.
-
-    </p>
-
-  </div>
-
-</div>
-
-</div>
-
-
-<!-- =======================================================
-     CHAT ROOM
-======================================================= -->
-
-<div
-  id="chatRoom"
-  class="chatRoom">
-
-<header class="chatHeader">
-
-  <button
-    class="back"
-    onclick="closeChat()">
-    ‹
-  </button>
-
-
-  <div
-    id="chatAvatar"
-    class="profileAvatar">
-    U
-  </div>
-
-
-  <div>
-
-    <strong id="chatName">
-      Contact
-    </strong>
-
-    <div
-      style="font-size:11px;color:#666;">
-      SYNK contact
-    </div>
-
-  </div>
-
-</header>
-
-
-<div
-  id="chatMessages"
-  class="chatMessages">
-</div>
-
-
-<div class="chatComposer">
-
-  <input
-    id="chatInput"
-    placeholder="Write a message..."
-    onkeydown="chatKeyDown(event)">
-
-  <button
-    class="send"
-    onclick="sendMessage()">
-    ➤
-  </button>
-
-</div>
-
-</div>
-
-
-<script>
-
-/* =========================================================
-   SYNK JAVASCRIPT
-========================================================= */
-/* =========================================================
-   FIREBASE INITIALIZATION
-========================================================= */
 const firebaseConfig = {
-  apiKey: "AIzaSyASv7wf_kykbEIMHhcvAqF3CxzVrzyIrmo",
-  authDomain: "synk-chat-16f04.firebaseapp.com",
-  databaseURL: "https://synk-chat-16f04-default-rtdb.firebaseio.com",
-  projectId: "synk-chat-16f04",
-  storageBucket: "synk-chat-16f04.firebasestorage.app",
-  messagingSenderId: "475877937569",
-  appId: "1:475877937569:web:4b63a19be59d3967f43be0",
-  measurementId: "G-V45CT7MWT1"
+
+    apiKey: "AIzaSyASv7wf_kykbEIMHhcvAqF3CxzVrzyIrmo",
+
+    authDomain:
+        "synk-chat-16f04.firebaseapp.com",
+
+    projectId:
+        "synk-chat-16f04",
+
+    storageBucket:
+        "synk-chat-16f04.firebasestorage.app",
+
+    messagingSenderId:
+        "475877937569",
+
+    appId:
+        "1:475877937569:web:4b63a19be59d3967f43be0"
+
 };
 
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-const storage = firebase.storage();
+/* =====================================================
+   FIREBASE INITIALIZATION
+===================================================== */
 
-let currentUserData = null;
+const app = initializeApp(firebaseConfig);
 
-/* =========================================================
-   AUTH TAB SWITCHER
-========================================================= */
-function switchAuth(type) {
-  const signup = document.getElementById("signupForm");
-  const login = document.getElementById("loginForm");
-  const signupTab = document.getElementById("signupTab");
-  const loginTab = document.getElementById("loginTab");
+const auth = getAuth(app);
 
-  if (type === "signup") {
-    signup.classList.remove("hidden");
-    login.classList.add("hidden");
-    signupTab.classList.add("active");
-    loginTab.classList.remove("active");
-  } else {
-    signup.classList.add("hidden");
-    login.classList.remove("hidden");
-    signupTab.classList.remove("active");
-    loginTab.classList.add("active");
-  }
-}
+const db = getFirestore(app);
 
-/* =========================================================
-   SIGN UP LOGIC
-========================================================= */
-document.getElementById("signupForm").addEventListener("submit", function (e) {
-  e.preventDefault();
+const storage = getStorage(app);
 
-  const name = document.getElementById("signupName").value.trim();
-  const country = document.getElementById("signupCountry").value;
-  const phone = document.getElementById("signupPhone").value.trim();
-  const password = document.getElementById("signupPassword").value;
+const googleProvider =
+    new GoogleAuthProvider();
 
-  if (name.length < 2) { alert("Enter your name."); return; }
-  if (phone.length < 6) { alert("Enter a valid phone number."); return; }
-  if (password.length < 4) { alert("Password must contain at least 4 characters."); return; }
 
-  // Maps phone number to a pseudo-email format required by Firebase Auth
-  const email = phone + "@synkapp.local";
+/* =====================================================
+   GLOBAL VARIABLES
+===================================================== */
 
-  auth.createUserWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
+let currentUser = null;
 
-      // Save user details into Firestore
-      return db.collection("users").doc(user.uid).set({
-        id: user.uid,
-        name: name,
-        country: country,
-        phone: phone,
-        email: email,
-        age: "",
-        description: "",
-        hobbies: [],
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-    })
-    .then(() => {
-      alert("Account created successfully!\nPlease login.");
-      document.getElementById("loginPhone").value = phone;
-      switchAuth("login");
-    })
-    .catch((error) => {
-      alert("Error: " + error.message);
-    });
-});
+let currentChatUser = null;
 
-/* =========================================================
-   LOGIN LOGIC
-========================================================= */
-document.getElementById("loginForm").addEventListener("submit", function (e) {
-  e.preventDefault();
+let unsubscribeMessages = null;
 
-  const phone = document.getElementById("loginPhone").value.trim();
-  const password = document.getElementById("loginPassword").value;
-  const email = phone + "@synkapp.local";
+let unsubscribeRequests = null;
 
-  auth.signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      fetchUserDataAndLaunch(userCredential.user.uid);
-    })
-    .catch((error) => {
-      alert("Incorrect phone number or password: " + error.message);
-    });
-});
+let unsubscribeChats = null;
 
-/* =========================================================
-   FIRESTORE PROFILE SYNC & APP LAUNCH
-========================================================= */
-function fetchUserDataAndLaunch(uid) {
-  db.collection("users").doc(uid).get().then((doc) => {
-    if (doc.exists) {
-      currentUserData = doc.data();
-      
-      // Hide Auth Screen and Show App
-      document.getElementById("authScreen").classList.add("hidden");
-      document.getElementById("app").classList.remove("hidden");
-      
-      // Call UI update function if present
-      if (typeof updateUserUI === "function") updateUserUI();
-    } else {
-      alert("User profile data not found.");
-    }
-  }).catch((error) => {
-    alert("Error fetching profile: " + error.message);
-  });
-}
+let isSignup = false;
 
-/* Keeps user logged in across page refreshes */
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    fetchUserDataAndLaunch(user.uid);
-  }
-});
+let selectedHobbies = [];
 
-/* =========================================================
-   LOGOUT LOGIC
-========================================================= */
-function logout() {
-  auth.signOut().then(() => {
-    document.getElementById("app").classList.add("hidden");
-    document.getElementById("authScreen").classList.remove("hidden");
-    switchAuth("login");
-  });
-}
 
-const DB = {
-  account:"synk_account_v3",
-  session:"synk_session_v3",
-  contacts:"synk_contacts_v3",
-  posts:"synk_posts_v3",
-  messages:"synk_messages_v3",
-  settings:"synk_settings_v3"
-};
+/* =====================================================
+   HOBBIES
+===================================================== */
 
-let activeContact = null;
-let selectedMedia = null;
-let selectedMediaType = null;
-let selectedAI = "ChatGPT";
+const hobbyOptions = [
 
-const hobbies = [
-  "Gaming",
-  "Reading",
-  "Music",
-  "Sports",
-  "Gym",
-  "Coding",
-  "Football",
-  "Movies",
-  "Anime",
-  "Art",
-  "Photography",
-  "Travel",
-  "Dancing",
-  "Cooking",
-  "Writing"
+    "Gaming",
+    "Reading",
+    "Music",
+    "Sports",
+    "Gym",
+    "Coding",
+    "Travel",
+    "Photography",
+    "Cooking",
+    "Drawing",
+    "Dancing",
+    "Writing",
+    "Movies",
+    "Anime",
+    "Football",
+    "Basketball",
+    "Business",
+    "Tech",
+    "Science",
+    "Fitness"
+
 ];
 
 
-/* =========================================================
-   STORAGE
-========================================================= */
-
-function load(key,fallback){
-
-  try{
-
-    const item = localStorage.getItem(key);
-
-    return item
-      ? JSON.parse(item)
-      : fallback;
-
-  }catch(e){
-
-    return fallback;
-
-  }
-
-}
-
-
-function save(key,value){
-
-  localStorage.setItem(
-    key,
-    JSON.stringify(value)
-  );
-
-}
-
-
-function account(){
-
-  return load(DB.account,null);
-
-}
-
-
-/* =========================================================
-   AUTH
-========================================================= */
-
-function switchAuth(type){
-
-  const signup =
-    document.getElementById("signupForm");
-
-  const login =
-    document.getElementById("loginForm");
-
-  const signupTab =
-    document.getElementById("signupTab");
-
-  const loginTab =
-    document.getElementById("loginTab");
-
-  if(type==="signup"){
-
-    signup.classList.remove("hidden");
-    login.classList.add("hidden");
-
-    signupTab.classList.add("active");
-    loginTab.classList.remove("active");
-
-  }else{
-
-    signup.classList.add("hidden");
-    login.classList.remove("hidden");
-
-    signupTab.classList.remove("active");
-    loginTab.classList.add("active");
-
-  }
-
-}
-
-
-/* =========================================================
-   SIGN UP
-========================================================= */
+/* =====================================================
+   AUTH TABS
+===================================================== */
 
 document
-.getElementById("signupForm")
-.addEventListener("submit",function(e){
+.getElementById("loginTab")
+.addEventListener("click",()=>{
 
-  e.preventDefault();
+    isSignup=false;
 
-  const name =
-    document.getElementById("signupName")
-    .value.trim();
-
-  const country =
-    document.getElementById("signupCountry")
-    .value;
-
-  const phone =
-    document.getElementById("signupPhone")
-    .value.trim();
-
-  const password =
-    document.getElementById("signupPassword")
-    .value;
-
-  if(name.length < 2){
-
-    alert("Enter your name.");
-    return;
-
-  }
-
-  if(phone.length < 6){
-
-    alert("Enter a valid phone number.");
-    return;
-
-  }
-
-  if(password.length < 4){
-
-    alert("Password must contain at least 4 characters.");
-    return;
-
-  }
-
-
-  const user = {
-
-    id:
-      "user_" +
-      Date.now() +
-      "_" +
-      Math.random()
-      .toString(36)
-      .substring(2,8),
-
-    name:name,
-
-    country:country,
-
-    phone:phone,
-
-    password:password,
-
-    age:"",
-
-    description:"",
-
-    hobbies:[],
-
-    profileImage:"",
-
-    created:
-      new Date().toISOString()
-
-  };
-
-
-  save(DB.account,user);
-
-  save(DB.contacts,[]);
-  save(DB.posts,[]);
-  save(DB.messages,{});
-
-
-  save(DB.settings,{
-
-    dark:true,
-    neon:true,
-    notifications:true,
-    sounds:true,
-    readReceipts:true,
-    enterSend:true,
-    visibility:"everyone"
-
-  });
-
-
-  alert(
-    "Account created successfully.\n\nPlease login to continue."
-  );
-
-
-  document.getElementById("loginPhone")
-    .value = phone;
-
-  switchAuth("login");
-
-});
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
-
-document
-.getElementById("loginForm")
-.addEventListener("submit",function(e){
-
-  e.preventDefault();
-
-  const user = account();
-
-  if(!user){
-
-    alert(
-      "No SYNK account exists on this device. Please sign up."
-    );
-
-    switchAuth("signup");
-
-    return;
-
-  }
-
-
-  const phone =
-    document.getElementById("loginPhone")
-    .value.trim();
-
-  const password =
-    document.getElementById("loginPassword")
-    .value;
-
-
-  if(
-    phone === user.phone &&
-    password === user.password
-  ){
-
-    localStorage.setItem(
-      DB.session,
-      "true"
-    );
-
-    launchApp();
-
-  }else{
-
-    alert(
-      "Incorrect phone number or password."
-    );
-
-  }
-
-});
-
-
-/* =========================================================
-   APP START
-========================================================= */
-
-function launchApp(){
-
-  document
-    .getElementById("authScreen")
-    .classList.add("hidden");
-
-  document
-    .getElementById("app")
-    .classList.remove("hidden");
-
-
-  updateUserUI();
-
-  loadSettings();
-
-  renderContacts();
-
-  renderPosts();
-
-  renderRequests();
-
-}
-
-
-function updateUserUI(){
-
-  const user = account();
-
-  if(!user) return;
-
-
-  document.getElementById("topName")
-    .textContent = user.name;
-
-  document.getElementById("profileName")
-    .textContent = user.name;
-
-  document.getElementById("profileCountry")
-    .textContent = countryName(user.country);
-
-  document.getElementById("countryInfo")
-    .textContent = countryName(user.country);
-
-  document.getElementById("ageInfo")
-    .textContent =
-      user.age
-      ? user.age
-      : "Not set";
-
-  document.getElementById("descriptionInfo")
-    .textContent =
-      user.description ||
-      "No description yet.";
-
-  setAvatar(
-    document.getElementById("topAvatar"),
-    user
-  );
-
-  setAvatar(
-    document.getElementById("largeAvatar"),
-    user
-  );
-
-  renderHobbies();
-
-}
-
-
-/* =========================================================
-   AVATAR
-========================================================= */
-
-function setAvatar(element,user){
-
-  if(user.profileImage){
-
-    element.innerHTML =
-      `<img src="${user.profileImage}" alt="Profile">`;
-
-  }else{
-
-    element.textContent =
-      user.name
-      .charAt(0)
-      .toUpperCase();
-
-  }
-
-}
-
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-function navigate(page,button){
-
-  document
-    .querySelectorAll(".page")
-    .forEach(p =>
-      p.classList.remove("active")
-    );
-
-
-  document
-    .getElementById(page)
+    document
+    .getElementById("loginTab")
     .classList.add("active");
 
-
-  document
-    .querySelectorAll(".navButton")
-    .forEach(b =>
-      b.classList.remove("active")
-    );
-
-
-  button.classList.add("active");
-
-}
-
-
-/* =========================================================
-   PROFILE
-========================================================= */
-
-function openProfile(){
-
-  updateUserUI();
-
-  document
-    .getElementById("profileModal")
-    .classList.add("open");
-
-}
-
-
-function changeProfileImage(){
-
-  document
-    .getElementById("profileImageInput")
-    .click();
-
-}
-
-
-function saveProfileImage(input){
-
-  const file = input.files[0];
-
-  if(!file) return;
-
-
-  if(!file.type.startsWith("image/")){
-
-    alert("Please select an image.");
-
-    return;
-
-  }
-
-
-  const reader =
-    new FileReader();
-
-
-  reader.onload = function(){
-
-    const user = account();
-
-    user.profileImage =
-      reader.result;
-
-    save(DB.account,user);
-
-    updateUserUI();
-
-  };
-
-
-  reader.readAsDataURL(file);
-
-}
-
-
-function editName(){
-
-  const user = account();
-
-  const newName =
-    prompt(
-      "Enter your new name:",
-      user.name
-    );
-
-
-  if(
-    !newName ||
-    !newName.trim()
-  ) return;
-
-
-  user.name =
-    newName.trim();
-
-  save(DB.account,user);
-
-  updateUserUI();
-
-}
-
-
-function renderHobbies(){
-
-  const user = account();
-
-  const container =
-    document.getElementById("hobbies");
-
-  container.innerHTML = "";
-
-
-  if(
-    !user.hobbies ||
-    user.hobbies.length === 0
-  ){
-
-    container.innerHTML =
-      `<span style="color:#666;">
-        No hobbies selected.
-      </span>`;
-
-    return;
-
-  }
-
-
-  user.hobbies.forEach(h => {
-
-    const span =
-      document.createElement("span");
-
-    span.className =
-      "hobby selected";
-
-    span.textContent = h;
-
-    container.appendChild(span);
-
-  });
-
-}
-
-
-/* =========================================================
-   EDIT PROFILE
-========================================================= */
-
-function openEditProfile(){
-
-  const user = account();
-
-  document.getElementById("editAge")
-    .value = user.age || "";
-
-  document.getElementById("editDescription")
-    .value = user.description || "";
-
-  renderEditHobbies();
-
-  closeModal("profileModal");
-
-  document
-    .getElementById("editProfileModal")
-    .classList.add("open");
-
-}
-
-
-/*
-  Allow the profile section itself to open editing
-  through a small helper.
-*/
-
-document.addEventListener("click",function(e){
-
-  if(
-    e.target.matches("#profileName") ||
-    e.target.matches("#descriptionInfo")
-  ){
-    openEditProfile();
-  }
+    document
+    .getElementById("signupTab")
+    .classList.remove("active");
+
+    document
+    .getElementById("signupFields")
+    .classList.add("hidden");
+
+    document
+    .getElementById("authSubmit")
+    .textContent="Login";
 
 });
 
 
-function renderEditHobbies(){
+document
+.getElementById("signupTab")
+.addEventListener("click",()=>{
 
-  const user = account();
+    isSignup=true;
 
-  const container =
-    document.getElementById("editHobbies");
+    document
+    .getElementById("signupTab")
+    .classList.add("active");
 
-  container.innerHTML = "";
+    document
+    .getElementById("loginTab")
+    .classList.remove("active");
+
+    document
+    .getElementById("signupFields")
+    .classList.remove("hidden");
+
+    document
+    .getElementById("authSubmit")
+    .textContent="Create SYNK Account";
+
+});
 
 
-  hobbies.forEach(hobby => {
+/* =====================================================
+   EMAIL AUTH
+===================================================== */
 
-    const button =
-      document.createElement("button");
+document
+.getElementById("authForm")
+.addEventListener("submit",async(e)=>{
 
-    button.className =
-      "hobby";
+    e.preventDefault();
 
-    if(
-      user.hobbies &&
-      user.hobbies.includes(hobby)
-    ){
+    const email =
+        document.getElementById("email").value.trim();
 
-      button.classList.add("selected");
+    const password =
+        document.getElementById("password").value;
+
+    const message =
+        document.getElementById("authMessage");
+
+
+    try{
+
+        if(isSignup){
+
+            const name =
+                document
+                .getElementById("signupName")
+                .value
+                .trim();
+
+            const country =
+                document
+                .getElementById("signupCountry")
+                .value;
+
+
+            if(!name || !country){
+
+                message.textContent =
+                    "Enter your name and country.";
+
+                return;
+
+            }
+
+
+            const result =
+                await createUserWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
+
+
+            await setDoc(
+                doc(db,"users",result.user.uid),
+                {
+
+                    uid:result.user.uid,
+
+                    name:name,
+
+                    username:name
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]/g,""),
+
+                    email:email,
+
+                    country:country,
+
+                    age:"",
+
+                    description:"",
+
+                    hobbies:[],
+
+                    photoURL:"",
+
+                    createdAt:serverTimestamp(),
+
+                    online:true
+
+                }
+            );
+
+
+            message.style.color="#45e477";
+
+            message.textContent =
+                "Account created. You are now signed in.";
+
+
+        }else{
+
+            await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+        }
+
+    }catch(error){
+
+        message.textContent =
+            error.message;
 
     }
 
-    button.textContent = hobby;
-
-    button.type = "button";
+});
 
 
-    button.onclick = function(){
+/* =====================================================
+   GOOGLE LOGIN
+===================================================== */
 
-      button.classList.toggle("selected");
+document
+.getElementById("googleBtn")
+.addEventListener("click",async()=>{
+
+    try{
+
+        const result =
+            await signInWithPopup(
+                auth,
+                googleProvider
+            );
+
+        const user =
+            result.user;
+
+        const userRef =
+            doc(db,"users",user.uid);
+
+        const existing =
+            await getDoc(userRef);
+
+
+        if(!existing.exists()){
+
+            await setDoc(
+                userRef,
+                {
+
+                    uid:user.uid,
+
+                    name:user.displayName ||
+                        "SYNK User",
+
+                    username:
+                        (user.displayName ||
+                        "synkuser")
+                        .toLowerCase()
+                        .replace(
+                            /[^a-z0-9]/g,
+                            ""
+                        ),
+
+                    email:user.email || "",
+
+                    country:"",
+
+                    age:"",
+
+                    description:"",
+
+                    hobbies:[],
+
+                    photoURL:
+                        user.photoURL || "",
+
+                    createdAt:
+                        serverTimestamp(),
+
+                    online:true
+
+                }
+            );
+
+        }
+
+    }catch(error){
+
+        document
+        .getElementById("authMessage")
+        .textContent=error.message;
+
+    }
+
+});
+
+
+/* =====================================================
+   AUTH STATE
+===================================================== */
+
+onAuthStateChanged(auth,async(user)=>{
+
+    const splash =
+        document.getElementById("splash");
+
+    const authPage =
+        document.getElementById("authPage");
+
+    const appPage =
+        document.getElementById("app");
+
+
+    if(user){
+
+        currentUser=user;
+
+        splash.classList.add("hidden");
+
+        authPage.classList.add("hidden");
+
+        appPage.classList.remove("hidden");
+
+
+        await loadMyProfile();
+
+        loadChats();
+
+        loadRequests();
+
+        loadReels();
+
+    }else{
+
+        currentUser=null;
+
+        splash.classList.add("hidden");
+
+        appPage.classList.add("hidden");
+
+        authPage.classList.remove("hidden");
+
+    }
+
+});
+
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+async function loadMyProfile(){
+
+    if(!currentUser)return;
+
+    const snap =
+        await getDoc(
+            doc(
+                db,
+                "users",
+                currentUser.uid
+            )
+        );
+
+    if(!snap.exists())return;
+
+    const data=snap.data();
+
+
+    document
+    .getElementById("topUsername")
+    .textContent=
+        data.name || "User";
+
+
+    document
+    .getElementById("topAvatar")
+    .src=
+        data.photoURL ||
+        "https://via.placeholder.com/100";
+
+
+    document
+    .getElementById("profileAvatar")
+    .src=
+        data.photoURL ||
+        "https://via.placeholder.com/100";
+
+
+    document
+    .getElementById("profileName")
+    .value=
+        data.name || "";
+
+
+    document
+    .getElementById("profileCountry")
+    .value=
+        data.country || "Nigeria";
+
+
+    document
+    .getElementById("profileAge")
+    .value=
+        data.age || "";
+
+
+    document
+    .getElementById("profileDescription")
+    .value=
+        data.description || "";
+
+
+    selectedHobbies =
+        data.hobbies || [];
+
+    renderHobbies();
+
+}
+
+
+/* =====================================================
+   HOBBY UI
+===================================================== */
+
+function renderHobbies(){
+
+    const container =
+        document.getElementById("hobbies");
+
+    container.innerHTML="";
+
+
+    hobbyOptions.forEach(hobby=>{
+
+        const button =
+            document.createElement("div");
+
+        button.className="hobby";
+
+        if(
+            selectedHobbies.includes(hobby)
+        ){
+
+            button.classList.add("selected");
+
+        }
+
+        button.textContent=hobby;
+
+        button.onclick=()=>{
+
+            if(
+                selectedHobbies.includes(hobby)
+            ){
+
+                selectedHobbies =
+                    selectedHobbies.filter(
+                        h=>h!==hobby
+                    );
+
+            }else{
+
+                selectedHobbies.push(hobby);
+
+            }
+
+            renderHobbies();
+
+        };
+
+
+        container.appendChild(button);
+
+    });
+
+}
+
+
+/* =====================================================
+   SAVE PROFILE
+===================================================== */
+
+window.saveProfile=async function(){
+
+    if(!currentUser)return;
+
+
+    const name =
+        document
+        .getElementById("profileName")
+        .value
+        .trim();
+
+
+    await updateDoc(
+
+        doc(
+            db,
+            "users",
+            currentUser.uid
+        ),
+
+        {
+
+            name:name,
+
+            username:
+                name
+                .toLowerCase()
+                .replace(
+                    /[^a-z0-9]/g,
+                    ""
+                ),
+
+            country:
+                document
+                .getElementById("profileCountry")
+                .value,
+
+            age:
+                document
+                .getElementById("profileAge")
+                .value,
+
+            description:
+                document
+                .getElementById("profileDescription")
+                .value,
+
+            hobbies:selectedHobbies
+
+        }
+
+    );
+
+
+    await loadMyProfile();
+
+    alert("Profile saved.");
+
+};
+
+
+/* =====================================================
+   IMAGE PROFILE
+===================================================== */
+
+document
+.getElementById("profileImageInput")
+.addEventListener("change",(e)=>{
+
+    const file=e.target.files[0];
+
+    if(!file)return;
+
+
+    /*
+       For production, upload this file to Firebase
+       Storage.
+
+       This single-file version previews the image.
+    */
+
+    const reader =
+        new FileReader();
+
+    reader.onload=async()=>{
+
+        document
+        .getElementById("profileAvatar")
+        .src=reader.result;
+
+        document
+        .getElementById("topAvatar")
+        .src=reader.result;
+
+
+        /*
+           Store image data only for small images.
+           For production use Firebase Storage.
+        */
+
+        await updateDoc(
+
+            doc(
+                db,
+                "users",
+                currentUser.uid
+            ),
+
+            {
+                photoURL:reader.result
+            }
+
+        );
+
+    };
+
+    reader.readAsDataURL(file);
+
+});
+
+
+/* =====================================================
+   USER SEARCH
+===================================================== */
+
+window.searchUsers=async function(){
+
+    const input =
+        document
+        .getElementById("userSearch")
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    const container =
+        document
+        .getElementById("searchResults");
+
+    container.innerHTML="";
+
+
+    if(!input)return;
+
+
+    const snap =
+        await getDocs(
+            collection(db,"users")
+        );
+
+
+    snap.forEach(userDoc=>{
+
+        const user=userDoc.data();
+
+        if(
+            user.uid===currentUser.uid
+        )return;
+
+
+        const name =
+            (user.name || "")
+            .toLowerCase();
+
+
+        const username =
+            (user.username || "")
+            .toLowerCase();
+
+
+        if(
+            name.includes(input) ||
+            username.includes(input)
+        ){
+
+            const card =
+                document.createElement("div");
+
+            card.className="user-result";
+
+
+            card.innerHTML=`
+
+                <img class="avatar"
+                     src="${user.photoURL ||
+                     "https://via.placeholder.com/100"}">
+
+                <div class="user-info">
+
+                    <strong>
+                        ${escapeHTML(user.name || "User")}
+                    </strong>
+
+                    <small>
+                        @${escapeHTML(user.username || "")}
+                    </small>
+
+                </div>
+
+                <button class="icon-btn">
+                    +
+                </button>
+            `;
+
+
+            card.querySelector("button")
+            .onclick=(e)=>{
+
+                e.stopPropagation();
+
+                sendRequest(user);
+
+            };
+
+
+            card.onclick=()=>{
+
+                showUserProfile(user);
+
+            };
+
+
+            container.appendChild(card);
+
+        }
+
+    });
+
+};
+
+
+/* =====================================================
+   SEND SYNK REQUEST
+===================================================== */
+
+async function sendRequest(user){
+
+    if(!currentUser)return;
+
+
+    const requestId =
+        currentUser.uid+"_"+user.uid;
+
+
+    await setDoc(
+
+        doc(
+            db,
+            "synkRequests",
+            requestId
+        ),
+
+        {
+
+            id:requestId,
+
+            from:currentUser.uid,
+
+            to:user.uid,
+
+            status:"pending",
+
+            createdAt:
+                serverTimestamp()
+
+        }
+
+    );
+
+
+    alert(
+        "SYNK request sent to "+
+        user.name
+    );
+
+}
+
+
+/* =====================================================
+   REQUESTS
+===================================================== */
+
+function loadRequests(){
+
+    if(unsubscribeRequests)
+        unsubscribeRequests();
+
+
+    const q =
+        query(
+            collection(
+                db,
+                "synkRequests"
+            ),
+            where(
+                "to",
+                "==",
+                currentUser.uid
+            ),
+            where(
+                "status",
+                "==",
+                "pending"
+            )
+        );
+
+
+    unsubscribeRequests =
+        onSnapshot(q,(snap)=>{
+
+            const container =
+                document
+                .getElementById("requestList");
+
+
+            container.innerHTML="";
+
+
+            if(snap.empty){
+
+                container.innerHTML=
+                    `<div class="empty">
+                        No SYNK requests yet.
+                     </div>`;
+
+                return;
+
+            }
+
+
+            snap.forEach(async requestDoc=>{
+
+                const request =
+                    requestDoc.data();
+
+
+                const senderSnap =
+                    await getDoc(
+                        doc(
+                            db,
+                            "users",
+                            request.from
+                        )
+                    );
+
+
+                if(!senderSnap.exists())
+                    return;
+
+
+                const sender =
+                    senderSnap.data();
+
+
+                const card =
+                    document.createElement("div");
+
+                card.className=
+                    "request-card";
+
+
+                card.innerHTML=`
+
+                    <div style="display:flex;
+                                gap:10px;
+                                align-items:center">
+
+                        <img class="avatar"
+                             src="${sender.photoURL ||
+                             "https://via.placeholder.com/100"}">
+
+                        <div>
+
+                            <strong>
+                                ${escapeHTML(sender.name)}
+                            </strong>
+
+                            <small style="display:block;
+                                          color:#777">
+                                @${escapeHTML(sender.username || "")}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="request-actions">
+
+                        <button class="accept">
+                            Accept
+                        </button>
+
+                        <button class="decline">
+                            Decline
+                        </button>
+
+                    </div>
+
+                `;
+
+
+                card
+                .querySelector(".accept")
+                .onclick=()=>acceptRequest(
+                    requestDoc.id,
+                    request.from
+                );
+
+
+                card
+                .querySelector(".decline")
+                .onclick=()=>declineRequest(
+                    requestDoc.id
+                );
+
+
+                container.appendChild(card);
+
+            });
+
+        });
+
+}
+
+
+/* =====================================================
+   ACCEPT REQUEST
+===================================================== */
+
+async function acceptRequest(
+    requestId,
+    otherUid
+){
+
+    await updateDoc(
+
+        doc(
+            db,
+            "synkRequests",
+            requestId
+        ),
+
+        {
+            status:"accepted"
+        }
+
+    );
+
+
+    /*
+       Create chat membership.
+    */
+
+    const chatId =
+        makeChatId(
+            currentUser.uid,
+            otherUid
+        );
+
+
+    await setDoc(
+
+        doc(
+            db,
+            "chats",
+            chatId
+        ),
+
+        {
+
+            members:[
+                currentUser.uid,
+                otherUid
+            ],
+
+            updatedAt:
+                serverTimestamp()
+
+        },
+
+        {merge:true}
+
+    );
+
+
+    alert("SYNK accepted. You can now chat.");
+
+}
+
+
+async function declineRequest(requestId){
+
+    await updateDoc(
+
+        doc(
+            db,
+            "synkRequests",
+            requestId
+        ),
+
+        {
+            status:"declined"
+        }
+
+    );
+
+}
+
+
+/* =====================================================
+   CHAT LIST
+===================================================== */
+
+function loadChats(){
+
+    if(unsubscribeChats)
+        unsubscribeChats();
+
+
+    const q =
+        query(
+            collection(db,"chats"),
+            where(
+                "members",
+                "array-contains",
+                currentUser.uid
+            )
+        );
+
+
+    unsubscribeChats =
+        onSnapshot(q,async snap=>{
+
+            const container =
+                document.getElementById("chatList");
+
+            container.innerHTML="";
+
+
+            if(snap.empty){
+
+                container.innerHTML=
+                    `<div class="empty">
+                        Find another SYNK user
+                        and send a request.
+                     </div>`;
+
+                return;
+
+            }
+
+
+            for(const chatDoc of snap.docs){
+
+                const chat =
+                    chatDoc.data();
+
+
+                const otherUid =
+                    chat.members.find(
+                        id=>id!==currentUser.uid
+                    );
+
+
+                if(!otherUid)continue;
+
+
+                const userSnap =
+                    await getDoc(
+                        doc(
+                            db,
+                            "users",
+                            otherUid
+                        )
+                    );
+
+
+                if(!userSnap.exists())
+                    continue;
+
+
+                const user=userSnap.data();
+
+
+                const card =
+                    document.createElement("div");
+
+                card.className="chat-card";
+
+
+                card.innerHTML=`
+
+                    <img class="avatar"
+                         src="${user.photoURL ||
+                         "https://via.placeholder.com/100"}">
+
+                    <div class="user-info">
+
+                        <strong>
+                            ${escapeHTML(user.name)}
+                        </strong>
+
+                        <small>
+                            Tap to chat
+                        </small>
+
+                    </div>
+
+                `;
+
+
+                card.onclick=()=>{
+
+                    openChat(user);
+
+                };
+
+
+                container.appendChild(card);
+
+            }
+
+        });
+
+}
+
+
+/* =====================================================
+   CHAT
+===================================================== */
+
+window.openChat=function(user){
+
+    currentChatUser=user;
+
+
+    document
+    .getElementById("chatRoom")
+    .style.display="flex";
+
+
+    document
+    .getElementById("chatName")
+    .textContent=user.name;
+
+
+    document
+    .getElementById("chatAvatar")
+    .src=
+        user.photoURL ||
+        "https://via.placeholder.com/100";
+
+
+    loadMessages();
+
+};
+
+
+window.closeChat=function(){
+
+    document
+    .getElementById("chatRoom")
+    .style.display="none";
+
+
+    if(unsubscribeMessages){
+
+        unsubscribeMessages();
+
+        unsubscribeMessages=null;
+
+    }
+
+};
+
+
+function loadMessages(){
+
+    if(unsubscribeMessages)
+        unsubscribeMessages();
+
+
+    const chatId =
+        makeChatId(
+            currentUser.uid,
+            currentChatUser.uid
+        );
+
+
+    const messagesRef =
+        collection(
+            db,
+            "chats",
+            chatId,
+            "messages"
+        );
+
+
+    const q =
+        query(
+            messagesRef,
+            orderBy(
+                "createdAt",
+                "asc"
+            )
+        );
+
+
+    unsubscribeMessages =
+        onSnapshot(q,(snap)=>{
+
+            const container =
+                document
+                .getElementById("chatMessages");
+
+
+            container.innerHTML="";
+
+
+            snap.forEach(messageDoc=>{
+
+                const msg =
+                    messageDoc.data();
+
+
+                const div =
+                    document.createElement("div");
+
+
+                div.className=
+                    "message "+
+                    (
+                        msg.senderId===
+                        currentUser.uid
+                        ?
+                        "mine"
+                        :
+                        "theirs"
+                    );
+
+
+                if(msg.image){
+
+                    div.innerHTML=
+                        `<img src="${msg.image}">`;
+
+                }else{
+
+                    div.textContent=
+                        msg.text || "";
+
+                }
+
+
+                container.appendChild(div);
+
+            });
+
+
+            container.scrollTop =
+                container.scrollHeight;
+
+        });
+
+}
+
+
+/* =====================================================
+   SEND MESSAGE
+===================================================== */
+
+window.sendMessage=async function(){
+
+    const input =
+        document
+        .getElementById("messageInput");
+
+
+    const text =
+        input.value.trim();
+
+
+    if(!text || !currentChatUser)
+        return;
+
+
+    const chatId =
+        makeChatId(
+            currentUser.uid,
+            currentChatUser.uid
+        );
+
+
+    await addDoc(
+
+        collection(
+            db,
+            "chats",
+            chatId,
+            "messages"
+        ),
+
+        {
+
+            senderId:
+                currentUser.uid,
+
+            receiverId:
+                currentChatUser.uid,
+
+            text:text,
+
+            createdAt:
+                serverTimestamp()
+
+        }
+
+    );
+
+
+    await updateDoc(
+
+        doc(
+            db,
+            "chats",
+            chatId
+        ),
+
+        {
+            lastMessage:text,
+            updatedAt:
+                serverTimestamp()
+        }
+
+    );
+
+
+    input.value="";
+
+};
+
+
+/* =====================================================
+   CHAT IMAGE
+===================================================== */
+
+document
+.getElementById("chatImageInput")
+.addEventListener("change",(e)=>{
+
+    const file =
+        e.target.files[0];
+
+    if(!file)return;
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload=async()=>{
+
+        const chatId =
+            makeChatId(
+                currentUser.uid,
+                currentChatUser.uid
+            );
+
+
+        await addDoc(
+
+            collection(
+                db,
+                "chats",
+                chatId,
+                "messages"
+            ),
+
+            {
+
+                senderId:
+                    currentUser.uid,
+
+                receiverId:
+                    currentChatUser.uid,
+
+                image:
+                    reader.result,
+
+                text:"",
+
+                createdAt:
+                    serverTimestamp()
+
+            }
+
+        );
 
     };
 
 
-    container.appendChild(button);
+    reader.readAsDataURL(file);
 
-  });
+});
 
-}
 
+/* =====================================================
+   REELS
+===================================================== */
 
-function saveProfileDetails(){
+function loadReels(){
 
-  const user = account();
+    const q =
+        query(
+            collection(db,"reels"),
+            orderBy(
+                "createdAt",
+                "desc"
+            )
+        );
 
-  user.age =
-    document.getElementById("editAge")
-    .value;
 
-  user.description =
-    document.getElementById("editDescription")
-    .value.trim();
+    onSnapshot(q,async snap=>{
 
+        const container =
+            document.getElementById("reelsList");
 
-  user.hobbies =
-    [...document
-      .querySelectorAll("#editHobbies .hobby.selected")]
-    .map(el => el.textContent);
 
+        container.innerHTML="";
 
-  save(DB.account,user);
 
-  updateUserUI();
+        if(snap.empty){
 
-  closeModal("editProfileModal");
+            container.innerHTML=
+                `<div class="empty">
+                    No reels yet.
+                 </div>`;
 
-}
+            return;
 
-
-/* =========================================================
-   CONTACTS
-========================================================= */
-
-function renderContacts(){
-
-  const contacts =
-    load(DB.contacts,[]);
-
-  const container =
-    document.getElementById("contacts");
-
-  const empty =
-    document.getElementById("chatEmpty");
-
-  const search =
-    document.getElementById("contactSearch")
-    .value
-    .toLowerCase();
-
-
-  container.innerHTML = "";
-
-
-  const filtered =
-    contacts.filter(c =>
-      c.name.toLowerCase()
-      .includes(search) ||
-      c.phone.includes(search)
-    );
-
-
-  if(filtered.length===0){
-
-    empty.style.display = "flex";
-
-    return;
-
-  }
-
-
-  empty.style.display = "none";
-
-
-  filtered.forEach(contact => {
-
-    const div =
-      document.createElement("div");
-
-    div.className = "contact";
-
-
-    const avatar =
-      contact.name
-      .charAt(0)
-      .toUpperCase();
-
-
-    div.innerHTML = `
-
-      <div class="profileAvatar">
-        ${avatar}
-      </div>
-
-      <div class="contactDetails">
-
-        <div class="contactName">
-          ${safe(contact.name)}
-        </div>
-
-        <div class="contactPhone">
-          ${safe(contact.phone)}
-        </div>
-
-      </div>
-
-      <div class="contactButtons">
-
-        <button
-          class="smallButton"
-          onclick="openChat('${contact.id}')">
-          💬
-        </button>
-
-        <button
-          class="smallButton"
-          onclick="deleteContact('${contact.id}')">
-          ×
-        </button>
-
-      </div>
-
-    `;
-
-
-    container.appendChild(div);
-
-  });
-
-}
-
-
-/* =========================================================
-   INVITE
-========================================================= */
-
-function openInvite(){
-
-  document
-    .getElementById("inviteModal")
-    .classList.add("open");
-
-}
-
-
-function whatsappInvite(){
-
-  const phone =
-    document.getElementById("invitePhone")
-    .value.trim();
-
-
-  if(!phone){
-
-    alert("Enter a phone number.");
-    return;
-
-  }
-
-
-  const message =
-    "Join me on SYNK — Connect. Share. Belong          https://cscript09-byte.github.io/SYNK-CHAT/";
-
-
-  window.open(
-    "https://wa.me/" +
-    phone.replace(/\D/g,"") +
-    "?text=" +
-    encodeURIComponent(message),
-    "_blank"
-  );
-
-}
-
-
-function smsInvite(){
-
-  const phone =
-    document.getElementById("invitePhone")
-    .value.trim();
-
-
-  if(!phone){
-
-    alert("Enter a phone number.");
-    return;
-
-  }
-
-
-  const message =
-    "Join me on SYNK — Connect. Share. Belong.";
-
-
-  location.href =
-    "sms:" +
-    phone +
-    "?body=" +
-    encodeURIComponent(message);
-
-}
-
-
-function gmailInvite(){
-
-  const subject =
-    "Join me on SYNK";
-
-  const body =
-    "Join me on SYNK — Connect. Share. Belong.";
-
-
-  location.href =
-    "mailto:?subject=" +
-    encodeURIComponent(subject) +
-    "&body=" +
-    encodeURIComponent(body);
-
-}
-
-
-/* =========================================================
-   DELETE CONTACT
-========================================================= */
-
-function deleteContact(id){
-
-  if(!confirm(
-    "Remove this contact from SYNK?"
-  )) return;
-
-
-  let contacts =
-    load(DB.contacts,[]);
-
-
-  contacts =
-    contacts.filter(
-      c => c.id !== id
-    );
-
-
-  save(DB.contacts,contacts);
-
-  renderContacts();
-
-}
-
-
-/* =========================================================
-   POSTS / REELS
-========================================================= */
-
-function chooseImage(){
-
-  document
-    .getElementById("imageInput")
-    .click();
-
-}
-
-
-function chooseVideo(){
-
-  document
-    .getElementById("videoInput")
-    .click();
-
-}
-
-
-function handleImage(input){
-
-  const file = input.files[0];
-
-  if(!file) return;
-
-
-  if(!file.type.startsWith("image/")){
-
-    alert("Select an image file.");
-    return;
-
-  }
-
-
-  const reader =
-    new FileReader();
-
-
-  reader.onload = function(){
-
-    selectedMedia =
-      reader.result;
-
-    selectedMediaType =
-      "image";
-
-  };
-
-
-  reader.readAsDataURL(file);
-
-}
-
-
-function handleVideo(input){
-
-  const file = input.files[0];
-
-  if(!file) return;
-
-
-  if(!file.type.startsWith("video/")){
-
-    alert("Select a video file.");
-    return;
-
-  }
-
-
-  /*
-    Data URLs are useful for this frontend demo,
-    but large videos should be uploaded to a server
-    when your backend is connected.
-  */
-
-  const reader =
-    new FileReader();
-
-
-  reader.onload = function(){
-
-    selectedMedia =
-      reader.result;
-
-    selectedMediaType =
-      "video";
-
-  };
-
-
-  reader.readAsDataURL(file);
-
-}
-
-
-function createReel(){
-
-  const text =
-    document.getElementById("reelText")
-    .value.trim();
-
-
-  if(
-    !text &&
-    !selectedMedia
-  ){
-
-    alert(
-      "Write something or add a picture/video."
-    );
-
-    return;
-
-  }
-
-
-  const user = account();
-
-  const posts =
-    load(DB.posts,[]);
-
-
-  posts.unshift({
-
-    id:
-      "post_" +
-      Date.now(),
-
-    userId:user.id,
-
-    userName:user.name,
-
-    profileImage:user.profileImage || "",
-
-    text:text,
-
-    media:selectedMedia,
-
-    mediaType:selectedMediaType,
-
-    likes:0,
-
-    liked:false,
-
-    comments:[],
-
-    created:
-      new Date().toISOString()
-
-  });
-
-
-  save(DB.posts,posts);
-
-
-  document
-    .getElementById("reelText")
-    .value = "";
-
-
-  document
-    .getElementById("imageInput")
-    .value = "";
-
-
-  document
-    .getElementById("videoInput")
-    .value = "";
-
-
-  selectedMedia = null;
-  selectedMediaType = null;
-
-
-  renderPosts();
-
-}
-
-
-function renderPosts(){
-
-  const posts =
-    load(DB.posts,[]);
-
-  const container =
-    document.getElementById("reels");
-
-  container.innerHTML = "";
-
-
-  if(posts.length===0){
-
-    container.innerHTML = `
-
-      <div class="empty">
-
-        <div>
-
-          <div class="emptyIcon">
-            🎬
-          </div>
-
-          <h3>
-            No Reels yet
-          </h3>
-
-          <p>
-            Your SYNK feed is empty.
-          </p>
-
-        </div>
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  const user = account();
-
-
-  posts.forEach(post => {
-
-    const reel =
-      document.createElement("article");
-
-    reel.className = "reel";
-
-
-    let mediaHTML = "";
-
-
-    if(
-      post.media &&
-      post.mediaType === "image"
-    ){
-
-      mediaHTML =
-        `<img
-          class="reelMedia"
-          src="${post.media}"
-          alt="SYNK post">`;
-
-    }
-
-
-    if(
-      post.media &&
-      post.mediaType === "video"
-    ){
-
-      mediaHTML =
-        `<video
-          class="reelMedia"
-          controls
-          playsinline
-          src="${post.media}">
-        </video>`;
-
-    }
-
-
-    const comments =
-      (post.comments || [])
-      .map(c => `
-
-        <div class="comment">
-
-          <strong>
-            ${safe(c.name)}
-          </strong>
-
-          ${safe(c.text)}
-
-        </div>
-
-      `)
-      .join("");
-
-
-    const mine =
-      post.userId === user.id;
-
-
-    reel.innerHTML = `
-
-      <div class="reelTop">
-
-        <div class="profileAvatar">
-
-          ${
-            post.profileImage
-            ?
-            `<img src="${post.profileImage}">`
-            :
-            safe(post.userName.charAt(0))
-          }
-
-        </div>
-
-
-        <div class="reelTopInfo">
-
-          <strong>
-            ${safe(post.userName)}
-          </strong>
-
-          <small>
-            ${formatDate(post.created)}
-          </small>
-
-        </div>
-
-      </div>
-
-
-      ${
-        post.text
-        ?
-        `<div class="reelText">
-          ${safe(post.text)}
-        </div>`
-        :
-        ""
-      }
-
-
-      ${mediaHTML}
-
-
-      <div class="reelActions">
-
-        <button
-          class="${post.liked ? "liked" : ""}"
-          onclick="likePost('${post.id}')">
-
-          ❤️ ${post.likes}
-
-        </button>
-
-
-        <button
-          onclick="focusComment('${post.id}')">
-
-          💬 ${post.comments?.length || 0}
-
-        </button>
-
-
-        <button
-          onclick="shareWhatsApp('${post.id}')">
-
-          ↗ Share
-
-        </button>
-
-
-        ${
-          mine
-          ?
-          `
-          <button
-            onclick="deletePost('${post.id}')">
-
-            🗑 Delete
-
-          </button>
-          `
-          :
-          `
-          <button
-            onclick="copyPost('${post.id}')">
-
-            📋 Copy
-
-          </button>
-          `
         }
 
-      </div>
+
+        for(const postDoc of snap.docs){
+
+            const post =
+                postDoc.data();
 
 
-      <div
-        id="comments_${post.id}"
-        class="comments">
+            let userData={
+                name:"SYNK User",
+                photoURL:""
+            };
 
-        ${comments}
+
+            const userSnap =
+                await getDoc(
+                    doc(
+                        db,
+                        "users",
+                        post.uid
+                    )
+                );
 
 
-        <div class="commentInput">
+            if(userSnap.exists())
+                userData=userSnap.data();
 
-          <input
-            id="comment_${post.id}"
-            placeholder="Write a comment...">
 
-          <button
-            onclick="addComment('${post.id}')">
+            const reel =
+                document.createElement("div");
 
-            Send
 
-          </button>
+            reel.className="reel";
 
-        </div>
 
-      </div>
+            let media = "";
 
+
+if (post.image) {
+    
+    media += `
+        <img
+            class="reel-media"
+            src="${post.image}"
+            alt="SYNK Reel">
     `;
-
-
-    container.appendChild(reel);
-
-  });
-
+    
 }
 
 
-/* =========================================================
-   LIKE
-========================================================= */
-
-function likePost(id){
-
-  const posts =
-    load(DB.posts,[]);
-
-
-  const post =
-    posts.find(p => p.id === id);
-
-
-  if(!post) return;
-
-
-  if(post.liked){
-
-    post.likes =
-      Math.max(0,post.likes-1);
-
-    post.liked = false;
-
-  }else{
-
-    post.likes++;
-
-    post.liked = true;
-
-  }
-
-
-  save(DB.posts,posts);
-
-  renderPosts();
-
-}
-
-
-/* =========================================================
-   COMMENT
-========================================================= */
-
-function addComment(id){
-
-  const input =
-    document.getElementById(
-      "comment_" + id
-    );
-
-
-  const text =
-    input.value.trim();
-
-
-  if(!text) return;
-
-
-  const posts =
-    load(DB.posts,[]);
-
-
-  const post =
-    posts.find(p => p.id === id);
-
-
-  if(!post) return;
-
-
-  if(!post.comments)
-    post.comments = [];
-
-
-  post.comments.push({
-
-    name:account().name,
-
-    text:text,
-
-    date:
-      new Date().toISOString()
-
-  });
-
-
-  save(DB.posts,posts);
-
-
-  renderPosts();
-
-}
-
-
-function focusComment(id){
-
-  const input =
-    document.getElementById(
-      "comment_" + id
-    );
-
-
-  if(input){
-
-    input.focus();
-
-  }
-
-}
-
-
-/* =========================================================
-   SHARE
-========================================================= */
-
-function shareWhatsApp(id){
-
-  const posts =
-    load(DB.posts,[]);
-
-
-  const post =
-    posts.find(p => p.id === id);
-
-
-  if(!post) return;
-
-
-  const text =
-    "Check this out on SYNK:\n\n" +
-    (post.text || "SYNK post") +
-    "\n\nConnect. Share. Belong.";
-
-
-  window.open(
-    "https://wa.me/?text=" +
-    encodeURIComponent(text),
-    "_blank"
-  );
-
-}
-
-
-async function copyPost(id){
-
-  const posts =
-    load(DB.posts,[]);
-
-
-  const post =
-    posts.find(p => p.id === id);
-
-
-  if(!post) return;
-
-
-  const text =
-    post.text ||
-    "SYNK post";
-
-
-  try{
-
-    await navigator.clipboard.writeText(text);
-
-    alert("Post copied.");
-
-  }catch(e){
-
-    alert(text);
-
-  }
-
-}
-
-
-/* =========================================================
-   DELETE POST
-========================================================= */
-
-function deletePost(id){
-
-  if(!confirm(
-    "Delete this SYNK post permanently?"
-  )) return;
-
-
-  let posts =
-    load(DB.posts,[]);
-
-
-  posts =
-    posts.filter(
-      p => p.id !== id
-    );
-
-
-  save(DB.posts,posts);
-
-  renderPosts();
-
-}
-
-
-function clearPosts(){
-
-  if(!confirm(
-    "Delete ALL your SYNK posts?"
-  )) return;
-
-
-  const user = account();
-
-
-  let posts =
-    load(DB.posts,[]);
-
-
-  posts =
-    posts.filter(
-      p => p.userId !== user.id
-    );
-
-
-  save(DB.posts,posts);
-
-  renderPosts();
-
-  alert("Your posts were deleted.");
-
-}
-
-
-/* =========================================================
-   REQUESTS
-========================================================= */
-
-function renderRequests(){
-
-  const container =
-    document.getElementById("requests");
-
-
-  container.innerHTML = `
-
-    <div class="empty">
-
-      <div>
-
-        <div class="emptyIcon">
-          👥
-        </div>
-
-        <h3>
-          No SYNK Requests
-        </h3>
-
-        <p>
-          New connection requests will appear here
-          when your backend is connected.
-        </p>
-
-      </div>
-
-    </div>
-
-  `;
-
-}
-
-
-/* =========================================================
-   CHAT
-========================================================= */
-
-function openChat(id){
-
-  const contacts =
-    load(DB.contacts,[]);
-
-
-  activeContact =
-    contacts.find(
-      c => c.id === id
-    );
-
-
-  if(!activeContact) return;
-
-
-  document
-    .getElementById("chatName")
-    .textContent =
-      activeContact.name;
-
-
-  document
-    .getElementById("chatAvatar")
-    .textContent =
-      activeContact.name
-      .charAt(0)
-      .toUpperCase();
-
-
-  document
-    .getElementById("chatRoom")
-    .classList.add("open");
-
-
-  renderMessages();
-
-}
-
-
-function closeChat(){
-
-  activeContact = null;
-
-  document
-    .getElementById("chatRoom")
-    .classList.remove("open");
-
-}
-
-
-function renderMessages(){
-
-  const container =
-    document.getElementById("chatMessages");
-
-
-  container.innerHTML = "";
-
-
-  if(!activeContact) return;
-
-
-  const messages =
-    load(DB.messages,{});
-
-
-  const conversation =
-    messages[activeContact.id] || [];
-
-
-  if(conversation.length===0){
-
-    container.innerHTML = `
-
-      <div
-        style="
-        text-align:center;
-        color:#666;
-        padding-top:30vh;">
-
-        <div style="font-size:45px;">
-          💬
-        </div>
-
-        <p>
-          Start the conversation.
-        </p>
-
-      </div>
-
+if (post.video) {
+    
+    media += `
+        <video
+            class="reel-media"
+            controls
+            playsinline
+            preload="metadata"
+            src="${post.video}">
+        </video>
     `;
-
-    return;
-
-  }
-
-
-  conversation.forEach(message => {
-
-    const div =
-      document.createElement("div");
-
-
-    div.className =
-      "message " +
-      (
-        message.sender === "me"
-        ? "mine"
-        : "other"
-      );
-
-
-    div.textContent =
-      message.text;
-
-
-    container.appendChild(div);
-
-  });
-
-
-  container.scrollTop =
-    container.scrollHeight;
-
+    
 }
 
 
-function sendMessage(){
+if (post.audio) {
+    
+    media += `
+        <div class="reel-audio">
 
-  if(!activeContact) return;
+            <div class="audio-icon">
+                🎵
+            </div>
 
+            <div class="audio-info">
+                <strong>
+                    SYNK Audio
+                </strong>
 
-  const input =
-    document.getElementById("chatInput");
+                <small>
+                    Tap play to listen
+                </small>
+            </div>
 
+            <audio
+                controls
+                preload="metadata"
+                src="${post.audio}">
+            </audio>
 
-  const text =
-    input.value.trim();
-
-
-  if(!text) return;
-
-
-  const messages =
-    load(DB.messages,{});
-
-
-  if(!messages[activeContact.id])
-    messages[activeContact.id] = [];
-
-
-  messages[activeContact.id].push({
-
-    sender:"me",
-
-    text:text,
-
-    time:
-      new Date().toISOString()
-
-  });
-
-
-  save(DB.messages,messages);
-
-
-  input.value = "";
-
-
-  renderMessages();
-
+        </div>
+    `;
+    
 }
 
 
-function chatKeyDown(event){
+            reel.innerHTML=`
 
-  const settings =
-    load(DB.settings,{});
+                <div class="reel-header">
+
+                    <img class="avatar"
+                         src="${userData.photoURL ||
+                         "https://via.placeholder.com/100"}">
+
+                    <strong>
+                        ${escapeHTML(userData.name)}
+                    </strong>
+
+                </div>
+
+                ${post.text ?
+                `<div class="reel-text">
+                    ${escapeHTML(post.text)}
+                 </div>`
+                :""}
+
+                ${media}
+
+               <div class="reel-actions">
+
+    <button class="likeBtn">
+        ❤️ ${post.likes || 0}
+    </button>
 
 
-  if(
-    event.key === "Enter" &&
-    !event.shiftKey
-  ){
+    <button class="commentBtn">
+        💬 Comment
+    </button>
 
-    if(settings.enterSend !== false){
 
-      event.preventDefault();
+    <button class="shareBtn">
+        ↗ Share
+    </button>
 
-      sendMessage();
 
+    ${
+        post.uid === currentUser.uid
+        ?
+        `
+        <button
+            class="deleteReelBtn">
+            🗑️ Delete
+        </button>
+        `
+        :
+        ""
     }
 
-  }
+</div>
+            `;
 
+
+            reel
+            .querySelector(".likeBtn")
+            .onclick=()=>likeReel(
+                postDoc.id,
+                post
+            );
+
+
+            reel
+            .querySelector(".commentBtn")
+            .onclick=()=>commentReel(
+                postDoc.id
+            );
+
+
+            reel
+            .querySelector(".shareBtn")
+            .onclick=()=>shareReel(post);
+            if (post.uid === currentUser.uid) {
+    
+    reel
+        .querySelector(".deleteReelBtn")
+        .onclick = () => deleteReel(
+            postDoc.id,
+            post
+        );
+    
 }
 
 
-/* =========================================================
-   SETTINGS
-========================================================= */
+            container.appendChild(reel);
 
-function loadSettings(){
-
-  const settings =
-    load(DB.settings,{
-
-      dark:true,
-      neon:true,
-      notifications:true,
-      sounds:true,
-      readReceipts:true,
-      enterSend:true,
-      visibility:"everyone"
+        }
 
     });
 
-
-  if(settings.dark){
-
-    document.body
-      .classList.remove("light");
-
-  }else{
-
-    document.body
-      .classList.add("light");
-
-  }
-
-
-  setSwitch(
-    "darkSwitch",
-    settings.dark
-  );
-
-  setSwitch(
-    "neonSwitch",
-    settings.neon
-  );
-
-  setSwitch(
-    "notificationSwitch",
-    settings.notifications
-  );
-
-  setSwitch(
-    "soundSwitch",
-    settings.sounds
-  );
-
-  setSwitch(
-    "readSwitch",
-    settings.readReceipts
-  );
-
-  setSwitch(
-    "enterSwitch",
-    settings.enterSend
-  );
-
-
-  document.getElementById(
-    "visibilitySelect"
-  ).value =
-    settings.visibility || "everyone";
-
 }
 
+/* =====================================================
+   DELETE OWN REEL
+===================================================== */
 
-function setSwitch(id,value){
+window.deleteReel = async function(
+    reelId,
+    post
+) {
+    
+    if (!currentUser) {
+        
+        alert(
+            "Please login first."
+        );
+        
+        return;
+    }
+    
+    
+    /* SECURITY CHECK */
+    
+    if (
+        post.uid !==
+        currentUser.uid
+    ) {
+        
+        alert(
+            "You can only delete your own Reels."
+        );
+        
+        return;
+    }
+    
+    
+    const confirmed =
+        confirm(
+            "Delete this Reel permanently?\n\n" +
+            "This will remove the Reel and its media."
+        );
+    
+    
+    if (!confirmed) return;
+    
+    
+    try {
+        
+        /* ======================================
+           DELETE IMAGE FROM STORAGE
+        ====================================== */
+        
+        if (post.imagePath) {
+            
+            try {
+                
+                await deleteObject(
+                    ref(
+                        storage,
+                        post.imagePath
+                    )
+                );
+                
+            } catch (error) {
+                
+                console.warn(
+                    "Image deletion warning:",
+                    error
+                );
+                
+            }
+            
+        }
+        
+        
+        /* ======================================
+           DELETE VIDEO FROM STORAGE
+        ====================================== */
+        
+        if (post.videoPath) {
+            
+            try {
+                
+                await deleteObject(
+                    ref(
+                        storage,
+                        post.videoPath
+                    )
+                );
+                
+            } catch (error) {
+                
+                console.warn(
+                    "Video deletion warning:",
+                    error
+                );
+                
+            }
+            
+        }
+        
+        
+        /* ======================================
+           DELETE AUDIO FROM STORAGE
+        ====================================== */
+        
+        if (post.audioPath) {
+            
+            try {
+                
+                await deleteObject(
+                    ref(
+                        storage,
+                        post.audioPath
+                    )
+                );
+                
+            } catch (error) {
+                
+                console.warn(
+                    "Audio deletion warning:",
+                    error
+                );
+                
+            }
+            
+        }
+        
+        
+        /* ======================================
+           DELETE FIRESTORE REEL
+        ====================================== */
+        
+        await deleteDoc(
+            doc(
+                db,
+                "reels",
+                reelId
+            )
+        );
+        
+        
+        alert(
+            "Reel deleted successfully."
+        );
+        
+        
+    } catch (error) {
+        
+        console.error(
+            "Delete Reel error:",
+            error
+        );
+        
+        
+        alert(
+            "Unable to delete Reel:\n\n" +
+            error.message
+        );
+        
+    }
+    
+};
+/* =====================================================
+   CREATE POST
+===================================================== */
 
-  const el =
-    document.getElementById(id);
+window.openCreateMenu = function() {
+    
+    openModal(
+        "Create SYNK Post",
+        `
 
-  if(!el) return;
+        <div class="field">
 
-  el.classList.toggle(
-    "on",
-    value
-  );
+            <label>Text</label>
 
-}
+            <textarea
+                id="postText"
+                rows="5"
+                placeholder="What's happening?">
+            </textarea>
 
-
-function toggleDarkMode(){
-
-  const settings =
-    load(DB.settings,{});
-
-
-  settings.dark =
-    !settings.dark;
+        </div>
 
 
-  save(DB.settings,settings);
+        <div class="field">
 
-  loadSettings();
+            <label>🖼️ Picture</label>
 
-}
+            <input
+                type="file"
+                id="postImage"
+                accept="image/*">
 
-
-function toggleSetting(key){
-
-  const settings =
-    load(DB.settings,{});
-
-
-  settings[key] =
-    settings[key] === false;
+        </div>
 
 
-  save(DB.settings,settings);
+        <div class="field">
 
-  loadSettings();
+            <label>🎥 Video</label>
 
-}
+            <input
+                type="file"
+                id="postVideo"
+                accept="video/*">
 
+            <small class="media-help">
+                Maximum video size: 20 MB
+            </small>
 
-function saveSettingSelect(key,value){
-
-  const settings =
-    load(DB.settings,{});
-
-  settings[key] = value;
-
-  save(DB.settings,settings);
-
-}
+        </div>
 
 
-/* =========================================================
-   AI
-========================================================= */
-
-function openAI(){
-
-  closeAllModals();
-
-  document
-    .getElementById("aiModal")
-    .classList.add("open");
-
-}
+      
 
 
-function selectAI(provider,button){
+        <button
+            class="primary-btn"
+            onclick="createPost()">
 
-  selectedAI = provider;
+            🚀 Post to SYNK
+
+        </button>
 
 
-  document
-    .querySelectorAll(".aiProvider button")
-    .forEach(b =>
-      b.classList.remove("active")
+        <hr style="margin:20px 0;border-color:#333">
+
+
+        <h3>Invite someone to SYNK</h3>
+
+        <br>
+
+
+        <button
+            class="secondary-btn"
+            style="width:100%;margin-bottom:8px"
+            onclick="inviteWhatsApp()">
+
+            WhatsApp
+
+        </button>
+
+
+        <button
+            class="secondary-btn"
+            style="width:100%;margin-bottom:8px"
+            onclick="inviteSMS()">
+
+            SMS
+
+        </button>
+
+
+        <button
+            class="secondary-btn"
+            style="width:100%"
+            onclick="inviteEmail()">
+
+            Gmail / Email
+
+        </button>
+
+        `
+    );
+    
+};
+
+/* =====================================================
+   CREATE REEL
+===================================================== */
+
+window.createPost = async function(){
+
+    if(!currentUser){
+        alert("Please login first.");
+        return;
+    }
+
+    const text =
+        document.getElementById("postText")
+        .value.trim();
+
+    const imageFile =
+        document.getElementById("postImage")
+        .files[0];
+
+    const videoFile =
+        document.getElementById("postVideo")
+        .files[0];
+
+
+    /* =========================
+       NOTHING TO POST
+    ========================= */
+
+    if(!text && !imageFile && !videoFile){
+
+        alert(
+            "Write something or select a picture or video."
+        );
+
+        return;
+    }
+
+
+    /* =========================
+       ONLY ONE MEDIA FILE
+    ========================= */
+
+    if(imageFile && videoFile){
+
+        alert(
+            "Please select either a picture OR a video."
+        );
+
+        return;
+    }
+
+
+    /* =========================
+       VIDEO 20MB LIMIT
+    ========================= */
+
+    if(videoFile){
+
+        const maxSize =
+            20 * 1024 * 1024;
+
+        if(videoFile.size > maxSize){
+
+            alert(
+                "Video is too large.\n\n" +
+                "Maximum video size is 20 MB."
+            );
+
+            return;
+        }
+
+
+        /* Do NOT rely only on MIME type.
+           Android sometimes reports it incorrectly. */
+
+        const fileName =
+            videoFile.name.toLowerCase();
+
+        const validVideoExtension =
+            [
+                ".mp4",
+                ".webm",
+                ".mov",
+                ".m4v",
+                ".avi",
+                ".mkv"
+            ].some(
+                ext => fileName.endsWith(ext)
+            );
+
+
+        const validVideoType =
+            videoFile.type &&
+            videoFile.type.startsWith("video/");
+
+
+        if(
+            !validVideoType &&
+            !validVideoExtension
+        ){
+
+            alert(
+                "Please select a valid video file."
+            );
+
+            return;
+        }
+    }
+
+
+    try{
+
+        let imageURL = "";
+        let videoURL = "";
+
+        let imagePath = "";
+        let videoPath = "";
+
+
+        /* =========================
+           IMAGE UPLOAD
+        ========================= */
+
+        if(imageFile){
+
+            const safeName =
+                imageFile.name.replace(
+                    /[^a-zA-Z0-9._-]/g,
+                    "_"
+                );
+
+
+            imagePath =
+                `reels/${currentUser.uid}/images/` +
+                `${Date.now()}_${safeName}`;
+
+
+            const imageRef =
+                ref(
+                    storage,
+                    imagePath
+                );
+
+
+            await uploadBytes(
+                imageRef,
+                imageFile,
+                {
+                    contentType:
+                        imageFile.type ||
+                        "image/jpeg"
+                }
+            );
+
+
+            imageURL =
+                await getDownloadURL(
+                    imageRef
+                );
+        }
+
+
+        /* =========================
+           VIDEO UPLOAD
+        ========================= */
+
+        if(videoFile){
+
+            const safeName =
+                videoFile.name.replace(
+                    /[^a-zA-Z0-9._-]/g,
+                    "_"
+                );
+
+
+            videoPath =
+                `reels/${currentUser.uid}/videos/` +
+                `${Date.now()}_${safeName}`;
+
+
+            const videoRef =
+                ref(
+                    storage,
+                    videoPath
+                );
+
+
+            await uploadBytes(
+                videoRef,
+                videoFile,
+                {
+                    contentType:
+                        videoFile.type ||
+                        "video/mp4"
+                }
+            );
+
+
+            videoURL =
+                await getDownloadURL(
+                    videoRef
+                );
+        }
+
+
+        /* =========================
+           SAVE REEL
+        ========================= */
+
+        await addDoc(
+            collection(
+                db,
+                "reels"
+            ),
+            {
+
+                uid:
+                    currentUser.uid,
+
+                text:
+                    text,
+
+                image:
+                    imageURL,
+
+                video:
+                    videoURL,
+
+                imagePath:
+                    imagePath,
+
+                videoPath:
+                    videoPath,
+
+                likes:
+                    0,
+
+                createdAt:
+                    serverTimestamp()
+
+            }
+        );
+
+
+        closeModal();
+
+
+        alert(
+            "Your SYNK Reel has been posted!"
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "REEL UPLOAD ERROR:",
+            error
+        );
+
+
+        alert(
+            "Unable to upload Reel.\n\n" +
+            error.message
+        );
+
+    }
+
+};
+
+/* =====================================================
+   LIKE / UNLIKE REEL
+===================================================== */
+
+async function likeReel(reelId, post){
+
+    if(!currentUser){
+        alert("Please login first.");
+        return;
+    }
+
+    const reelRef = doc(
+        db,
+        "reels",
+        reelId
     );
 
+    const likeRef = doc(
+        db,
+        "reels",
+        reelId,
+        "likes",
+        currentUser.uid
+    );
 
-  button.classList.add("active");
+    try{
+
+        await runTransaction(db, async transaction => {
+
+            const likeSnap =
+                await transaction.get(likeRef);
+
+            const reelSnap =
+                await transaction.get(reelRef);
+
+            if(!reelSnap.exists()){
+                throw new Error("Reel no longer exists.");
+            }
+
+            const reelData =
+                reelSnap.data();
+
+            const currentLikes =
+                Number(reelData.likes || 0);
+
+            if(likeSnap.exists()){
+
+                /* Already liked → unlike */
+
+                transaction.delete(likeRef);
+
+                transaction.update(
+                    reelRef,
+                    {
+                        likes:Math.max(
+                            0,
+                            currentLikes - 1
+                        )
+                    }
+                );
+
+            }else{
+
+                /* Not liked → like */
+
+                transaction.set(
+                    likeRef,
+                    {
+                        uid:currentUser.uid,
+                        createdAt:
+                            serverTimestamp()
+                    }
+                );
+
+                transaction.update(
+                    reelRef,
+                    {
+                        likes:currentLikes + 1
+                    }
+                );
+
+            }
+
+        });
+
+    }catch(error){
+
+        console.error(
+            "Like error:",
+            error
+        );
+
+        alert(
+            "Unable to update like."
+        );
+
+    }
+
+}
+
+/* =====================================================
+   COMMENTS
+===================================================== */
+
+window.commentReel=function(reelId){
+
+    openModal(
+        "Comments",
+        `
+        <div
+            id="commentsList"
+            class="comments-list">
+        </div>
+
+        <div class="comment-input-row">
+
+            <textarea
+                id="commentText"
+                rows="2"
+                placeholder="Write a comment...">
+            </textarea>
+
+            <button
+                class="primary-btn"
+                onclick="sendComment('${reelId}')">
+
+                Send
+
+            </button>
+
+        </div>
+        `
+    );
+
+    loadReelComments(reelId);
+
+};
+
+
+/* =====================================================
+   LOAD COMMENTS IN REAL TIME
+===================================================== */
+
+function loadReelComments(reelId){
+
+    const container =
+        document.getElementById(
+            "commentsList"
+        );
+
+    if(!container)return;
+
+    const commentsQuery =
+        query(
+            collection(
+                db,
+                "reels",
+                reelId,
+                "comments"
+            ),
+            orderBy(
+                "createdAt",
+                "asc"
+            )
+        );
+
+    onSnapshot(
+        commentsQuery,
+        snap => {
+
+            container.innerHTML="";
+
+            if(snap.empty){
+
+                container.innerHTML=`
+                    <div class="no-comments">
+                        No comments yet.
+                    </div>
+                `;
+
+                return;
+            }
+
+            snap.forEach(commentDoc => {
+
+                const comment =
+                    commentDoc.data();
+
+                const commentDiv =
+                    document.createElement("div");
+
+                commentDiv.className =
+                    "reel-comment";
+
+                commentDiv.innerHTML=`
+
+                    <img
+                        class="comment-avatar"
+                        src="${
+                            comment.userPhoto ||
+                            "https://via.placeholder.com/100"
+                        }"
+                        onerror="
+                            this.src=
+                            'https://via.placeholder.com/100'
+                        "
+                    >
+
+                    <div class="comment-body">
+
+                        <strong>
+                            ${
+                                escapeHTML(
+                                    comment.userName ||
+                                    "SYNK User"
+                                )
+                            }
+                        </strong>
+
+                        <p>
+                            ${
+                                escapeHTML(
+                                    comment.text || ""
+                                )
+                            }
+                        </p>
+
+                    </div>
+
+                `;
+
+                container.appendChild(
+                    commentDiv
+                );
+
+            });
+
+            container.scrollTop =
+                container.scrollHeight;
+
+        }
+    );
 
 }
 
 
-function aiKeyDown(event){
+/* =====================================================
+   SEND COMMENT
+===================================================== */
 
-  if(event.key === "Enter"){
+window.sendComment=async function(reelId){
 
-    event.preventDefault();
+    if(!currentUser){
 
-    sendAI();
+        alert(
+            "Please login first."
+        );
 
-  }
+        return;
+    }
 
-}
+    const input =
+        document.getElementById(
+            "commentText"
+        );
+
+    if(!input)return;
+
+    const text =
+        input.value.trim();
+
+    if(!text)return;
+
+    try{
+
+        const userSnap =
+            await getDoc(
+                doc(
+                    db,
+                    "users",
+                    currentUser.uid
+                )
+            );
+
+        const userData =
+            userSnap.exists()
+                ? userSnap.data()
+                : {};
+
+        await addDoc(
+            collection(
+                db,
+                "reels",
+                reelId,
+                "comments"
+            ),
+            {
+
+                uid:
+                    currentUser.uid,
+
+                userName:
+                    userData.name ||
+                    currentUser.displayName ||
+                    "SYNK User",
+
+                userPhoto:
+                    userData.photoURL ||
+                    currentUser.photoURL ||
+                    "",
+
+                text:text,
+
+                createdAt:
+                    serverTimestamp()
+
+            }
+        );
+
+        input.value="";
+
+        /* The onSnapshot listener
+           automatically displays it. */
+
+    }catch(error){
+
+        console.error(
+            "Comment error:",
+            error
+        );
+
+        alert(
+            "Could not send comment."
+        );
+
+    }
+
+};
+
+/* =====================================================
+   WHATSAPP SHARING
+===================================================== */
+
+window.shareReel=function(post){
+
+    let text =
+        "Check out this post on SYNK:\n\n"+
+        (post.text || "")+
+        "\n\n"+
+        "Join SYNK:\n"+
+        "https://cscript09-byte.github.io/SYNK-CHAT/";
 
 
-function sendAI(){
-
-  const input =
-    document.getElementById("aiInput");
-
-
-  const question =
-    input.value.trim();
+    const url =
+        "https://wa.me/?text="+
+        encodeURIComponent(text);
 
 
-  if(!question) return;
+    window.open(url,"_blank");
+
+};
 
 
-  addAIBubble(
-    question,
-    "user"
-  );
+/* =====================================================
+   INVITES
+===================================================== */
+
+window.inviteWhatsApp=function(){
+
+    const text =
+        "Join me on SYNK! Connect, chat and share.\n\n"+
+        "https://cscript09-byte.github.io/SYNK-CHAT/";
 
 
-  input.value = "";
-
-
-  /*
-    FRONTEND DEMO RESPONSE.
-
-    To make this genuinely use ChatGPT or DeepSeek,
-    connect this function to YOUR backend later.
-
-    Never place a private production API key directly
-    in this HTML file.
-  */
-
-
-  setTimeout(() => {
-
-    const answer =
-      localAIResponse(question);
-
-
-    addAIBubble(
-      answer,
-      "assistant"
+    window.open(
+        "https://wa.me/?text="+
+        encodeURIComponent(text),
+        "_blank"
     );
 
-  },500);
-
-}
+};
 
 
-function addAIBubble(text,type){
+window.inviteSMS=function(){
 
-  const container =
-    document.getElementById("aiMessages");
-
-
-  const bubble =
-    document.createElement("div");
+    const body =
+        "Join me on SYNK:\n"+
+        "https://cscript09-byte.github.io/SYNK-CHAT/";
 
 
-  bubble.className =
-    "aiBubble " + type;
+    window.location.href=
+        "sms:?body="+
+        encodeURIComponent(body);
+
+};
 
 
-  bubble.textContent =
-    text;
+window.inviteEmail=function(){
+
+    const body =
+        "Join me on SYNK:\n\n"+
+        "https://cscript09-byte.github.io/SYNK-CHAT/";
 
 
-  container.appendChild(bubble);
+    window.location.href=
+        "mailto:?subject=Join%20me%20on%20SYNK&body="+
+        encodeURIComponent(body);
+
+};
 
 
-  container.scrollTop =
-    container.scrollHeight;
+/* =====================================================
+   USER PROFILE VIEW
+===================================================== */
 
-}
+window.showUserProfile=function(user){
 
+    openModal(
 
-function localAIResponse(question){
+        user.name || "SYNK User",
 
-  const q =
-    question.toLowerCase();
+        `
 
+        <div style="text-align:center">
 
-  if(
-    q.includes("hello") ||
-    q.includes("hi") ||
-    q.includes("hey")
-  ){
+            <img
+                src="${user.photoURL ||
+                "https://via.placeholder.com/100"}"
+                class="profile-big">
 
-    return (
-      "Hey! 👋 I'm your SYNK Personal AI. " +
-      "What would you like to talk about?"
+            <h2 style="margin-top:12px">
+                ${escapeHTML(user.name || "")}
+            </h2>
+
+            <p style="color:#777">
+                @${escapeHTML(user.username || "")}
+            </p>
+
+        </div>
+
+        <br>
+
+        <p>
+            <b>Country:</b>
+            ${escapeHTML(user.country || "Not set")}
+        </p>
+
+        <br>
+
+        <p>
+            <b>Age:</b>
+            ${escapeHTML(String(user.age || "Not set"))}
+        </p>
+
+        <br>
+
+        <p>
+            <b>About:</b><br>
+            ${escapeHTML(user.description || "No description")}
+        </p>
+
+        <br>
+
+        <p>
+            <b>Hobbies:</b><br>
+            ${(user.hobbies || []).join(", ") || "None"}
+        </p>
+
+        `
+
     );
 
-  }
+};
 
 
-  if(q.includes("who created synk")){
+window.viewChatProfile=function(){
 
-    return "SYNK was created by Alex Artie.";
+    if(currentChatUser)
+        showUserProfile(
+            currentChatUser
+        );
 
-  }
+};
 
 
-  if(q.includes("html")){
+/* =====================================================
+   MY PROFILE
+===================================================== */
 
-    return (
-      "HTML is the markup language used to structure " +
-      "web pages."
+window.openMyProfile=function(){
+
+    showPage("profilePage");
+
+};
+
+
+/* =====================================================
+   SETTINGS
+===================================================== */
+
+window.openSettings=function(){
+
+    openModal(
+
+        "Settings",
+
+        `
+
+        <div class="setting">
+
+            <div class="setting-info">
+                <strong>Dark Mode</strong>
+                <small>Use dark SYNK interface</small>
+            </div>
+
+            <div
+                id="darkSwitch"
+                class="switch on"
+                onclick="toggleDarkMode()">
+            </div>
+
+        </div>
+
+
+        <div class="setting">
+
+            <div class="setting-info">
+                <strong>Theme Color</strong>
+                <small>Choose SYNK accent</small>
+            </div>
+
+            <input
+                type="color"
+                value="#ff008c"
+                onchange="changeTheme(this.value)">
+
+        </div>
+
+
+        <div class="setting">
+
+            <div class="setting-info">
+                <strong>Notifications</strong>
+                <small>Message notifications</small>
+            </div>
+
+            <div
+                class="switch on"
+                onclick="this.classList.toggle('on')">
+            </div>
+
+        </div>
+
+
+        <div class="setting">
+
+            <div class="setting-info">
+                <strong>Online Status</strong>
+                <small>Show when you're online</small>
+            </div>
+
+            <div
+                class="switch on"
+                onclick="this.classList.toggle('on')">
+            </div>
+
+        </div>
+
+        `
+
     );
 
-  }
+};
 
 
-  if(
-    q.includes("javascript") ||
-    q.includes("javascript")
-  ){
+window.toggleDarkMode=function(){
 
-    return (
-      "JavaScript is a programming language used to " +
-      "add logic and interactivity to websites."
+    document
+    .body
+    .classList.toggle("light");
+
+    localStorage.setItem(
+        "synkTheme",
+        document.body.classList.contains("light")
+        ?
+        "light"
+        :
+        "dark"
     );
 
-  }
+};
 
 
-  if(q.includes("css")){
+window.changeTheme=function(color){
 
-    return (
-      "CSS controls the appearance and layout of a " +
-      "website."
+    document.documentElement
+    .style
+    .setProperty(
+        "--pink",
+        color
     );
 
-  }
+    localStorage.setItem(
+        "synkPink",
+        color
+    );
+
+};
 
 
-  return (
-    "I'm ready for a real ChatGPT or DeepSeek connection. " +
-    "In this frontend-only version, I cannot directly call " +
-    "their private AI APIs safely. Connect this function to " +
-    "your backend when you're ready."
-  );
+/* =====================================================
+   PERSONAL AI
+===================================================== */
 
-}
+window.openAI=function(){
+
+    openModal(
+
+        "Personal AI",
+
+        `
+
+        <div
+            id="aiMessages"
+            class="ai-messages">
+
+            <div class="ai-message ai-bot">
+
+                Hi! 👋
+
+                I'm your SYNK Personal AI.
+
+                Ask me anything.
+
+            </div>
+
+        </div>
 
 
-/* =========================================================
+        <div class="ai-input">
+
+            <input
+                id="aiInput"
+                placeholder="Ask Personal AI...">
+
+            <button
+                class="icon-btn"
+                onclick="askAI()">
+
+                ➤
+
+            </button>
+
+        </div>
+
+        `
+
+    );
+
+};
+
+
+window.askAI=async function(){
+
+    const input =
+        document
+        .getElementById("aiInput");
+
+
+    const question =
+        input.value.trim();
+
+
+    if(!question)return;
+
+
+    const box =
+        document
+        .getElementById("aiMessages");
+
+
+    box.innerHTML+=`
+
+        <div class="ai-message ai-user">
+            ${escapeHTML(question)}
+        </div>
+
+    `;
+
+
+    input.value="";
+
+
+    /*
+       IMPORTANT:
+
+       Do NOT put a ChatGPT/OpenAI/DeepSeek API
+       secret key directly in this HTML file.
+
+       You need a backend endpoint.
+
+       Example:
+
+       POST /api/ai
+
+       {
+          "message":"..."
+       }
+
+       The backend then calls OpenAI or DeepSeek.
+
+       Until you connect that endpoint, this demo
+       gives a local response.
+    */
+
+
+    box.innerHTML+=`
+
+        <div class="ai-message ai-bot">
+
+            I'm ready to answer.
+
+            To connect me to real ChatGPT or DeepSeek
+            responses, connect the SYNK Personal AI
+            endpoint to your secure backend API.
+
+        </div>
+
+    `;
+
+
+    box.scrollTop=box.scrollHeight;
+
+};
+
+
+/* =====================================================
    ABOUT
-========================================================= */
+===================================================== */
 
-function openAbout(){
+window.openAbout=function(){
 
-  closeAllModals();
+    openModal(
 
-  document
-    .getElementById("aboutModal")
-    .classList.add("open");
+        "About SYNK",
 
-}
+        `
 
+        <h2>SYNK</h2>
 
-/* =========================================================
-   MODALS
-========================================================= */
+        <br>
 
-function closeModal(id){
+        <p style="line-height:1.6;color:#aaa">
 
-  document
-    .getElementById(id)
-    .classList.remove("open");
+        SYNK is a social communication platform
+        designed to connect people through private
+        messaging, profiles, requests, media sharing,
+        reels and company updates.
 
-}
+        </p>
 
+        <br>
 
-function closeAllModals(){
+        <h3>Current Features</h3>
 
-  document
-    .querySelectorAll(".modal")
-    .forEach(m =>
-      m.classList.remove("open")
+        <br>
+
+        <p style="line-height:1.8">
+
+        ✓ Real authentication<br>
+        ✓ SYNK requests<br>
+        ✓ Private chats<br>
+        ✓ User profiles<br>
+        ✓ Reels<br>
+        ✓ Likes & comments<br>
+        ✓ WhatsApp sharing<br>
+        ✓ SYNK News<br>
+        ✓ Personal AI<br>
+        ✓ Custom themes<br>
+        ✓ Dark / Light mode
+
+        </p>
+
+        <br>
+
+        <h3>Coming Soon</h3>
+
+        <br>
+
+        <p style="color:#aaa;line-height:1.7">
+
+        Communities<br>
+        Voice calls<br>
+        Video calls<br>
+        Better media storage<br>
+        AI improvements<br>
+        More creator tools
+
+        </p>
+
+        <br>
+
+        <p>
+            Created by <b>Alex Artie</b>.
+        </p>
+
+        `
+
     );
 
-}
+};
 
 
-/* =========================================================
+/* =====================================================
+   PAGE NAVIGATION
+===================================================== */
+
+window.showPage=function(pageId){
+
+    document
+    .querySelectorAll(".page")
+    .forEach(page=>{
+        page.classList.remove("active");
+    });
+
+
+    const page =
+        document.getElementById(pageId);
+
+
+    if(page)
+        page.classList.add("active");
+
+
+    document
+    .querySelectorAll(".nav-btn")
+    .forEach(btn=>{
+        btn.classList.remove("active");
+    });
+
+
+    if(pageId==="chatPage")
+        document
+        .querySelectorAll(".nav-btn")[0]
+        .classList.add("active");
+
+
+    if(pageId==="requestPage")
+        document
+        .querySelectorAll(".nav-btn")[1]
+        .classList.add("active");
+
+
+    if(pageId==="reelsPage")
+        document
+        .querySelectorAll(".nav-btn")[2]
+        .classList.add("active");
+
+
+    if(pageId==="newsPage")
+        document
+        .querySelectorAll(".nav-btn")[3]
+        .classList.add("active");
+
+
+    if(pageId==="profilePage")
+        loadMyProfile();
+
+};
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+window.openModal=function(title,content){
+
+    document
+    .getElementById("modalTitle")
+    .textContent=title;
+
+
+    document
+    .getElementById("modalContent")
+    .innerHTML=content;
+
+
+    document
+    .getElementById("modal")
+    .classList.add("show");
+
+};
+
+
+window.closeModal=function(){
+
+    document
+    .getElementById("modal")
+    .classList.remove("show");
+
+};
+
+
+/* =====================================================
    LOGOUT
-========================================================= */
+===================================================== */
 
-function logout(){
+window.logout=async function(){
 
-  localStorage.removeItem(DB.session);
+    if(currentUser){
 
-  closeAllModals();
+        await updateDoc(
 
-  document
-    .getElementById("app")
-    .classList.add("hidden");
+            doc(
+                db,
+                "users",
+                currentUser.uid
+            ),
 
-  document
-    .getElementById("authScreen")
-    .classList.remove("hidden");
+            {
+                online:false
+            }
 
-  switchAuth("login");
+        );
 
-}
-
-
-/* =========================================================
-   COUNTRY
-========================================================= */
-
-function countryName(code){
-
-  const countries = {
-
-    "+234":"🇳🇬 Nigeria",
-
-    "+233":"🇬🇭 Ghana",
-
-    "+254":"🇰🇪 Kenya",
-
-    "+27":"🇿🇦 South Africa",
-
-    "+44":"🇬🇧 United Kingdom",
-
-    "+1":"🇺🇸 United States",
-
-    "+91":"🇮🇳 India",
-
-    "+971":"🇦🇪 United : Emirates"
-
-  };
+    }
 
 
-  return countries[code] || code;
+    await signOut(auth);
+
+};
+
+
+/* =====================================================
+   UTILITIES
+===================================================== */
+
+function makeChatId(a,b){
+
+    return [a,b]
+    .sort()
+    .join("_");
 
 }
 
 
-/* =========================================================
-   SAFE HTML
-========================================================= */
+function fileToDataURL(file){
 
-function safe(value){
+    return new Promise(resolve=>{
 
-  return String(value || "")
+        const reader =
+            new FileReader();
+
+        reader.onload=()=>
+            resolve(reader.result);
+
+        reader.readAsDataURL(file);
+
+    });
+
+}
+
+
+function escapeHTML(value){
+
+    return String(value || "")
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
     .replace(/>/g,"&gt;")
@@ -4997,326 +4978,220 @@ function safe(value){
 }
 
 
-/* =========================================================
-   DATE
-========================================================= */
+/* =====================================================
+   RESTORE THEME
+===================================================== */
 
-function formatDate(date){
+const savedTheme =
+    localStorage.getItem(
+        "synkTheme"
+    );
 
-  try{
 
-    return new Date(date)
-      .toLocaleString();
+if(savedTheme==="light"){
 
-  }catch(e){
-
-    return "";
-
-  }
+    document
+    .body
+    .classList.add("light");
 
 }
 
 
-/* =========================================================
-   MODAL BACKDROP
-========================================================= */
+const savedPink =
+    localStorage.getItem(
+        "synkPink"
+    );
 
-document
-.querySelectorAll(".modal")
-.forEach(modal => {
 
-  modal.addEventListener(
-    "click",
-    function(e){
+if(savedPink){
 
-      if(e.target === modal){
+    document.documentElement
+    .style
+    .setProperty(
+        "--pink",
+        savedPink
+    );
 
-        modal.classList.remove("open");
+}
 
-      }
 
+/* =====================================================
+   SPLASH TIMER
+===================================================== */
+
+setTimeout(()=>{
+
+    const splash =
+        document
+        .getElementById("splash");
+
+
+    if(splash)
+        splash.classList.add("hidden");
+
+},1500);
+const menuButton = document.getElementById("menuButton");
+const sideMenu = document.getElementById("sideMenu");
+const menuOverlay = document.getElementById("menuOverlay");
+const closeMenu = document.getElementById("closeMenu");
+
+function openMenu() {
+    sideMenu.classList.add("active");
+    menuOverlay.classList.add("active");
+}
+
+function closeSideMenu() {
+    sideMenu.classList.remove("active");
+    menuOverlay.classList.remove("active");
+}
+
+menuButton.addEventListener("click", openMenu);
+closeMenu.addEventListener("click", closeSideMenu);
+menuOverlay.addEventListener("click", closeSideMenu);
+
+/* =====================================================
+   DELETE SYNK ACCOUNT
+===================================================== */
+
+window.deleteMyAccount = async function(){
+
+    if(!currentUser){
+
+        alert(
+            "You are not logged in."
+        );
+
+        return;
     }
-  );
 
-});
+    const confirmation =
+        confirm(
+            "Delete your SYNK account permanently?\n\n" +
+            "Your SYNK profile will be deleted " +
+            "and you will be signed out."
+        );
 
+    if(!confirmation)return;
 
-/* =========================================================
-   STARTUP
-========================================================= */
+    try{
 
-window.addEventListener(
-  "load",
-  function(){
+        const uid =
+            currentUser.uid;
 
-    const user =
-      account();
+        /* Delete profile */
 
-    const session =
-      localStorage.getItem(DB.session);
+        await deleteDoc(
+            doc(
+                db,
+                "users",
+                uid
+            )
+        );
 
+        /* Delete requests involving this user */
 
-    if(
-      user &&
-      session === "true"
-    ){
+        const requestSnap =
+            await getDocs(
+                collection(
+                    db,
+                    "synkRequests"
+                )
+            );
 
-      launchApp();
+        for(
+            const requestDoc
+            of requestSnap.docs
+        ){
 
-    }
+            const request =
+                requestDoc.data();
 
-  }
-);
-function openModal(id) {
-  document.getElementById(id).style.display = 'flex';
-}
+            if(
+                request.from === uid ||
+                request.to === uid
+            ){
 
-function closeModal(id) {
-  document.getElementById(id).style.display = 'none'
-  };
-  // Function to fetch and display all registered users
-function loadUsersList() {
-  // Prevent running if no active auth session
-  if (!firebase.auth().currentUser) return;
+                await deleteDoc(
+                    requestDoc.ref
+                );
 
-  db.collection("users").get().then((querySnapshot) => {
-    const userListContainer = document.getElementById("contacts");
-    if (!userListContainer) return;
+            }
 
-    userListContainer.innerHTML = "";
-
-    querySnapshot.forEach((doc) => {
-      const userData = doc.data();
-
-      if (currentUserData && userData.id === currentUserData.id) return;
-
-      const isSynked = currentUserData && currentUserData.synkedUsers && currentUserData.synkedUsers.includes(userData.id);
-
-      const contactCard = document.createElement("div");
-      contactCard.className = "contact";
-      // Inside your loadUsersList() function, update the created card HTML:
-contactCard.innerHTML = `
-  <div class="profileAvatar" onclick="openUserProfile('${userData.id}')" style="cursor: pointer;">
-    ${userData.name ? userData.name.charAt(0).toUpperCase() : "U"}
-  </div>
-  <div class="contactDetails" onclick="openUserProfile('${userData.id}')" style="cursor: pointer;">
-    <div class="contactName">${userData.name}</div>
-    <div class="contactPhone">${userData.phone || ""}</div>
-  </div>
-  <div class="contactButtons">
-    ${isSynked 
-      ? `<button class="smallButton" onclick="startChat('${userData.id}', '${userData.name}')">💬 Chat</button>`
-      : `<button class="smallButton" onclick="sendSynkRequest('${userData.id}')">➕ Synk</button>`
-    }
-  </div>
-`;
-
-      userListContainer.appendChild(contactCard);
-    });
-  }).catch((error) => console.error("Error loading contacts:", error));
-}
-
-
-function sendSynkRequest(targetUserId) {
-  if (!currentUserData) return alert("Please log in first.");
-
-  db.collection("synkRequests").add({
-    from: currentUserData.id,
-    fromName: currentUserData.name,
-    to: targetUserId,
-    status: "pending",
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  }).then(() => {
-    alert("Synk request sent!");
-  }).catch((error) => console.error("Error sending request:", error));
-}
-
-function listenForSynkRequests() {
-  if (!currentUserData) return;
-
-  db.collection("synkRequests")
-    .where("to", "==", currentUserData.id)
-    .where("status", "==", "pending")
-    .onSnapshot((snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          const req = change.doc.data();
-          const reqId = change.doc.id;
-          
-          if (confirm(`${req.fromName} sent you a Synk request! Accept?`)) {
-            acceptSynkRequest(reqId, req.from);
-          }
         }
-      });
-    });
-}
 
-function acceptSynkRequest(requestId, senderId) {
-  db.collection("synkRequests").doc(requestId).update({ status: "accepted" });
+        /* Delete user's Reels */
 
-  db.collection("users").doc(currentUserData.id).update({
-    synkedUsers: firebase.firestore.FieldValue.arrayUnion(senderId)
-  });
-  
-  db.collection("users").doc(senderId).update({
-    synkedUsers: firebase.firestore.FieldValue.arrayUnion(currentUserData.id)
-  }).then(() => {
-    alert("You are now Synked!");
-    loadUsersList();
-  });
-}
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    db.collection("users").doc(user.uid).get().then((doc) => {
-      if (doc.exists) {
-        currentUserData = doc.data();
-        loadUsersList();
-        listenForSynkRequests(); // Starts listening for incoming requests
-      }
-    });
-  } else {
-    currentUserData = null;
-  }
-});
-// Upload large files (>50MB) to Firebase Storage
-function uploadReelFile(file) {
-  if (!file) return alert("Please select a file to upload.");
+        const reelsQuery =
+            query(
+                collection(
+                    db,
+                    "reels"
+                ),
+                where(
+                    "uid",
+                    "==",
+                    uid
+                )
+            );
 
-  const statusContainer = document.getElementById("reelUploadStatus");
-  const progressBar = document.getElementById("reelProgressBar");
-  const progressText = document.getElementById("reelProgressText");
+        const reelsSnap =
+            await getDocs(
+                reelsQuery
+            );
 
-  // Show status container
-  if (statusContainer) statusContainer.style.display = "block";
+        for(
+            const reelDoc
+            of reelsSnap.docs
+        ){
 
-  const storageRef = storage.ref(`reels/${Date.now()}_${file.name}`);
-  const uploadTask = storageRef.put(file);
+            await deleteDoc(
+                reelDoc.ref
+            );
 
-  uploadTask.on(
-    'state_changed',
-    (snapshot) => {
-      // Calculate progress percentage
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      
-      // Update Progress Bar & Text
-      if (progressBar) progressBar.value = progress;
-      if (progressText) progressText.innerText = `${Math.round(progress)}% Uploaded`;
-    },
-    (error) => {
-      console.error("Upload failed:", error);
-      alert("Upload failed. Please try again.");
-      if (statusContainer) statusContainer.style.display = "none";
-    },
-    () => {
-      // Upload Complete: Get Download URL & Save to Firestore
-      uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-        db.collection("reels").add({
-          userId: currentUserData.id,
-          userName: currentUserData.name,
-          videoUrl: downloadURL,
-          likeCount: 0,
-          likedBy: [],
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        }).then(() => {
-          alert("Reel published successfully!");
-          if (statusContainer) statusContainer.style.display = "none";
-          if (progressBar) progressBar.value = 0;
-        });
-      });
+        }
+
+        /* Delete Firebase Authentication account */
+
+        await deleteUser(
+            currentUser
+        );
+
+        alert(
+            "Your SYNK account has been deleted."
+        );
+
+        window.location.reload();
+
+    }catch(error){
+
+        console.error(
+            "Account deletion error:",
+            error
+        );
+
+        if(
+            error.code ===
+            "auth/requires-recent-login"
+        ){
+
+            alert(
+                "For security, Firebase requires you " +
+                "to log in again before deleting your account."
+            );
+
+        }else{
+
+            alert(
+                "Unable to delete account: " +
+                error.message
+            );
+
+        }
+
     }
-  );
-}
 
-
-// Like or Unlike a Reel
-function toggleLikeReel(reelId) {
-  const reelRef = db.collection("reels").doc(reelId);
-
-  db.runTransaction((transaction) => {
-    return transaction.get(reelRef).then((reelDoc) => {
-      if (!reelDoc.exists) return;
-
-      const likes = reelDoc.data().likedBy || [];
-      const hasLiked = likes.includes(currentUserData.id);
-
-      if (hasLiked) {
-        transaction.update(reelRef, {
-          likedBy: firebase.firestore.FieldValue.arrayRemove(currentUserData.id),
-          likeCount: firebase.firestore.FieldValue.increment(-1)
-        });
-      } else {
-        transaction.update(reelRef, {
-          likedBy: firebase.firestore.FieldValue.arrayUnion(currentUserData.id),
-          likeCount: firebase.firestore.FieldValue.increment(1)
-        });
-      }
-    });
-  });
-}
-
-// Add a Comment to a Reel
-function addCommentToReel(reelId, commentText) {
-  if (!commentText.trim()) return;
-
-  db.collection("reels").doc(reelId).collection("comments").add({
-    userId: currentUserData.id,
-    userName: currentUserData.name,
-    text: commentText,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  });
-}
-
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    db.collection("users").doc(user.uid).get().then((doc) => {
-      if (doc.exists) {
-        currentUserData = doc.data();
-        loadUsersList();
-        listenForSynkRequests();
-      }
-    }).catch((error) => {
-      console.log("Waiting for auth initialization...", error);
-    });
-  } else {
-    currentUserData = null;
-  }
-});
-function startChat(targetUserId, targetUserName) {
-  // Hide all other views
-  document.querySelectorAll(".view-section").forEach(el => el.classList.add("hidden"));
-
-  // Show Chat View
-  const chatView = document.getElementById("chatView");
-  if (chatView) chatView.classList.remove("hidden");
-
-  // Update header with recipient name
-  const chatHeader = document.getElementById("chatRecipientName");
-  if (chatHeader) chatHeader.innerText = targetUserName;
-
-  // Save current active chat ID
-  window.activeChatUserId = targetUserId;
-
-  // Load messages
-  loadChatMessages(targetUserId);
-}
-function openUserProfile(targetUserId) {
-  db.collection("users").doc(targetUserId).get().then((doc) => {
-    if (!doc.exists) return alert("User profile not found.");
-
-    const data = doc.data();
-    
-    // Update Profile Modal / View Elements
-    document.getElementById("profileViewName").innerText = data.name || "User";
-    document.getElementById("profileViewPhone").innerText = data.phone || "No phone listed";
-    document.getElementById("profileAvatarLarge").innerText = data.name ? data.name.charAt(0).toUpperCase() : "U";
-
-    // Show Profile View / Overlay
-    document.querySelectorAll(".view-section").forEach(el => el.classList.add("hidden"));
-    const profileView = document.getElementById("userProfileView");
-    if (profileView) profileView.classList.remove("hidden");
-  }).catch((error) => console.error("Error loading profile:", error));
-}
-
+}; 
 </script>
 
 </body>
+</html>

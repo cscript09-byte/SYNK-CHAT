@@ -1,0 +1,36 @@
+rules_version = '2';
+// SYNK — Cloud Storage security rules
+// Paste into Firebase Console > Storage > Rules, then Publish.
+service firebase.storage {
+  match /b/{bucket}/o {
+    function signedIn() { return request.auth != null; }
+    function isAdmin() {
+      return signedIn() && request.auth.token.email_verified == true
+        && request.auth.token.email.lower() in ['cscript09@gmail.com', 'alexartie347@gmail.com'];
+    }
+    function underMB(n) { return request.resource.size < n * 1024 * 1024; }
+
+    // Profile photos
+    match /avatars/{uid}/{file=**} {
+      allow read: if signedIn();
+      allow create, update: if signedIn() && request.auth.uid == uid && underMB(5)
+                            && request.resource.contentType.matches('image/.*');
+      allow delete: if signedIn() && (request.auth.uid == uid || isAdmin());
+    }
+
+    // Reels: photos up to 15 MB, videos up to 20 MB
+    match /reels/{uid}/{file=**} {
+      allow read: if signedIn();
+      allow create, update: if signedIn() && request.auth.uid == uid && underMB(21)
+                            && (request.resource.contentType.matches('image/.*') || request.resource.contentType.matches('video/.*'));
+      allow delete: if signedIn() && (request.auth.uid == uid || isAdmin());
+    }
+
+    // Chat attachments (any file type, up to 25 MB). Only the two chat members can read.
+    match /chats/{chatId}/{file=**} {
+      allow read: if signedIn() && (request.auth.uid in chatId.split('_') || isAdmin());
+      allow create: if signedIn() && request.auth.uid in chatId.split('_') && underMB(26);
+      allow delete: if signedIn() && (request.auth.uid in chatId.split('_') || isAdmin());
+    }
+  }
+}

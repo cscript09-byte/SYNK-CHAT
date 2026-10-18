@@ -1373,6 +1373,8 @@ $("#authForm").addEventListener("submit", async e => {
 });
 $("#googleBtn").onclick = async () => {
   if (!consentAccepted) { authMsg("Review and accept the SYNK terms first."); return $("#consentLink").focus(); }
+  if (signup && !$("#aDob").value) return authMsg("Enter your date of birth to confirm you are 15 or older."), $("#aDob").focus();
+  if (signup && new Date($("#aDob").value + "T00:00:00") > dobLimit) return authMsg("You must be 15 or older to create a SYNK account."), $("#aDob").focus();
   authMsg("");
   const btn = $("#googleBtn"); btn.disabled = true;
   try { const a = await needLive(); useAPI(a); await a.google(); } catch (err) { authMsg(friendly(err)); }

@@ -148,15 +148,23 @@ button.chip{cursor:pointer}
 .demo-cta{margin-top:1.25rem;padding:1rem;border-radius:var(--r);border:1px dashed var(--border2);display:flex;align-items:center;justify-content:space-between;gap:1rem;font-size:13px;color:var(--muted)}
 .demo-cta strong{display:block;color:var(--text);font-size:14px}
 .auth-foot{margin-top:1.5rem;font-size:12px;color:var(--faint);text-align:center}
-.trust-checklist{margin-top:1.25rem;padding:1rem;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);text-align:left}
-.trust-checklist summary{cursor:pointer;list-style-position:inside;font-weight:600;color:var(--text);padding:.15rem 0}
-.trust-checklist summary::marker{color:var(--a2)}
-.trust-intro{margin:.65rem 0 .85rem;color:var(--muted);font-size:12px}
-.trust-items{display:grid;gap:.65rem;padding:0;list-style:none}
-.trust-item{display:grid;grid-template-columns:1.15rem 1fr;gap:.55rem;align-items:start;color:var(--muted);font-size:12px;line-height:1.45}
-.trust-item input{width:1rem;height:1rem;margin:.15rem 0 0;accent-color:var(--a2)}
-.trust-item strong{color:var(--text);font-weight:600}
-.trust-note{margin:.85rem 0 0;padding-top:.75rem;border-top:1px solid var(--border);color:var(--faint);font-size:11px}
+.consent-prompt{margin-top:1.25rem;padding:.85rem 1rem;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--muted);font-size:12px;text-align:left}
+.consent-prompt .link-btn{display:inline;padding:0;font-size:inherit;vertical-align:baseline}
+.consent-status{display:block;margin-top:.35rem;color:var(--faint);font-size:11px}
+.consent-screen{position:fixed;inset:0;z-index:1000;overflow-y:auto;padding:clamp(1rem,4vw,3rem);background:var(--bg)}
+.consent-card{width:min(100%,720px);margin:auto;padding:clamp(1.25rem,4vw,2.5rem);border:1px solid var(--border);border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow)}
+.consent-card h1{font-size:clamp(1.6rem,4vw,2.2rem);letter-spacing:-.025em;margin-top:1.25rem}
+.consent-card .intro{margin-top:.55rem;color:var(--muted);max-width:62ch}
+.consent-card .back-link{display:inline-flex;min-height:44px;align-items:center;color:var(--a2);font-weight:600;text-decoration:none}
+.consent-items{display:grid;gap:.8rem;margin:1.5rem 0;padding:0;list-style:none}
+.consent-item{display:grid;grid-template-columns:1.25rem 1fr;gap:.7rem;align-items:start;color:var(--muted);font-size:14px;line-height:1.5}
+.consent-item input{width:1.1rem;height:1.1rem;margin:.18rem 0 0;accent-color:var(--a2)}
+.consent-item strong{color:var(--text);font-weight:600}
+.consent-card .field{margin-top:1rem}
+.consent-card .field small{color:var(--faint);font-size:12px}
+.consent-warning{margin-top:1rem;color:var(--faint);font-size:12px}
+.consent-actions{display:flex;justify-content:flex-end;gap:.75rem;margin-top:1.5rem}
+@media (max-width:520px){.consent-actions{flex-direction:column-reverse}.consent-actions .btn{width:100%}}
 @media (max-width:900px){#auth{grid-template-columns:1fr}.auth-art{display:none}}
 
 /* =====================================================================
@@ -520,6 +528,11 @@ button.chip{cursor:pointer}
           <label for="aCountry">Country</label>
           <select id="aCountry"></select>
         </div>
+        <div class="field hidden" id="fDob">
+          <label for="aDob">Date of birth</label>
+          <input id="aDob" type="date" autocomplete="bday" aria-describedby="aDobHelp" />
+          <small id="aDobHelp" style="color:var(--faint);font-size:12px">You must be 15 or older to create a SYNK account.</small>
+        </div>
         <div class="field">
           <label for="aEmail">Email</label>
           <input id="aEmail" type="email" autocomplete="email" inputmode="email" placeholder="you@gmail.com" />
@@ -546,29 +559,45 @@ button.chip{cursor:pointer}
         <div><strong>Just looking around?</strong>Try SYNK with sample data. Nothing is saved.</div>
         <button class="btn btn-soft btn-sm" id="demoBtn" type="button">Explore demo</button>
       </div>
-      <details class="trust-checklist">
-        <summary>Trust &amp; accessibility checklist</summary>
-        <p class="trust-intro">Use this review list before launch or a material change. A checked box records your local review only; it is not a legal policy or a claim that the item is complete.</p>
-        <ul class="trust-items">
-          <li class="trust-item"><input id="checkContrast" type="checkbox"><label for="checkContrast"><strong>Contrast:</strong> verify text, controls, focus indicators and states remain readable in both themes and at increased zoom.</label></li>
-          <li class="trust-item"><input id="checkAlt" type="checkbox"><label for="checkAlt"><strong>Alt text:</strong> verify every meaningful image has a useful alternative and decorative images are ignored by assistive technology.</label></li>
-          <li class="trust-item"><input id="checkKeyboard" type="checkbox"><label for="checkKeyboard"><strong>Keyboard navigation:</strong> verify every action, dialog, form, tab and menu can be reached, operated and exited without a pointer.</label></li>
-          <li class="trust-item"><input id="checkPrivacy" type="checkbox"><label for="checkPrivacy"><strong>Privacy:</strong> publish a reviewed privacy notice that accurately explains what SYNK collects, why, how long it is kept and how people can exercise their rights.</label></li>
-          <li class="trust-item"><input id="checkCookies" type="checkbox"><label for="checkCookies"><strong>Cookies and tracking:</strong> identify cookies, local storage, analytics and other tracking, and do not describe them as absent without verification.</label></li>
-          <li class="trust-item"><input id="checkConsent" type="checkbox"><label for="checkConsent"><strong>Consent:</strong> obtain any required consent before optional tracking or communications, and make withdrawal as clear as acceptance.</label></li>
-          <li class="trust-item"><input id="checkTerms" type="checkbox"><label for="checkTerms"><strong>Terms:</strong> publish terms only after they have been reviewed and accurately describe how SYNK operates and what users may expect.</label></li>
-          <li class="trust-item"><input id="checkRefunds" type="checkbox"><label for="checkRefunds"><strong>Refunds where applicable:</strong> if SYNK charges for anything, publish accurate pricing, cancellation and refund information before accepting payment.</label></li>
-          <li class="trust-item"><input id="checkEmbeds" type="checkbox"><label for="checkEmbeds"><strong>Third-party embeds:</strong> list external services, explain their data implications and verify that embeds are accessible and necessary.</label></li>
-          <li class="trust-item"><input id="checkCopyright" type="checkbox"><label for="checkCopyright"><strong>Copyright:</strong> confirm that uploaded, displayed and embedded content is licensed or otherwise permitted, with attribution where required.</label></li>
-          <li class="trust-item"><input id="checkBusiness" type="checkbox"><label for="checkBusiness"><strong>Truthful business details:</strong> publish only verified ownership, contact, pricing and company information; do not fill gaps with assumptions.</label></li>
-          <li class="trust-item"><input id="checkReviews" type="checkbox"><label for="checkReviews"><strong>Fake reviews:</strong> do not create, buy, edit deceptively or selectively present reviews in a way that misleads people.</label></li>
-          <li class="trust-item"><input id="checkMinimisation" type="checkbox"><label for="checkMinimisation"><strong>Data minimisation:</strong> collect only what is needed for a stated purpose, restrict access, and remove it when it is no longer needed.</label></li>
-          <li class="trust-item"><input id="checkLaw" type="checkbox"><label for="checkLaw"><strong>Applicable law:</strong> have a qualified reviewer confirm which accessibility, privacy, consumer, copyright and other rules apply to SYNK’s audience and activities.</label></li>
-        </ul>
-        <p class="trust-note">This checklist is a product review aid, not legal advice. Do not treat it as a substitute for published policies or professional review.</p>
-      </details>
+      <div class="consent-prompt">
+        Before continuing, <a href="#consent" class="link-btn" id="consentLink">review and accept the SYNK terms, trust requirements and age requirement</a>.
+        <span class="consent-status" id="consentStatus" role="status">Not accepted yet.</span>
+      </div>
       <p class="auth-foot">By continuing you agree to use SYNK respectfully.</p>
     </div>
+  </div>
+</section>
+
+<!-- ============================ CONSENT ============================ -->
+<section id="consentScreen" class="consent-screen hidden" aria-labelledby="consentTitle">
+  <div class="consent-card">
+    <a href="#login" class="back-link" id="consentBack">← Back to login</a>
+    <div class="logo" style="font-size:34px;margin-top:1rem">SYNK</div>
+    <h1 id="consentTitle" tabindex="-1">Before you continue</h1>
+    <p class="intro">Review each acknowledgement below. You must accept every item before continuing to the login or sign-up screen.</p>
+    <form id="consentForm">
+      <ul class="consent-items">
+        <li class="consent-item"><input id="consentAge" type="checkbox" required><label for="consentAge"><strong>Age requirement:</strong> I confirm that I am 15 years old or older.</label></li>
+        <li class="consent-item"><input id="consentContrast" type="checkbox" required><label for="consentContrast"><strong>Accessibility and contrast:</strong> I understand that SYNK should keep text, controls, focus indicators and states readable in both themes and at increased zoom.</label></li>
+        <li class="consent-item"><input id="consentAlt" type="checkbox" required><label for="consentAlt"><strong>Accessible content:</strong> I will provide useful alternative text for meaningful images and avoid making essential information depend on images alone.</label></li>
+        <li class="consent-item"><input id="consentKeyboard" type="checkbox" required><label for="consentKeyboard"><strong>Keyboard access:</strong> I understand that actions, dialogs, forms, tabs and menus should be operable without a pointer, and I can report barriers.</label></li>
+        <li class="consent-item"><input id="consentPrivacy" type="checkbox" required><label for="consentPrivacy"><strong>Privacy and data minimisation:</strong> I understand that account information is processed to provide authentication and chat, and that only data needed for a stated purpose should be collected and retained.</label></li>
+        <li class="consent-item"><input id="consentCookies" type="checkbox" required><label for="consentCookies"><strong>Cookies, tracking and consent:</strong> I understand that any optional cookies or tracking should be identified and require any consent that applies, with withdrawal kept clear.</label></li>
+        <li class="consent-item"><input id="consentTerms" type="checkbox" required><label for="consentTerms"><strong>Terms and applicable law:</strong> I agree to use SYNK respectfully and lawfully; the owner must publish complete, reviewed terms before launch.</label></li>
+        <li class="consent-item"><input id="consentRefunds" type="checkbox" required><label for="consentRefunds"><strong>Refunds where applicable:</strong> I understand that accurate pricing, cancellation and refund information must be published before any payment is accepted.</label></li>
+        <li class="consent-item"><input id="consentEmbeds" type="checkbox" required><label for="consentEmbeds"><strong>Third-party embeds:</strong> I understand that external services should be necessary, identified, accessible and clear about their data implications.</label></li>
+        <li class="consent-item"><input id="consentCopyright" type="checkbox" required><label for="consentCopyright"><strong>Copyright:</strong> I will only upload or share content I have the right to use, with attribution where required.</label></li>
+        <li class="consent-item"><input id="consentBusiness" type="checkbox" required><label for="consentBusiness"><strong>Truthful business details:</strong> I understand that ownership, contact, pricing and company information must be verified and not invented.</label></li>
+        <li class="consent-item"><input id="consentReviews" type="checkbox" required><label for="consentReviews"><strong>Reviews:</strong> I will not create, buy, edit deceptively or selectively present fake reviews in a way that misleads people.</label></li>
+        <li class="consent-item"><input id="consentRespect" type="checkbox" required><label for="consentRespect"><strong>Respectful use:</strong> I will not use SYNK for unlawful, abusive, deceptive or harmful activity, or misrepresent people or businesses.</label></li>
+        <li class="consent-item"><input id="consentUpdates" type="checkbox" required><label for="consentUpdates"><strong>Policy updates:</strong> I understand that published terms, privacy, tracking, refund and contact information must be kept accurate and current.</label></li>
+      </ul>
+      <p class="consent-warning">This screen records user acknowledgements; it does not replace professionally reviewed Terms of Use, Privacy Notice, Cookie Notice, refund information or other policies that may apply.</p>
+      <div class="consent-actions">
+        <button class="btn btn-ghost" type="button" id="consentCancel">Back</button>
+        <button class="btn btn-grad" type="submit" id="acceptConsent" disabled>Accept and continue</button>
+      </div>
+    </form>
   </div>
 </section>
 
@@ -1254,7 +1283,7 @@ document.addEventListener("keydown", e => {
 /* =====================================================================
    AUTH SCREEN
    ===================================================================== */
-let signup = false;
+let signup = false, consentAccepted = false;
 $("#aCountry").innerHTML = `<option value="">Select your country</option>` + COUNTRIES.map(c => `<option>${c}</option>`).join("");
 $("#pwToggle").innerHTML = ic("eye");
 $("#pwToggle").onclick = () => {
@@ -1269,6 +1298,7 @@ function setMode(isSignup) {
   $("#tabSignup").setAttribute("aria-selected", String(isSignup));
   $("#fName").classList.toggle("hidden", !isSignup);
   $("#fCountry").classList.toggle("hidden", !isSignup);
+  $("#fDob").classList.toggle("hidden", !isSignup);
   $("#forgotBtn").classList.toggle("hidden", isSignup);
   $("#authSubmit").textContent = isSignup ? "Create SYNK account" : "Log in";
   $("#googleLbl").textContent = isSignup ? "Sign up with Google" : "Continue with Google";
@@ -1279,6 +1309,33 @@ function setMode(isSignup) {
 }
 $("#tabLogin").onclick = () => setMode(false);
 $("#tabSignup").onclick = () => setMode(true);
+const dobLimit = new Date(); dobLimit.setFullYear(dobLimit.getFullYear() - 15);
+$("#aDob").max = dobLimit.toISOString().slice(0, 10);
+const consentChecks = $$("#consentForm input[type=checkbox]");
+function updateConsentButton() { $("#acceptConsent").disabled = !consentChecks.every(c => c.checked); }
+function openConsent() {
+  $("#auth").classList.add("hidden");
+  $("#consentScreen").classList.remove("hidden");
+  $("#consentTitle").focus?.();
+}
+function closeConsent() {
+  $("#consentScreen").classList.add("hidden");
+  $("#auth").classList.remove("hidden");
+  $("#consentLink").focus();
+}
+$("#consentLink").onclick = e => { e.preventDefault(); openConsent(); };
+$("#consentBack").onclick = $("#consentCancel").onclick = () => closeConsent();
+consentChecks.forEach(c => c.addEventListener("change", updateConsentButton));
+$("#consentForm").addEventListener("submit", e => {
+  e.preventDefault();
+  if (!consentChecks.every(c => c.checked)) return updateConsentButton();
+  consentAccepted = true;
+  $("#consentScreen").classList.add("hidden");
+  $("#auth").classList.remove("hidden");
+  $("#consentStatus").textContent = "Accepted for this session.";
+  $("#consentStatus").style.color = "var(--ok)";
+  $("#consentLink").focus();
+});
 function authMsg(t, ok) { const m = $("#authMsg"); m.textContent = t; m.className = "auth-msg" + (t ? " show " + (ok ? "ok" : "err") : ""); }
 function friendly(e) {
   const c = e?.code || "";
@@ -1301,9 +1358,12 @@ async function needLive() {
 
 $("#authForm").addEventListener("submit", async e => {
   e.preventDefault();
+  if (!consentAccepted) { authMsg("Review and accept the SYNK terms first."); return $("#consentLink").focus(); }
   const email = $("#aEmail").value.trim(), pw = $("#aPass").value, name = $("#aName").value.trim(), country = $("#aCountry").value;
   if (signup && name.length < 2) return authMsg("Please enter a display name (at least 2 characters)."), $("#aName").focus();
   if (signup && !country) return authMsg("Please select your country."), $("#aCountry").focus();
+  if (signup && !$("#aDob").value) return authMsg("Enter your date of birth to confirm you are 15 or older."), $("#aDob").focus();
+  if (signup && new Date($("#aDob").value + "T00:00:00") > dobLimit) return authMsg("You must be 15 or older to create a SYNK account."), $("#aDob").focus();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return authMsg("Please enter a valid email address."), $("#aEmail").focus();
   if (pw.length < 6) return authMsg("Password must be at least 6 characters."), $("#aPass").focus();
   const btn = $("#authSubmit"); busy(btn, true, signup ? "Creating account…" : "Logging in…"); authMsg("");
@@ -1312,6 +1372,7 @@ $("#authForm").addEventListener("submit", async e => {
   finally { busy(btn, false); }
 });
 $("#googleBtn").onclick = async () => {
+  if (!consentAccepted) { authMsg("Review and accept the SYNK terms first."); return $("#consentLink").focus(); }
   authMsg("");
   const btn = $("#googleBtn"); btn.disabled = true;
   try { const a = await needLive(); useAPI(a); await a.google(); } catch (err) { authMsg(friendly(err)); }

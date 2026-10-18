@@ -148,6 +148,15 @@ button.chip{cursor:pointer}
 .demo-cta{margin-top:1.25rem;padding:1rem;border-radius:var(--r);border:1px dashed var(--border2);display:flex;align-items:center;justify-content:space-between;gap:1rem;font-size:13px;color:var(--muted)}
 .demo-cta strong{display:block;color:var(--text);font-size:14px}
 .auth-foot{margin-top:1.5rem;font-size:12px;color:var(--faint);text-align:center}
+.trust-checklist{margin-top:1.25rem;padding:1rem;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);text-align:left}
+.trust-checklist summary{cursor:pointer;list-style-position:inside;font-weight:600;color:var(--text);padding:.15rem 0}
+.trust-checklist summary::marker{color:var(--a2)}
+.trust-intro{margin:.65rem 0 .85rem;color:var(--muted);font-size:12px}
+.trust-items{display:grid;gap:.65rem;padding:0;list-style:none}
+.trust-item{display:grid;grid-template-columns:1.15rem 1fr;gap:.55rem;align-items:start;color:var(--muted);font-size:12px;line-height:1.45}
+.trust-item input{width:1rem;height:1rem;margin:.15rem 0 0;accent-color:var(--a2)}
+.trust-item strong{color:var(--text);font-weight:600}
+.trust-note{margin:.85rem 0 0;padding-top:.75rem;border-top:1px solid var(--border);color:var(--faint);font-size:11px}
 @media (max-width:900px){#auth{grid-template-columns:1fr}.auth-art{display:none}}
 
 /* =====================================================================
@@ -537,6 +546,27 @@ button.chip{cursor:pointer}
         <div><strong>Just looking around?</strong>Try SYNK with sample data. Nothing is saved.</div>
         <button class="btn btn-soft btn-sm" id="demoBtn" type="button">Explore demo</button>
       </div>
+      <details class="trust-checklist">
+        <summary>Trust &amp; accessibility checklist</summary>
+        <p class="trust-intro">Use this review list before launch or a material change. A checked box records your local review only; it is not a legal policy or a claim that the item is complete.</p>
+        <ul class="trust-items">
+          <li class="trust-item"><input id="checkContrast" type="checkbox"><label for="checkContrast"><strong>Contrast:</strong> verify text, controls, focus indicators and states remain readable in both themes and at increased zoom.</label></li>
+          <li class="trust-item"><input id="checkAlt" type="checkbox"><label for="checkAlt"><strong>Alt text:</strong> verify every meaningful image has a useful alternative and decorative images are ignored by assistive technology.</label></li>
+          <li class="trust-item"><input id="checkKeyboard" type="checkbox"><label for="checkKeyboard"><strong>Keyboard navigation:</strong> verify every action, dialog, form, tab and menu can be reached, operated and exited without a pointer.</label></li>
+          <li class="trust-item"><input id="checkPrivacy" type="checkbox"><label for="checkPrivacy"><strong>Privacy:</strong> publish a reviewed privacy notice that accurately explains what SYNK collects, why, how long it is kept and how people can exercise their rights.</label></li>
+          <li class="trust-item"><input id="checkCookies" type="checkbox"><label for="checkCookies"><strong>Cookies and tracking:</strong> identify cookies, local storage, analytics and other tracking, and do not describe them as absent without verification.</label></li>
+          <li class="trust-item"><input id="checkConsent" type="checkbox"><label for="checkConsent"><strong>Consent:</strong> obtain any required consent before optional tracking or communications, and make withdrawal as clear as acceptance.</label></li>
+          <li class="trust-item"><input id="checkTerms" type="checkbox"><label for="checkTerms"><strong>Terms:</strong> publish terms only after they have been reviewed and accurately describe how SYNK operates and what users may expect.</label></li>
+          <li class="trust-item"><input id="checkRefunds" type="checkbox"><label for="checkRefunds"><strong>Refunds where applicable:</strong> if SYNK charges for anything, publish accurate pricing, cancellation and refund information before accepting payment.</label></li>
+          <li class="trust-item"><input id="checkEmbeds" type="checkbox"><label for="checkEmbeds"><strong>Third-party embeds:</strong> list external services, explain their data implications and verify that embeds are accessible and necessary.</label></li>
+          <li class="trust-item"><input id="checkCopyright" type="checkbox"><label for="checkCopyright"><strong>Copyright:</strong> confirm that uploaded, displayed and embedded content is licensed or otherwise permitted, with attribution where required.</label></li>
+          <li class="trust-item"><input id="checkBusiness" type="checkbox"><label for="checkBusiness"><strong>Truthful business details:</strong> publish only verified ownership, contact, pricing and company information; do not fill gaps with assumptions.</label></li>
+          <li class="trust-item"><input id="checkReviews" type="checkbox"><label for="checkReviews"><strong>Fake reviews:</strong> do not create, buy, edit deceptively or selectively present reviews in a way that misleads people.</label></li>
+          <li class="trust-item"><input id="checkMinimisation" type="checkbox"><label for="checkMinimisation"><strong>Data minimisation:</strong> collect only what is needed for a stated purpose, restrict access, and remove it when it is no longer needed.</label></li>
+          <li class="trust-item"><input id="checkLaw" type="checkbox"><label for="checkLaw"><strong>Applicable law:</strong> have a qualified reviewer confirm which accessibility, privacy, consumer, copyright and other rules apply to SYNK’s audience and activities.</label></li>
+        </ul>
+        <p class="trust-note">This checklist is a product review aid, not legal advice. Do not treat it as a substitute for published policies or professional review.</p>
+      </details>
       <p class="auth-foot">By continuing you agree to use SYNK respectfully.</p>
     </div>
   </div>

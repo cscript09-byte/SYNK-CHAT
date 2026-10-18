@@ -366,6 +366,7 @@ button.chip{cursor:pointer}
 .upload-preview button{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;display:grid;place-items:center}
 .progress{height:6px;border-radius:999px;background:var(--surface3);overflow:hidden;margin-top:.75rem}
 .progress i{display:block;height:100%;width:0;background:var(--grad);transition:width .2s}
+.upload-status{margin-top:.55rem;color:var(--muted);font-size:12.5px;text-align:center}
 .file-pick{display:flex;align-items:center;gap:.75rem;padding:.85rem 1rem;border-radius:var(--r);border:1px dashed var(--border2);cursor:pointer;color:var(--muted);font-size:14px;margin-top:.75rem}
 .file-pick:hover{border-color:var(--a2);color:var(--text)}
 
@@ -933,12 +934,14 @@ async function createFirebaseAPI() {
     if (u.email && snap.data().email !== u.email) { try { await setDoc(ref, { email: u.email }, { merge: true }); } catch {} }
     return false;
   }
-  async function upload(path, blob, contentType, onProgress) {
+  async function upload(path, blob, contentType, onProgress, control) {
     const r = S.ref(storage, path);
     await new Promise((res, rej) => {
       const t = S.uploadBytesResumable(r, blob, { contentType });
+      if (control) control.cancel = () => t.cancel();
       t.on("state_changed", s => onProgress && onProgress(s.bytesTransferred / s.totalBytes), rej, res);
     });
+    if (control) control.cancel = null;
     return S.getDownloadURL(r);
   }
 
@@ -1024,14 +1027,24 @@ async function createFirebaseAPI() {
 
     /* reels */
     subReels(cb, onErr) { return onSnapshot(query(collection(db, "reels"), orderBy("createdAt", "desc"), limit(60)), s => cb(s.docs.map(data)), onErr); },
-    async createReel({ text, file }, onProgress) {
+    async createReel({ text, file }, onProgress, onStatus, control) {
       let image = "", video = "", imagePath = "", videoPath = "";
       if (file) {
         const isVideo = file.type.startsWith("video/") || /\.(mp4|webm|mov|m4v)$/i.test(file.name);
         const safe = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-        if (isVideo) { videoPath = `reels/${uid}/videos/${Date.now()}_${safe}`; video = await upload(videoPath, file, file.type || "video/mp4", onProgress); }
-        else { const { blob } = await compressImage(file, 1600, .85); imagePath = `reels/${uid}/images/${Date.now()}_${safe.replace(/\.\w+$/, "")}.jpg`; image = await upload(imagePath, blob, "image/jpeg", onProgress); }
+        if (isVideo) {
+          onStatus?.("Uploading video…");
+          videoPath = `reels/${uid}/videos/${Date.now()}_${safe}`;
+          video = await upload(videoPath, file, file.type || "video/mp4", onProgress, control);
+        } else {
+          onStatus?.("Preparing photo…");
+          const { blob } = await compressImage(file, 1280, .8);
+          onStatus?.("Uploading photo…");
+          imagePath = `reels/${uid}/images/${Date.now()}_${safe.replace(/\.\w+$/, "")}.jpg`;
+          image = await upload(imagePath, blob, "image/jpeg", onProgress, control);
+        }
       }
+      onStatus?.("Saving post…");
       await addDoc(collection(db, "reels"), { uid, text, image, video, imagePath, videoPath, likes: 0, comments: 0, createdAt: now() });
     },
     async deleteReel(r) {
@@ -1917,17 +1930,20 @@ $("#reelList").addEventListener("click", async e => {
 /* Create post */
 function openCreatePost() {
   let file = null, previewURL = "";
+  let uploading = false;
+  const uploadControl = { cancel: null };
   openSheet("Create post", `
     <div style="display:flex;gap:.75rem;align-items:center;margin-bottom:.75rem"><img class="avatar sm" src="${esc(avatarOf(S.me))}" alt=""><strong>${esc(S.me?.name || "")}</strong></div>
     <div class="field"><label for="postText" class="sr-only">Post text</label><textarea id="postText" rows="4" maxlength="2000" placeholder="What's happening?" autofocus></textarea></div>
     <input type="file" id="postFile" accept="image/*,video/*" class="hidden">
     <label class="file-pick" for="postFile" id="pickLbl">${ic("image")}<span>Add a photo or video <small style="display:block;color:var(--faint)">Videos up to 20 MB</small></span></label>
     <div id="postPrev"></div>
-    <div class="progress hidden" id="postProg"><i></i></div>`, {
+    <div class="progress hidden" id="postProg" role="progressbar" aria-label="Upload progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div>
+    <p class="upload-status hidden" id="postStatus" role="status"></p>`, {
     foot: `<button class="btn btn-ghost" id="postCancel">Cancel</button><button class="btn btn-grad" id="postGo">Post</button>`,
-    onClose: () => previewURL && URL.revokeObjectURL(previewURL)
+    onClose: () => { uploadControl.cancel?.(); if (previewURL) URL.revokeObjectURL(previewURL); }
   });
-  $("#postCancel").onclick = () => closeSheet();
+  $("#postCancel").onclick = () => { if (uploading) { uploadControl.cancel?.(); return; } closeSheet(); };
   $("#postFile").onchange = e => {
     const f = e.target.files[0]; if (!f) return;
     const isVid = f.type.startsWith("video/") || /\.(mp4|webm|mov|m4v)$/i.test(f.name);
@@ -1942,13 +1958,26 @@ function openCreatePost() {
   $("#postGo").onclick = async () => {
     const text = $("#postText").value.trim();
     if (!text && !file) return toast("Write something or add a photo or video.", "err");
+    uploading = true;
     const btn = $("#postGo"); busy(btn, true, "Posting…");
+    const cancel = $("#postCancel"); cancel.textContent = "Cancel upload";
     $("#postProg").classList.remove("hidden");
+    $("#postStatus").classList.remove("hidden");
+    $("#postStatus").textContent = file ? "Starting upload…" : "Saving post…";
     try {
-      await api.createReel({ text, file }, p => { const bar = $("#postProg i"); if (bar) bar.style.width = Math.round(p * 100) + "%"; });
+      await api.createReel({ text, file }, p => {
+        const percent = Math.round(p * 100), bar = $("#postProg i"), progress = $("#postProg");
+        if (bar) bar.style.width = percent + "%";
+        if (progress) { progress.setAttribute("aria-valuenow", String(percent)); progress.setAttribute("aria-label", `Upload progress: ${percent}%`); }
+        const status = $("#postStatus"); if (status) status.textContent = file ? `Uploading ${file.type.startsWith("video/") ? "video" : "photo"}… ${percent}%` : "Saving post…";
+      }, status => { if ($("#postStatus")) $("#postStatus").textContent = status; }, uploadControl);
       if (api.mode === "demo" && file && file.type.startsWith("video/")) previewURL = ""; // keep blob alive for demo playback
       closeSheet(); toast("Posted to SYNK", "ok");
-    } catch (err) { toast("Couldn't post: " + friendly(err), "err"); busy(btn, false); $("#postProg").classList.add("hidden"); }
+    } catch (err) {
+      const cancelled = err?.code === "storage/canceled";
+      toast(cancelled ? "Upload cancelled." : "Couldn't post: " + friendly(err), "err");
+      uploading = false; if (cancel) cancel.textContent = "Cancel"; if (btn) busy(btn, false); const progress = $("#postProg"), status = $("#postStatus"); if (progress) progress.classList.add("hidden"); if (status) status.classList.add("hidden");
+    }
   };
 }
 $("#composerCard").onclick = openCreatePost;
